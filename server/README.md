@@ -30,7 +30,7 @@ This repository contains the L-L Server, an application built using ASP.NET Core
 
 - **ASP.NET Core 8.0**
 - **Entity Framework Core**
-- **SQL Server**
+- **Postgres SQL**
 - **Swagger**
 - **JWT Authentication**
 
