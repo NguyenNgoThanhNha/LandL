@@ -1,0 +1,20 @@
+﻿using L_L.Business.Services;
+using L_L.Data.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace L_L.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
+    {
+        private readonly UserService userService;
+
+        public UserController(UserService userService)
+        {
+            this.userService = userService;
+        }
+
+    }
+}
