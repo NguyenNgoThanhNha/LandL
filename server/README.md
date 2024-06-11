@@ -30,14 +30,14 @@ This repository contains the L-L Server, an application built using ASP.NET Core
 
 - **ASP.NET Core 8.0**
 - **Entity Framework Core**
-- **Postgres SQL**
+- **PostgreSQL**
 - **Swagger**
 - **JWT Authentication**
 
 ## Requirements
 
 - [.NET SDK 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
-- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+- [PostgreSQL](https://www.postgresql.org/download/)
 - [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) or any other IDE with .NET support
 
 ## Getting Started
