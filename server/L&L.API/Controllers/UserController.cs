@@ -16,5 +16,12 @@ namespace L_L.API.Controllers
             this.userService = userService;
         }
 
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var users = userService.GetAllUser();
+            return Ok(users);
+        }
+
     }
 }

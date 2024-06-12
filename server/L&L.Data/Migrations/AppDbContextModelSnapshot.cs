@@ -38,7 +38,7 @@ namespace L_L.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("CreateBy")
                         .HasColumnType("text");

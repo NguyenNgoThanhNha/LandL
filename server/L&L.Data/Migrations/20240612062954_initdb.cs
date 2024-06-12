@@ -39,7 +39,7 @@ namespace L_L.Data.Migrations
                     Gender = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Level = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Address = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    BirthDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     OTPCode = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
                     CreateBy = table.Column<string>(type: "text", nullable: true),

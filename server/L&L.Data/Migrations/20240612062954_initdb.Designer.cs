@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240611111713_init db")]
+    [Migration("20240612062954_initdb")]
     partial class initdb
     {
         /// <inheritdoc />
@@ -41,7 +41,7 @@ namespace L_L.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("CreateBy")
                         .HasColumnType("text");
