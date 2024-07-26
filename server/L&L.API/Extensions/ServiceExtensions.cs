@@ -63,10 +63,11 @@ namespace L_L.API.Extensions
                     };
                 });
 
-            services.AddDbContext<AppDbContext>(opt =>
+/*            services.AddDbContext<AppDbContext>(opt =>
             {
                 opt.UseNpgsql(configuration.GetConnectionString("PgDbConnection"));
-            });
+            }); */
+            services.AddDbContext<AppDbContext>();
 
             /*Config repository*/
             services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
