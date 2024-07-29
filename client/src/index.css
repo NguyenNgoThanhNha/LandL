@@ -4,7 +4,7 @@
   line-height: 1.5;
   font-family: 'Kumbh Sans', sans-serif;
   font-weight: 300;
-  font-size: 19px;
+  font-size: 18px;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -65,7 +65,7 @@
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: #EA5E29;
   }
   button {
     background-color: #f9f9f9;

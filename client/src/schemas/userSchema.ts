@@ -60,3 +60,19 @@ export const UserSetPasswordSchema = z.object({
   })
 })
 export type UserSetPasswordType = z.infer<typeof UserSetPasswordSchema>
+//get promote code
+export const UserGetPromoteCodeSchema = z.object({
+  email: z.string({
+    required_error: 'Email is required'
+  }),
+  username: z.string({
+    required_error: 'Username is required'
+  }),
+  phoneNumber: z
+    .string()
+    .length(10, 'Phone number must be exactly 10 digits')
+    .regex(/^\d+$/, 'Phone number must contain only digits')
+    .refine((val) => val.length === 10, { message: 'Phone number must be exactly 10 digits' })
+})
+
+export type UserGetPromoteCodeType = z.infer<typeof UserGetPromoteCodeSchema>
