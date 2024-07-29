@@ -20,6 +20,9 @@ const LoginForm = () => {
           autoFocus
         />
         <FormInput name={'password'} form={form} classContent={'col-span-2'} type={'password'} />
+        <div className={'justify-end flex text-orangeTheme text-sm col-span-2 -mt-4 font-semibold'}>
+          <Link to={'/forgot-password'}>Forgot password</Link>
+        </div>
       </div>
       <div className={'flex flex-col gap-2'}>
         <Button className={'bg-orangeTheme w-full hover:bg-orangeTheme/90'} type={'submit'}>
