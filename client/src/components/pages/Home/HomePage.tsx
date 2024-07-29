@@ -1,15 +1,19 @@
-import FrequentAskedQuestion from '@/components/organisms/Home/FrequentAskedQuestion.tsx'
-import PromoteCodeForm from '@/components/organisms/Home/PromoteCodeForm.tsx'
-import UserAvatar from '@/components/atoms/UserAvatar.tsx'
 import StatisticLine from '@/components/organisms/Home/StatisticLine.tsx'
+import TheWayToUseWeb from '@/components/organisms/Home/TheWayToUseWeb.tsx'
+import AboutUsLine from '@/components/organisms/Home/AboutUsLine.tsx'
+import FaqLine from '@/components/organisms/Home/FAQLine.tsx'
+import { Separator } from '@/components/atoms/ui/separator.tsx'
+import TrustLine from '@/components/organisms/Home/TrustLine.tsx'
 
 const HomePage = () => {
   return (
-    <div className={'flex flex-col gap-10 items-center justify-center'}>
-      <FrequentAskedQuestion />
-      <PromoteCodeForm />
-      <UserAvatar avatar={'https://github.com/shadcn.png'} />
+    <div className={'flex flex-col items-center justify-center'}>
+      <AboutUsLine />
+      <TheWayToUseWeb />
       <StatisticLine />
+      <Separator />
+      <FaqLine />
+      <TrustLine />
     </div>
   )
 }

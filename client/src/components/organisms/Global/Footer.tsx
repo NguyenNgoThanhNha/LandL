@@ -3,7 +3,7 @@ import { Clock, Mail, Phone } from 'lucide-react'
 
 const Footer = () => {
   return (
-    <div className={'bg-darkTheme text-white px-20 py-5 text-sm mt-10'}>
+    <div className={'bg-darkTheme text-white px-20 py-5 text-sm mt-auto '}>
       <div className={'flex gap-8 justify-between flex-wrap'}>
         <div className={'flex gap-2 items-center px-8'}>
           <img src={'/logoLL.png'} alt={'logo'} className={'w-28 h-28'} />

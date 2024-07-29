@@ -7,5 +7,9 @@ export enum ROUTES {
   SET_PASSWORD = 'set-password',
   HOME = 'home',
   SERVICE = 'service',
-  PROFILE = 'profile'
+  PROFILE = 'profile',
+  COST = 'cost',
+  ABOUT_US = 'about-us',
+  BLOG = 'blog',
+  BLOG_DETAIL = 'blog/:id'
 }

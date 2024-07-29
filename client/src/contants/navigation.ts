@@ -22,6 +22,6 @@ export const NAVIGATIONS = [
   {
     id: 5,
     title: 'About us',
-    path: '/about'
+    path: '/about-us'
   }
 ]

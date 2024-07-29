@@ -5,14 +5,14 @@ import Slogan from '@/components/organisms/Home/Slogan.tsx'
 
 const HomeLayout = () => {
   return (
-    <div>
+    <>
       <div className={"bg-[url('/bg-home.png')] bg-cover bg-center w-full h-[700px]"}>
         <Header />
         <Slogan />
       </div>
       <Outlet />
       <Footer />
-    </div>
+    </>
   )
 }
 

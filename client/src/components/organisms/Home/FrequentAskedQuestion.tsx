@@ -5,7 +5,7 @@ import { Badge } from '@/components/atoms/ui/badge.tsx'
 
 const FrequentAskedQuestion = () => {
   return (
-    <div className={'flex flex-col gap-6'}>
+    <div className={'flex flex-col gap-6 col-span-1 px-10 py-8'}>
       <div className={'flex flex-col gap-4'}>
         <Badge className={'w-fit rounded bg-orangeTheme'}>FAQ</Badge>
         <div className={'font-bold text-4xl'}>

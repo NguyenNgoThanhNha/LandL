@@ -20,7 +20,7 @@ const Slogan = () => {
       </div>
       <Button
         className={
-          'w-fit text-lg font-semibold tracking-tight bg-orangeTheme hover:bg-orangeTheme/90 px-4 flex items-center space-x-2'
+          'w-fit rounded-none text-lg font-semibold tracking-tight bg-orangeTheme hover:bg-orangeTheme/90 px-4 flex items-center space-x-2'
         }
         onClick={() => navigate(ROUTES.SERVICE)}
       >

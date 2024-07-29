@@ -1,5 +1,5 @@
 const ServicePage = () => {
-  return <div>Service</div>
+  return <div className={''}>Service</div>
 }
 
 export default ServicePage

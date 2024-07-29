@@ -4,9 +4,11 @@ import Footer from '@/components/organisms/Global/Footer.tsx'
 
 const MainLayout = () => {
   return (
-    <div>
-      <Header classContent={'bg-darkTheme'} />
-      <Outlet />
+    <div className='min-h-screen flex flex-col'>
+      <Header classContent='bg-darkTheme' />
+      <div className='flex-1'>
+        <Outlet />
+      </div>
       <Footer />
     </div>
   )
