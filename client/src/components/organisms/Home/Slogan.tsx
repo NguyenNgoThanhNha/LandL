@@ -6,10 +6,9 @@ import { ROUTES } from '@/contants/routerEndpoint.ts'
 const Slogan = () => {
   const navigate = useNavigate()
   return (
-    <div className={'flex flex-col gap-10 md:w-1/3 sm:w-1/2 mr-auto text-white md:ml-20 mt-20'}>
+    <div className={'flex flex-col gap-10 md:w-1/3 sm:w-full sm:px-10 md:px-0 mr-auto text-white md:ml-20 mt-20'}>
       <div className={'flex flex-col gap-6'}>
         <p className={'uppercase text-4xl font-semibold tracking-tighter leading-normal'}>
-          {' '}
           "Leopard Lorry: Leap and Lead"
         </p>
         <p>

@@ -1,14 +1,16 @@
-import UserAvatar from '@/components/atoms/UserAvatar.tsx'
 import { Badge } from '@/components/atoms/ui/badge.tsx'
 import { NAVIGATIONS } from '@/contants/navigation.ts'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/utils/cn.ts'
 import { useEffect } from 'react'
 import { ROUTES } from '@/contants/routerEndpoint.ts'
+import UserDropdown from '@/components/organisms/Global/UserDropdown.tsx'
+import { Plus } from 'lucide-react'
 
 interface HeaderProps {
   classContent?: string
 }
+
 const Header = ({ classContent }: HeaderProps) => {
   const path = useLocation()
   const navigate = useNavigate()
@@ -36,8 +38,14 @@ const Header = ({ classContent }: HeaderProps) => {
             </Link>
           ))}
         </div>
+        <Link to={'/service'}
+              className={cn('flex gap-1 text-center backdrop-blur-lg font-normal cursor-pointer  hover:text-orangeTheme border rounded px-2 py-1',
+                path && path.pathname === '/service' && 'text-orangeTheme font-semibold border-orangeTheme')}>
+          Create order
+        
+        </Link>
         <div className={'flex gap-2 items-center'}>
-          <UserAvatar avatar={'https://github.com/shadcn.png'} />
+          <UserDropdown avatar={'https://github.com/shadcn.png'} />
           <div className={'flex flex-col md:w-30'}>
             <span className={'truncate text-sm font-semibold'}>Luu Nguyen</span>
             <Badge className={'bg-orangeTheme hover:bg-orangeTheme/60 w-fit'}>Basic</Badge>

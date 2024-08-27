@@ -1,4 +1,4 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom'
+import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from 'react-router-dom'
 import { ROUTES } from '@/contants/routerEndpoint.ts'
 import LoginPage from '@/components/pages/Login/LoginPage.tsx'
 import SignupPage from '@/components/pages/Signup/SignupPage.tsx'
@@ -23,6 +23,7 @@ const router = createBrowserRouter(
     <Route path={ROUTES.VERIFY_CODE} element={<VerifyCodePage />} />,
     <Route path={ROUTES.SET_PASSWORD} element={<SetPasswordPage />} />,
     <Route path={ROUTES.ROOT} element={<HomeLayout />}>
+      <Route index element={<Navigate to={ROUTES.HOME} />} />,
       <Route path={ROUTES.HOME} element={<HomePage />} />
     </Route>,
     <Route path={ROUTES.ROOT} element={<MainLayout />}>

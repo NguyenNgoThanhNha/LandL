@@ -10,7 +10,7 @@ const OptionFormFooter = () => {
         <img src={'/facebook.webp'} alt={'facebook-logo'} className='w-6' />
       </Button>
       <Button className={'hover:bg-slate-50'}>
-        <img src={'/google.png'} alt={'google-logo'} className='w-6' />
+        <img src={'/google.png'} alt={'google-logo'} className='w-6 ' />
       </Button>
       <Button className={'hover:bg-slate-50'}>
         <img src={'/apple.png'} alt={'apple-logo'} className='w-6' />
