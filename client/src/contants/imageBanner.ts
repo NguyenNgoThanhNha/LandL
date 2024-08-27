@@ -16,7 +16,7 @@ export const IMAGES_SIGNUP = [
 export const IMAGES_LOGIN = [
   {
     id: 1,
-    url: '/delivery1.jfif'
+    url: '/login-1.png'
   },
   {
     id: 2,

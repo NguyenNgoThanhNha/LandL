@@ -4,11 +4,11 @@ export const NAVIGATIONS = [
     title: 'Home',
     path: '/home'
   },
-  {
-    id: 2,
-    title: 'Service',
-    path: '/service'
-  },
+  // {
+  //   id: 2,
+  //   title: 'Service',
+  //   path: '/service'
+  // },
   {
     id: 3,
     title: 'Cost',

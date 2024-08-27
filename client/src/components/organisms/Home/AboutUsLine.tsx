@@ -2,10 +2,10 @@ const AboutUsLine = () => {
   return (
     <div
       className={
-        'bg-[url(/home-3.png)] w-full h-[500px] bg-cover grid md:grid-cols-2 sm:grid-cols-1 text-white items-center'
+        'bg-[url(/home-3.png)] w-full md:h-[500px] sm:h-fit bg-cover grid md:grid-cols-2 sm:grid-cols-1 text-white items-center'
       }
     >
-      <div className={' col-span-1 flex justify-center'}>
+      <div className={'col-span-1 flex justify-center'}>
         <div className={'relative bg-orangeTheme w-fit p-2 transform -translate-y-24'}>
           <img src={'/home-4.png'} className={'object-cover w-72 '} alt={'home-4.png'} />
           <div
@@ -17,8 +17,8 @@ const AboutUsLine = () => {
           </div>
         </div>
       </div>
-      <div className={'col-span-1'}>
-        <p className={'font-semibold text-4xl uppercase mb-6'}>About us</p>
+      <div className={'col-span-1 px-4 py-4'}>
+        <p className={'font-semibold text-4xl uppercase mb-6 '}>About us</p>
         <p className={'md:w-3/4 sm:w-full md:px-0 sm:px-5'}>
           The same is true for companies. In addition to the information above, people who find your company online want
           to know about your mission, vision, and how you can help them solve their problems.The same is true for

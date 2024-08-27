@@ -11,7 +11,7 @@ import { TRANSPORTATION_PRICES } from '@/contants/transportationPrice.ts'
 
 const TransportationPriceTable = () => {
   return (
-    <Table className={'border collapse'}>
+    <Table className={'border '}>
       <TableCaption className={'font-semibold'}>TRUCK TRANSPORTATION PRICE LIST (UNIT: VND)</TableCaption>
       <TableHeader>
         <TableRow>
