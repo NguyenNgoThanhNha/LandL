@@ -1,35 +1,47 @@
-import { useForm } from 'react-hook-form'
-import { UserForgotPasswordType } from '@/schemas/userSchema.ts'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { UserForgotPasswordSchema, UserForgotPasswordType } from '@/schemas/userSchema.ts'
 import { Form } from '@/components/atoms/ui/form.tsx'
 import FormInput from '@/components/molecules/FormInput.tsx'
 import { Button } from '@/components/atoms/ui/button.tsx'
 import { Separator } from '@/components/atoms/ui/separator.tsx'
 import OptionFormFooter from '@/components/molecules/OptionFormFooter.tsx'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 const ForgotPasswordForm = () => {
-  const form = useForm<UserForgotPasswordType>()
+  const form = useForm<UserForgotPasswordType>({
+      resolver: zodResolver(UserForgotPasswordSchema),
+      defaultValues: {
+        email: ''
+      }
+    })
+  
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data)
+  }
   return (
     <Form {...form}>
-      <div className={'grid grid-cols-2  gap-x-2 gap-y-4'}>
-        <FormInput
-          name={'email'}
-          form={form}
-          placeholder={'Ex:customer@gmail.com'}
-          classContent={'col-span-2'}
-          autoFocus={true}
-        />
-      </div>
-      <div className={'flex flex-col gap-2'}>
-        <Button className={'bg-orangeTheme w-full hover:bg-orangeTheme/90'} type={'submit'}>
-          Submit
-        </Button>
-      </div>
-      <div className={'text-sm font-extralight flex items-center justify-center gap-4'}>
-        <Separator className={'w-1/3'} />
-        <span> Or Login with</span>
-        <Separator className={'w-1/3'} />
-      </div>
-      <OptionFormFooter />
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className={'grid grid-cols-2  gap-x-2 gap-y-4'}>
+          <FormInput
+            name={'email'}
+            form={form}
+            placeholder={'Ex:customer@gmail.com'}
+            classContent={'col-span-2'}
+            autoFocus={true}
+          />
+        </div>
+        <div className={'flex flex-col gap-2'}>
+          <Button className={'bg-orangeTheme w-full hover:bg-orangeTheme/90'} type={'submit'}>
+            Submit
+          </Button>
+        </div>
+        <div className={'text-sm font-extralight flex items-center justify-center gap-4'}>
+          <Separator className={'w-1/3'} />
+          <span> Or Login with</span>
+          <Separator className={'w-1/3'} />
+        </div>
+        <OptionFormFooter />
+      </form>
     </Form>
   )
 }

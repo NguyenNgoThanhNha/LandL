@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const searchProductSchema = z.object({
+export const SearchProductSchema = z.object({
   from: z.string({
     required_error: 'Address is required'
   }),
@@ -25,9 +25,9 @@ export const searchProductSchema = z.object({
   type: z.string({
     required_error: 'Product Type is required'
   }),
-  time: z.string({
+  date: z.string({
     required_error: 'Time is required'
   })
 })
 
-export type searchProductType = z.infer<typeof searchProductSchema>
+export type SearchProductType = z.infer<typeof SearchProductSchema>

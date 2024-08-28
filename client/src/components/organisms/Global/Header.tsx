@@ -5,7 +5,6 @@ import { cn } from '@/utils/cn.ts'
 import { useEffect } from 'react'
 import { ROUTES } from '@/contants/routerEndpoint.ts'
 import UserDropdown from '@/components/organisms/Global/UserDropdown.tsx'
-import { Plus } from 'lucide-react'
 
 interface HeaderProps {
   classContent?: string
@@ -38,11 +37,10 @@ const Header = ({ classContent }: HeaderProps) => {
             </Link>
           ))}
         </div>
-        <Link to={'/service'}
+        <Link to={ROUTES.CREATE_ORDER}
               className={cn('flex gap-1 text-center backdrop-blur-lg font-normal cursor-pointer  hover:text-orangeTheme border rounded px-2 py-1',
-                path && path.pathname === '/service' && 'text-orangeTheme font-semibold border-orangeTheme')}>
+                path && path.pathname?.slice(1) === ROUTES.CREATE_ORDER && 'text-orangeTheme font-semibold border-orangeTheme')}>
           Create order
-        
         </Link>
         <div className={'flex gap-2 items-center'}>
           <UserDropdown avatar={'https://github.com/shadcn.png'} />
