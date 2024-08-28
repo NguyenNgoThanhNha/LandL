@@ -23,15 +23,15 @@ const UserDropdown = ({ avatar }: UserDropdownProps) => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuItem className={'flex gap-2'} onClick={() => navigate(ROUTES.PROFILE)}>
-          <UserPen strokeWidth={1} size={18} />
-          <span>Profile</span>
+          <UserPen strokeWidth={2} size={20} />
+          <span>My Profile</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className={'flex gap-2'}>
-          <Truck strokeWidth={1} size={18} />
-          <span>Order</span>
+        <DropdownMenuItem className={'flex gap-2'} onClick={() => navigate(ROUTES.MY_ORDER)}>
+          <Truck strokeWidth={2} size={20} />
+          <span>My Order</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className={'flex gap-2'}>
-          <LogOut strokeWidth={1} size={18} />
+        <DropdownMenuItem className={'flex gap-2'} onClick={() => navigate(ROUTES.LOGOUT)}>
+          <LogOut strokeWidth={2} size={20} />
           <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

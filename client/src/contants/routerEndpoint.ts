@@ -11,5 +11,8 @@ export enum ROUTES {
   COST = 'cost',
   ABOUT_US = 'about-us',
   BLOG = 'blog',
-  BLOG_DETAIL = 'blog/:id'
+  BLOG_DETAIL = 'blog/:id',
+  CREATE_ORDER = 'create-order',
+  MY_ORDER = 'my-order',
+  LOGOUT = 'logout'
 }

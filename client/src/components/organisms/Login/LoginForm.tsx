@@ -1,46 +1,59 @@
-import { useForm } from 'react-hook-form'
-import { UserLoginType } from '@/schemas/userSchema.ts'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { UserLoginSchema, UserLoginType } from '@/schemas/userSchema.ts'
 import { Form } from '@/components/atoms/ui/form.tsx'
 import FormInput from '@/components/molecules/FormInput.tsx'
 import { Button } from '@/components/atoms/ui/button.tsx'
 import { Separator } from '@/components/atoms/ui/separator.tsx'
 import OptionFormFooter from '@/components/molecules/OptionFormFooter.tsx'
 import { Link } from 'react-router-dom'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 const LoginForm = () => {
-  const form = useForm<UserLoginType>()
+  const form = useForm<UserLoginType>({
+    resolver: zodResolver(UserLoginSchema),
+    defaultValues: {
+      email: '',
+      password: ''
+    }
+  })
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data)
+  }
   return (
-    <Form {...form}>
-      <div className={'grid grid-cols-2  gap-x-2 gap-y-4'}>
-        <FormInput
-          name={'email'}
-          form={form}
-          placeholder={'Ex:customer@gmail.com'}
-          classContent={'col-span-2'}
-          autoFocus
-        />
-        <FormInput name={'password'} form={form} classContent={'col-span-2'} type={'password'} />
-        <div className={'justify-end flex text-orangeTheme text-sm col-span-2 -mt-4 font-semibold'}>
-          <Link to={'/forgot-password'}>Forgot password</Link>
+    <Form {...form} >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className={'grid grid-cols-2  gap-x-2 gap-y-4'}>
+          <FormInput
+            name={'email'}
+            form={form}
+            placeholder={'Ex:customer@gmail.com'}
+            classContent={'col-span-2'}
+            autoFocus
+          />
+          <FormInput name={'password'} form={form} classContent={'col-span-2'} type={'password'} />
+          <div className={'justify-end flex text-orangeTheme text-sm col-span-2 -mt-4 font-semibold'}>
+            <Link to={'/forgot-password'}>Forgot password</Link>
+          </div>
         </div>
-      </div>
-      <div className={'flex flex-col gap-2'}>
-        <Button className={'bg-orangeTheme w-full hover:bg-orangeTheme/90'} type={'submit'}>
-          Login
-        </Button>
-        <div className={'text-sm justify-center flex gap-1'}>
-          Don’t have an account?{' '}
-          <Link to={'/sign-up'} className={'text-orangeTheme font-semibold'}>
-            Sign up
-          </Link>
+        <div className={'flex flex-col gap-2'}>
+          <Button className={'bg-orangeTheme w-full hover:bg-orangeTheme/90'} type={'submit'}
+                  disabled={form.formState.isSubmitting}>
+            Login
+          </Button>
+          <div className={'text-sm justify-center flex gap-1'}>
+            Don’t have an account?{' '}
+            <Link to={'/sign-up'} className={'text-orangeTheme font-semibold'}>
+              Sign up
+            </Link>
+          </div>
         </div>
-      </div>
-      <div className={'text-sm font-extralight flex items-center justify-center gap-4'}>
-        <Separator className={'w-1/3'} />
-        <span> Or Login with</span>
-        <Separator className={'w-1/3'} />
-      </div>
-      <OptionFormFooter />
+        <div className={'text-sm font-extralight flex items-center justify-center gap-4'}>
+          <Separator className={'w-1/3'} />
+          <span> Or Login with</span>
+          <Separator className={'w-1/3'} />
+        </div>
+        <OptionFormFooter />
+      </form>
     </Form>
   )
 }
