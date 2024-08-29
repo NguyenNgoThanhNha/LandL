@@ -1,7 +1,7 @@
-﻿using L_L.Data.Helpers;
-using L_L.Data.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using L_L.Data.Entities;
+using L_L.Data.Helpers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 namespace L_L.Data.SeedData
 {

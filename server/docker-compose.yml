@@ -1,0 +1,27 @@
+version: '3.4'
+
+name: landl
+
+services:
+  ll.api:
+    image: ${DOCKER_REGISTRY-}llapi
+    container_name: ll.api
+    build:
+      context: .
+      dockerfile: L&L.API/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+
+  ll.database:
+    image: postgres:latest
+    container_name: ll.database
+    environment:
+      - POSTGRES_DB=LandL
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/server-db:/var/lib/postgresql/data
+    ports:
+      - 5435:5432 
+
