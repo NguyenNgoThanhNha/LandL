@@ -231,6 +231,18 @@ namespace L_L.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ServiceId"));
 
+                    b.Property<int?>("Kilometer")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ProductType")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Size")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TruckType")
+                        .HasColumnType("integer");
+
                     b.HasKey("ServiceId");
 
                     b.ToTable("Service");

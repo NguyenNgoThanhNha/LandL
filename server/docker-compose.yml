@@ -6,6 +6,9 @@ services:
   ll.api:
     image: ${DOCKER_REGISTRY-}llapi
     container_name: ll.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__PgDbConnection=Server=ll.database;Database=LandL;User ID=postgres;Password=postgres;
     build:
       context: .
       dockerfile: L&L.API/Dockerfile
