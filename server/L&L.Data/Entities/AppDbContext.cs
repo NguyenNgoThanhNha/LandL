@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace L_L.Data.Entities
 {
@@ -25,20 +24,5 @@ namespace L_L.Data.Entities
         public DbSet<TruckType> TruckTypes { get; set; }
         public DbSet<Service> Services { get; set; }
         #endregion
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql(GetConnectionString());
-        }
-
-        private string GetConnectionString()
-        {
-            IConfiguration config = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            return config.GetConnectionString("PgDbConnection")!;
-        }
     }
 }

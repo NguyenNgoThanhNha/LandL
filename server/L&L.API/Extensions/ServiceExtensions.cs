@@ -8,6 +8,7 @@ using L_L.Data.Entities;
 using L_L.Data.SeedData;
 using L_L.Data.UnitOfWorks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -64,7 +65,12 @@ namespace L_L.API.Extensions
                     };
                 });
 
-            services.AddDbContext<AppDbContext>();
+            services.AddDbContext<AppDbContext>(opt =>
+            {
+                var connectionString = configuration.GetConnectionString("PgDbConnection");
+                Console.WriteLine($"PgDbConnection DbConnect: {connectionString}");
+                opt.UseNpgsql(connectionString);
+            });
 
             /*Config repository*/
             services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));

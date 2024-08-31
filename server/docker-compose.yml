@@ -26,5 +26,4 @@ services:
     volumes:
       - ./.containers/server-db:/var/lib/postgresql/data
     ports:
-      - 5435:5432 
-
+      - 5435:5432

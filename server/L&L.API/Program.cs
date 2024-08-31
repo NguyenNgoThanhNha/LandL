@@ -60,6 +60,8 @@ namespace L_L.API
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                var connectionString = builder.Configuration.GetConnectionString("PgDbConnection");
+                Console.WriteLine($"PgDbConnection Program: {connectionString}");
                 await using (var scope = app.Services.CreateAsyncScope())
                 {
                     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
