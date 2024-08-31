@@ -1,4 +1,5 @@
 using L_L.API.Extensions;
+using L_L.Business.Middlewares;
 using L_L.Data.Entities;
 using L_L.Data.SeedData;
 using Microsoft.EntityFrameworkCore;
@@ -73,7 +74,7 @@ namespace L_L.API
 
             app.UseHttpsRedirection();
 
-            /*        app.UseMiddleware<ExceptionMiddleware>();*/
+            app.UseMiddleware<ExceptionMiddleware>();
 
 
             app.UseAuthentication();

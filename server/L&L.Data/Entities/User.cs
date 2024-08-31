@@ -11,17 +11,21 @@ namespace L_L.Data.Entities
         public int UserId { get; set; }
 
         [MaxLength(255)]
+        [Required(ErrorMessage = "UserName is required")]
         public string? UserName { get; set; }
 
         [MaxLength(100)]
+        [Required(ErrorMessage = "Password is required")]
         public string? Password { get; set; }
 
         [MaxLength(50)]
         public string? FullName { get; set; }
 
         [MaxLength(255)]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
+
         public string? Avatar { get; set; }
 
         [MaxLength(100)]
@@ -38,6 +42,7 @@ namespace L_L.Data.Entities
         public string? OTPCode { get; set; }
 
         [MaxLength(15)]
+        [Phone(ErrorMessage = "Invalid Phone Number")]
         public string? PhoneNumber { get; set; }
 
         public string? CreateBy { get; set; }
@@ -51,8 +56,10 @@ namespace L_L.Data.Entities
         public string? Status { get; set; }
 
         [ForeignKey("UserRole")]
+        [Required(ErrorMessage = "RoleID is required")]
         public int RoleID { get; set; }
         public virtual UserRole UserRole { get; set; }
     }
+
 }
 

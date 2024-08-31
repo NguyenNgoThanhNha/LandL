@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using L_L.Business.Mappers;
+using L_L.Business.Middlewares;
 using L_L.Business.Services;
+using L_L.Business.Ultils;
 using L_L.Data.Base;
 using L_L.Data.Entities;
 using L_L.Data.SeedData;
 using L_L.Data.UnitOfWorks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace L_L.API.Extensions
 {
@@ -16,7 +19,7 @@ namespace L_L.API.Extensions
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            /*            services.AddScoped<ExceptionMiddleware>();*/
+            services.AddScoped<ExceptionMiddleware>();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
@@ -33,15 +36,13 @@ namespace L_L.API.Extensions
             //Set time
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-            /*            var jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
-                        services.Configure<JwtSettings>(val =>
-                        {
-                            val.Key = jwtSettings.Key;
-                        });
+            var jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
+            services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+            services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtSettings>>().Value);
 
-                        services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
+            services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
 
-                        services.Configure<CloundSettings>(configuration.GetSection(nameof(CloundSettings)));*/
+            services.Configure<CloundSettings>(configuration.GetSection(nameof(CloundSettings)));
 
             services.AddAuthorization();
 
@@ -55,7 +56,7 @@ namespace L_L.API.Extensions
                 {
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
-                        /*                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),*/
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
                         ValidateIssuer = false,
                         ValidateAudience = false,
                         ValidateLifetime = true,
@@ -63,10 +64,6 @@ namespace L_L.API.Extensions
                     };
                 });
 
-/*            services.AddDbContext<AppDbContext>(opt =>
-            {
-                opt.UseNpgsql(configuration.GetConnectionString("PgDbConnection"));
-            }); */
             services.AddDbContext<AppDbContext>();
 
             /*Config repository*/
@@ -80,6 +77,7 @@ namespace L_L.API.Extensions
 
             /*Config Service*/
             services.AddScoped<UserService>();
+            services.AddScoped<AuthService>();
 
             return services;
         }

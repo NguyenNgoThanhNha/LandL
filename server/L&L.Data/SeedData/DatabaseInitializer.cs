@@ -55,44 +55,29 @@ namespace L_L.Data.SeedData
                 return;
             }
 
-            var superAdminRole = new UserRole { RoleName = "Super Admin" };
             var adminRole = new UserRole { RoleName = "Admin" };
-            var instructorRole = new UserRole { RoleName = "Instructor" };
-            var traineeRole = new UserRole { RoleName = "Trainee" };
+            var customerRole = new UserRole { RoleName = "Customer" };
+            var driverRole = new UserRole { RoleName = "Driver" };
             List<UserRole> userRoles = new()
             {
-                superAdminRole,
                 adminRole,
-                instructorRole,
-                traineeRole
+                customerRole,
+                driverRole,
             };
-            var instructor = new User
+            var customer = new User
             {
-                UserName = "Instructor",
+                UserName = "Customer",
                 Password = SecurityUtil.Hash("123456"),
-                FullName = "Instructor",
-                Email = "instructor@gmail.com",
+                FullName = "Customer",
+                Email = "customer@gmail.com",
                 Gender = "Male",
                 Level = "Senior",
                 Address = "HCM",
                 PhoneNumber = "12345",
                 Status = "Active",
-                UserRole = instructorRole,
+                UserRole = customerRole,
             };
             var superAdmin = new User
-            {
-                UserName = "SuperAdmin",
-                Password = SecurityUtil.Hash("123456"),
-                FullName = "SuperAdmin",
-                Email = "superadmin@gmail.com",
-                Gender = "Male",
-                Level = "boss",
-                Address = "HCM",
-                PhoneNumber = "12345",
-                Status = "Active",
-                UserRole = superAdminRole,
-            };
-            var admin = new User
             {
                 UserName = "Admin",
                 Password = SecurityUtil.Hash("123456"),
@@ -105,12 +90,25 @@ namespace L_L.Data.SeedData
                 Status = "Active",
                 UserRole = adminRole,
             };
+            var driver = new User
+            {
+                UserName = "Driver",
+                Password = SecurityUtil.Hash("123456"),
+                FullName = "Driver",
+                Email = "driver@gmail.com",
+                Gender = "Male",
+                Level = "boss",
+                Address = "HCM",
+                PhoneNumber = "12345",
+                Status = "Active",
+                UserRole = driverRole,
+            };
 
             List<User> users = new()
             {
-                instructor,
+                driver,
                 superAdmin,
-                admin,
+                customer,
             };
 
 
