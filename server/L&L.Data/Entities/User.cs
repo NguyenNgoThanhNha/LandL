@@ -32,7 +32,7 @@ namespace L_L.Data.Entities
         public string? Gender { get; set; }
 
         [MaxLength(100)]
-        public string? Level { get; set; }
+        public string? City { get; set; }
 
         [MaxLength(255)]
         public string? Address { get; set; }

@@ -344,6 +344,10 @@ namespace L_L.Data.Migrations
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<string>("CreateBy")
                         .HasColumnType("text");
 
@@ -363,10 +367,6 @@ namespace L_L.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("Level")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<string>("ModifyBy")
                         .HasColumnType("text");
 
@@ -377,6 +377,7 @@ namespace L_L.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -391,6 +392,7 @@ namespace L_L.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 

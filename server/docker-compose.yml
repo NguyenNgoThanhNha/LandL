@@ -9,6 +9,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__PgDbConnection=Server=ll.database;Database=LandL;User ID=postgres;Password=postgres;
+    depends_on:
+      ll.database:
+        condition: service_started
     build:
       context: .
       dockerfile: L&L.API/Dockerfile

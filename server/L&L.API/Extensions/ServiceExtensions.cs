@@ -84,6 +84,7 @@ namespace L_L.API.Extensions
             /*Config Service*/
             services.AddScoped<UserService>();
             services.AddScoped<AuthService>();
+            services.AddScoped<MailService>();
 
             return services;
         }
