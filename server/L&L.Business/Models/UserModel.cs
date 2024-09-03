@@ -51,6 +51,8 @@ namespace L_L.Business.Models
 
         public string? Status { get; set; }
 
+        public string TypeLogin { get; set; }
+
         public int RoleID { get; set; }
     }
 }

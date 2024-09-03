@@ -75,6 +75,7 @@ namespace L_L.Data.SeedData
                 Address = "HCM",
                 PhoneNumber = "12345",
                 Status = "Active",
+                TypeLogin = "Normal",
                 UserRole = customerRole,
             };
             var superAdmin = new User
@@ -88,6 +89,7 @@ namespace L_L.Data.SeedData
                 Address = "HCM",
                 PhoneNumber = "12345",
                 Status = "Active",
+                TypeLogin = "Normal",
                 UserRole = adminRole,
             };
             var driver = new User
@@ -101,6 +103,7 @@ namespace L_L.Data.SeedData
                 Address = "HCM",
                 PhoneNumber = "12345",
                 Status = "Active",
+                TypeLogin = "Normal",
                 UserRole = driverRole,
             };
 

@@ -47,6 +47,7 @@ namespace L_L.Business.Services
                 user.CreateDate = DateTimeOffset.Now.AddMinutes(2);
                 user.Password = SecurityUtil.Hash(req.Password);
                 user.OTPCode = new Random().Next(100000, 999999).ToString();
+                user.TypeLogin = "Normal";
 
                 user = _unitOfWorks.UserRepository.Update(user);
                 int rs = await _unitOfWorks.UserRepository.Commit();
@@ -123,6 +124,61 @@ namespace L_L.Business.Services
                 Token = CreateJwtToken(user),
             };
         }
+
+        public async Task<LoginResult> SignInWithGG(SignInRequest req)
+        {
+            if (req == null) throw new ArgumentNullException(nameof(req));
+
+            var user = _unitOfWorks.AuthRepository.FindByCondition(u => u.Email == req.Email).FirstOrDefault();
+
+            if (user != null)
+            {
+                // Generate JWT or another token here if needed.
+                return new LoginResult
+                {
+                    Authenticated = true,
+                    Token = null
+                };
+            }
+
+            var userModel = new UserModel
+            {
+                Email = req.Email,
+                FullName = req.FullName,
+                UserName = req.UserName,
+                Password = SecurityUtil.Hash(req.Password!),
+                Avatar = req.Avatar,
+                PhoneNumber = req.PhoneNumber,
+                City = req.City,
+                Gender = req.Gender,
+                BirthDate = req.BirthDate,
+                OTPCode = "0",
+                TypeLogin = "Google",
+                RoleID = req.TypeAccount == "Customer" ? 2 : req.TypeAccount == "Driver" ? 3 : 0 // Adjust 0 if you have a default RoleID
+            };
+
+            var userRegister = _mapper.Map<User>(userModel);
+
+            await _unitOfWorks.UserRepository.AddAsync(userRegister);
+            int result = await _unitOfWorks.UserRepository.Commit();
+
+            if (result > 0)
+            {
+                // Generate JWT or another token here if needed.
+                return new LoginResult
+                {
+                    Authenticated = true,
+                    Token = null
+                };
+            }
+
+            return new LoginResult
+            {
+                Authenticated = false,
+                Token = null
+            };
+        }
+
 
         public async Task<UserModel> GetUserByEmail(string email)
         {

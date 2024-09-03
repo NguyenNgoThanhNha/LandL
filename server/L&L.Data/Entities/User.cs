@@ -55,6 +55,8 @@ namespace L_L.Data.Entities
 
         public string? Status { get; set; }
 
+        public string TypeLogin { get; set; }
+
         [ForeignKey("UserRole")]
         [Required(ErrorMessage = "RoleID is required")]
         public int RoleID { get; set; }

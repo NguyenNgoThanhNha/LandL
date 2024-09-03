@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240903034544_init db")]
+    [Migration("20240903072012_init db")]
     partial class initdb
     {
         /// <inheritdoc />
@@ -392,6 +392,10 @@ namespace L_L.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TypeLogin")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserName")

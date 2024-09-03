@@ -196,5 +196,35 @@ namespace L_L.API.Controllers
             };
             return Ok(ApiResult<SignInResponse>.Succeed(res));
         }
+
+        [AllowAnonymous]
+        [HttpPost("login-google")]
+        public async Task<IActionResult> LoginWithGoogle([FromBody] SignInRequest req)
+        {
+            if (req == null)
+            {
+                return BadRequest(ApiResult<SignInResponse>.Error(new SignInResponse
+                {
+                    message = "Invalid request data!"
+                }));
+            }
+
+            var loginResult = await authService.SignInWithGG(req);
+
+            if (loginResult.Authenticated)
+            {
+                var res = new SignInResponse
+                {
+                    message = "Sign In Successfully",
+                };
+                return Ok(ApiResult<SignInResponse>.Succeed(res));
+            }
+
+            return BadRequest(ApiResult<SignInResponse>.Error(new SignInResponse
+            {
+                message = "Error in login with Google!"
+            }));
+        }
+
     }
 }

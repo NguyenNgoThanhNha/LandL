@@ -391,6 +391,10 @@ namespace L_L.Data.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("text");
 
+                    b.Property<string>("TypeLogin")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(255)
