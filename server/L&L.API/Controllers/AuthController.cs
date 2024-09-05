@@ -8,7 +8,6 @@ using L_L.Business.Ultils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
-using System.Text.RegularExpressions;
 
 namespace L_L.API.Controllers
 {
@@ -28,12 +27,18 @@ namespace L_L.API.Controllers
         [HttpPost("FirstStep")]
         public async Task<IActionResult> FirstStepResgisterInfo(FirstStepResquest req)
         {
-            Regex regex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
-            if (!regex.IsMatch(req.Email))
+            if (req == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Invalid request data!"
+                }));
+            }
+            if (req.TypeAccount == null)
             {
                 return BadRequest(ApiResult<FirstStepResgisterInfoResponse>.Error(new FirstStepResgisterInfoResponse
                 {
-                    message = "Invalid email format: " + req.Email
+                    message = "Please select type account"
                 }));
             }
             var otp = 0;
@@ -129,6 +134,13 @@ namespace L_L.API.Controllers
         [HttpPost("SubmitOTP")]
         public async Task<IActionResult> SubmitOTP(SubmitOTPResquest req)
         {
+            if (req == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Invalid request data!"
+                }));
+            }
             var result = await authService.SubmitOTP(req);
             if (!result)
             {
@@ -142,9 +154,15 @@ namespace L_L.API.Controllers
 
 
         [HttpGet("GetTimeOTP")]
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> GetTimeOTP(string email)
         {
+            if (email == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Invalid request data!"
+                }));
+            }
             var user = await authService.GetUserByEmail(email);
             if (user == null)
             {
@@ -170,15 +188,12 @@ namespace L_L.API.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] SignInRequest req)
         {
-            // Check model validation
-            if (!ModelState.IsValid)
+            if (req == null)
             {
-                // Handle validation errors
-                return BadRequest(new ApiResult<string>
+                return BadRequest(ApiResult<SignInResponse>.Error(new SignInResponse
                 {
-                    Success = false,
-                    Result = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)).ToString()
-                });
+                    message = "Invalid request data!"
+                }));
             }
 
             var loginResult = authService.SignIn(req.Email, req.Password);
@@ -226,5 +241,161 @@ namespace L_L.API.Controllers
             }));
         }
 
+        [HttpPost("Forget-Password")]
+        public async Task<IActionResult> ForgotPassword([FromQuery] string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Invalid request data!"
+                }));
+            }
+
+            var user = await authService.GetUserByEmail(email);
+            if (user == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Account not found!"
+                }));
+            }
+
+            var result = await authService.ForgotPass(user);
+            if (result == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Failed to generate OTP!"
+                }));
+            }
+
+            var mailUpdateData = new MailData()
+            {
+                EmailToId = email,
+                EmailToName = "KayC",
+                EmailBody = $@"
+<div style=""max-width: 400px; margin: 50px auto; padding: 30px; text-align: center; font-size: 120%; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); position: relative;"">
+    <img src=""https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRDn7YDq7gsgIdHOEP2_Mng6Ym3OzmvfUQvQ&usqp=CAU"" alt=""Noto Image"" style=""max-width: 100px; height: auto; display: block; margin: 0 auto; border-radius: 50%;"">
+    <h2 style=""text-transform: uppercase; color: #3498db; margin-top: 20px; font-size: 28px; font-weight: bold;"">Welcome to Team 3</h2>
+    <div style=""font-size: 18px; color: #555; margin-bottom: 30px;"">Your OTP Code is: <span style=""font-weight: bold; color: #e74c3c;"">{result.OTPCode}</span></div>
+    <p style=""color: #888; font-size: 14px;"">Powered by Team 3</p>
+</div>",
+                EmailSubject = "OTP Verification"
+            };
+            var rsUpdate = await mailService.SendEmailAsync(mailUpdateData);
+            if (!rsUpdate)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Failed to send email!"
+                }));
+            }
+
+            return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage
+            {
+                message = "OTP sent successfully!"
+            }));
+        }
+
+        [HttpPost("Update-Password")]
+        public async Task<IActionResult> UpdatePassword([FromQuery] string email, [FromBody] UpdatePasswordRequest req)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(req.Password) || string.IsNullOrEmpty(req.ConfirmPassword))
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Invalid request data!"
+                }));
+            }
+
+            if (req.Password != req.ConfirmPassword)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Passwords do not match!"
+                }));
+            }
+
+            var result = await authService.UpdatePass(email, req.Password);
+
+            if (result)
+            {
+                return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage
+                {
+                    message = "Password updated successfully!"
+                }));
+            }
+            else
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Failed to update password! Please make sure verify otp code to update new password!"
+                }));
+            }
+        }
+
+        [HttpPost("Resend-Otp")]
+        public async Task<IActionResult> ResendOtp([FromQuery] string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Invalid request data!"
+                }));
+            }
+
+            var user = await authService.GetUserByEmail(email);
+            if (user == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Account not found!"
+                }));
+            }
+
+            var result = await authService.ResendOtp(email);
+
+            if (result != null)
+            {
+                var mailData = new MailData()
+                {
+                    EmailToId = email,
+                    EmailToName = user.FullName,
+                    EmailBody = $@"
+<div style=""max-width: 400px; margin: 50px auto; padding: 30px; text-align: center; font-size: 120%; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); position: relative;"">
+    <img src=""https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRDn7YDq7gsgIdHOEP2_Mng6Ym3OzmvfUQvQ&usqp=CAU"" alt=""Noto Image"" style=""max-width: 100px; height: auto; display: block; margin: 0 auto; border-radius: 50%;"">
+    <h2 style=""text-transform: uppercase; color: #3498db; margin-top: 20px; font-size: 28px; font-weight: bold;"">Welcome to Team 3</h2>
+    <div style=""font-size: 18px; color: #555; margin-bottom: 30px;"">Your OTP Code is: <span style=""font-weight: bold; color: #e74c3c;"">{result.OTPCode}</span></div>
+    <p style=""color: #888; font-size: 14px;"">Powered by Team 3</p>
+</div>",
+                    EmailSubject = "Resend OTP Verification"
+                };
+
+                var emailSent = await mailService.SendEmailAsync(mailData);
+                if (emailSent)
+                {
+                    return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage
+                    {
+                        message = "OTP resent successfully!"
+                    }));
+                }
+                else
+                {
+                    return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                    {
+                        message = "Failed to send email!"
+                    }));
+                }
+            }
+            else
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Failed to resend OTP!"
+                }));
+            }
+        }
     }
 }

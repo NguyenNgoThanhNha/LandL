@@ -71,6 +71,7 @@ namespace L_L.Business.Services
             userEntity.Status = "InActive";
             userEntity.CreateDate = DateTimeOffset.Now.AddMinutes(2);
             userEntity.Password = SecurityUtil.Hash(req.Password!);
+            userEntity.TypeLogin = "Normal";
             var existedUser = _unitOfWorks.UserRepository.FindByCondition(x => x.Email == req.Email).FirstOrDefault();
             if (existedUser != null)
             {
@@ -218,7 +219,6 @@ namespace L_L.Business.Services
 
             if (user != null && user.Status == "Active")
             {
-                user.RoleID = 4;
                 user.CreateDate = DateTimeOffset.Now.AddMinutes(2);
                 user.OTPCode = new Random().Next(100000, 999999).ToString();
 
@@ -239,14 +239,47 @@ namespace L_L.Business.Services
             }
         }
 
-        public async Task<bool> UpdatePass(string email, string password, string confirmPass)
+        public async Task<UserModel> ResendOtp(string email)
         {
             var user = _unitOfWorks.UserRepository.FindByCondition(x => x.Email == email).FirstOrDefault();
 
+            var twoMinuteAgo = user.CreateDate.Value.AddMinutes(-2);
+
+            if (DateTimeOffset.Now < twoMinuteAgo && DateTimeOffset.Now > user.CreateDate)
+            {
+                throw new BadRequestException("OTP code is expired");
+            }
+
             if (user != null && user.Status == "Active")
             {
-                user.RoleID = 4;
-                user.ModifyDate = DateTimeOffset.Now.AddMinutes(2);
+                user.CreateDate = DateTimeOffset.Now.AddMinutes(2);
+                user.OTPCode = new Random().Next(100000, 999999).ToString();
+
+                user = _unitOfWorks.UserRepository.Update(user);
+                int rs = await _unitOfWorks.UserRepository.Commit();
+                if (rs > 0)
+                {
+                    return _mapper.Map<UserModel>(user);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        public async Task<bool> UpdatePass(string email, string password)
+        {
+            var user = _unitOfWorks.UserRepository.FindByCondition(x => x.Email == email).FirstOrDefault();
+
+            if (user != null && user.Status == "Active" && user.OTPCode == "0")
+            {
+                user.ModifyDate = DateTimeOffset.Now;
                 user.Password = SecurityUtil.Hash(password);
 
                 user = _unitOfWorks.UserRepository.Update(user);

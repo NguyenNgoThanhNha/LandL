@@ -13,7 +13,6 @@ namespace L_L.Business.Commons.Request
         public string Password { get; set; } = null!;
 
         [MaxLength(255)]
-        [Required(ErrorMessage = "UserName is required")]
         public string? UserName { get; set; }
 
         [MaxLength(50)]
@@ -34,6 +33,6 @@ namespace L_L.Business.Commons.Request
 
         public string? PhoneNumber { get; set; }
 
-        public string TypeAccount { get; set; }
+        public string? TypeAccount { get; set; }
     }
 }
