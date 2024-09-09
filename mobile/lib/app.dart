@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobile/features/authentication/screens/login.dart';
+import 'package:mobile/bindings/general_bindings.dart';
+import 'package:mobile/features/authentication/screens/onboarding/onboarding.dart';
 import 'package:mobile/utils/themes/theme.dart';
 
 class App extends StatelessWidget {
@@ -12,7 +13,8 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
-      home: const LoginScreen(),
+      initialBinding: GeneralBindings(),
+      home: const OnboardingScreen(),
     );
   }
 }
