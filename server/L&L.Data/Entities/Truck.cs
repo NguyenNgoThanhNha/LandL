@@ -41,9 +41,9 @@ namespace L_L.Data.Entities
         [Required]
         public string Dimensions { get; set; } = string.Empty;
 
-        [ForeignKey("TruckType")]
+        [ForeignKey("VehicleType")]
         public int TypeId { get; set; }
-        public virtual TruckType TruckType { get; set; }
+        public virtual VehicleType TruckType { get; set; }
 
     }
 }
