@@ -16,9 +16,17 @@ namespace L_L.Data.Entities
 
         public string? Location { get; set; } = string.Empty;
 
+        // New Properties
+        public string? Carrier { get; set; }
+        public string? CarrierTrackingUrl { get; set; }
+        public string? DeliveryInstructions { get; set; }
+        public bool IsDelivered { get; set; } = false;
+        public DateTime? DeliveryConfirmedDate { get; set; }
+
         [Required]
         [ForeignKey("OrderInfo")]
         public int OrderId { get; set; }
         public virtual Order OrderInfo { get; set; }
     }
+
 }
