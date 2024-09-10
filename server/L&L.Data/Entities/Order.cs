@@ -31,6 +31,8 @@ namespace L_L.Data.Entities
         [Required]
         public double TotalAmount { get; set; }
 
+        public int OrderCount { get; set; }
+
         public string Status { get; set; } = string.Empty;
 
         public string? Notes { get; set; }

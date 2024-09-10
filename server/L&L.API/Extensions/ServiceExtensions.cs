@@ -37,12 +37,20 @@ namespace L_L.API.Extensions
             //Set time
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+            // jwt
             var jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
             services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
             services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtSettings>>().Value);
 
+            // zalo pay
+            var zaloPaySetting = configuration.GetSection(nameof(ZaloPaySetting)).Get<ZaloPaySetting>();
+            services.Configure<ZaloPaySetting>(configuration.GetSection(nameof(ZaloPaySetting)));
+            services.AddSingleton(sp => sp.GetRequiredService<IOptions<ZaloPaySetting>>().Value);
+
+            // mail
             services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
 
+            // cloud
             services.Configure<CloundSettings>(configuration.GetSection(nameof(CloundSettings)));
 
             services.AddAuthorization();

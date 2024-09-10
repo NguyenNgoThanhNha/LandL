@@ -44,6 +44,9 @@ namespace L_L.Data.Entities
         [MaxLength(15)]
         [Phone(ErrorMessage = "Invalid Phone Number")]
         public string? PhoneNumber { get; set; }
+        public string? STK { get; set; }
+        public string? Bank { get; set; }
+        public string? AccountBalance { get; set; }
 
         public string? CreateBy { get; set; }
 
