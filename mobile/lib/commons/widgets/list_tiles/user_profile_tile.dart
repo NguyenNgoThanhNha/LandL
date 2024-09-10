@@ -23,7 +23,7 @@ class TUserProfileTile extends StatelessWidget {
         padding: 0,
       ),
       title: Text(
-        '',
+        'Hieu',
         // controller.user.value.fullName,
         style: Theme.of(context)
             .textTheme

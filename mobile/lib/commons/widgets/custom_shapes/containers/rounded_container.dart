@@ -6,7 +6,7 @@ class TRoundedContainer extends StatelessWidget {
   const TRoundedContainer({super.key,
     this.width,
     this.height,
-    this.radius = TSizes.cardRadiusLg,
+    this.radius = TSizes.cardRadiusSm,
     this.child,
     this.showBorder = false,
     this.backgroundColor = TColors.white,
