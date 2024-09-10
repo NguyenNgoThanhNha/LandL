@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240909162548_init db")]
+    [Migration("20240910030801_init db")]
     partial class initdb
     {
         /// <inheritdoc />
@@ -279,10 +279,17 @@ namespace L_L.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PackageTypeId"));
 
-                    b.Property<string>("DimensionLimit")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                    b.Property<decimal>("HeightMax")
+                        .HasColumnType("decimal(19, 2)");
+
+                    b.Property<decimal>("HeightMin")
+                        .HasColumnType("decimal(19, 2)");
+
+                    b.Property<decimal>("LengthMax")
+                        .HasColumnType("decimal(19, 2)");
+
+                    b.Property<decimal>("LengthMin")
+                        .HasColumnType("decimal(19, 2)");
 
                     b.Property<int>("VehicleRangeMax")
                         .HasColumnType("integer");
@@ -291,6 +298,12 @@ namespace L_L.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<decimal>("WeightLimit")
+                        .HasColumnType("decimal(19, 2)");
+
+                    b.Property<decimal>("WidthMax")
+                        .HasColumnType("decimal(19, 2)");
+
+                    b.Property<decimal>("WidthMin")
                         .HasColumnType("decimal(19, 2)");
 
                     b.HasKey("PackageTypeId");

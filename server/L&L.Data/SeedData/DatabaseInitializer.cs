@@ -187,38 +187,160 @@ namespace L_L.Data.SeedData
             var packageTypes = new List<PackageType>
             {
                 // T1: ≤ 0.5 Tấn
-                new PackageType { WeightLimit = 0.5m, DimensionLimit = "Từ 2.05 x 1.31 x 1.10 đến 2.20 x 1.50 x 1.41", VehicleRangeMin = 500, VehicleRangeMax = 799 },
+                new PackageType
+                {
+                    WeightLimit = 0.5m,
+                    LengthMin = 2.05m,
+                    LengthMax = 2.60m,
+                    WidthMin = 1.31m,
+                    WidthMax = 1.50m,
+                    HeightMin = 1.10m,
+                    HeightMax = 1.41m,
+                    VehicleRangeMin = 500,
+                    VehicleRangeMax = 799
+                },
 
                 // T2: ≤ 0.8 Tấn
-                new PackageType { WeightLimit = 0.8m, DimensionLimit = "Từ 2.54 x 1.42 x 1.16 đến 2.68 x 1.50 x 1.58", VehicleRangeMin = 800, VehicleRangeMax = 999 },
+                new PackageType
+                {
+                    WeightLimit = 0.8m,
+                    LengthMin = 2.54m,
+                    LengthMax = 3.20m,
+                    WidthMin = 1.42m,
+                    WidthMax = 1.62m,
+                    HeightMin = 1.16m,
+                    HeightMax = 1.58m,
+                    VehicleRangeMin = 800,
+                    VehicleRangeMax = 999
+                },
 
                 // T3: ≤ 1 Tấn
-                new PackageType { WeightLimit = 1.0m, DimensionLimit = "Từ 2.85 x 1.45 x 1.20 đến 3.05 x 1.52 x 1.60", VehicleRangeMin = 1000, VehicleRangeMax = 1249 },
+                new PackageType
+                {
+                    WeightLimit = 1.0m,
+                    LengthMin = 3.05m,
+                    LengthMax = 3.47m,
+                    WidthMin = 1.60m,
+                    WidthMax = 1.75m,
+                    HeightMin = 1.20m,
+                    HeightMax = 1.80m,
+                    VehicleRangeMin = 1000,
+                    VehicleRangeMax = 1249
+                },
 
                 // T4: ≤ 1.25 Tấn
-                new PackageType { WeightLimit = 1.25m, DimensionLimit = "Từ 3.17 x 1.61 x 1.41 đến 3.39 x 1.64 x 1.95", VehicleRangeMin = 1250, VehicleRangeMax = 1499 },
+                new PackageType
+                {
+                    WeightLimit = 1.25m,
+                    LengthMin = 3.17m,
+                    LengthMax = 4.40m,
+                    WidthMin = 1.67m,
+                    WidthMax = 1.92m,
+                    HeightMin = 1.61m,
+                    HeightMax = 1.84m,
+                    VehicleRangeMin = 1250,
+                    VehicleRangeMax = 1499
+                },
 
                 // T5: ≤ 1.9 Tấn
-                new PackageType { WeightLimit = 1.9m, DimensionLimit = "Từ 3.27 x 1.64 x 1.41 đến 3.52 x 1.68 x 1.95", VehicleRangeMin = 1500, VehicleRangeMax = 1999 },
+                new PackageType
+                {
+                    WeightLimit = 1.9m,
+                    LengthMin = 3.48m,
+                    LengthMax = 4.40m,
+                    WidthMin = 1.67m,
+                    WidthMax = 1.94m,
+                    HeightMin = 1.49m,
+                    HeightMax = 1.92m,
+                    VehicleRangeMin = 1500,
+                    VehicleRangeMax = 1999
+                },
 
                 // T6: ≤ 2.4 Tấn
-                new PackageType { WeightLimit = 2.4m, DimensionLimit = "Từ 3.55 x 1.70 x 1.41 đến 3.80 x 1.75 x 1.95", VehicleRangeMin = 2000, VehicleRangeMax = 2999 },
+                new PackageType
+                {
+                    WeightLimit = 2.4m,
+                    LengthMin = 3.36m,
+                    LengthMax = 4.47m,
+                    WidthMin = 1.55m,
+                    WidthMax = 1.83m,
+                    HeightMin = 1.63m,
+                    HeightMax = 1.78m,
+                    VehicleRangeMin = 2000,
+                    VehicleRangeMax = 2999
+                },
 
                 // T7: ≤ 2.5 Tấn
-                new PackageType { WeightLimit = 2.5m, DimensionLimit = "Từ 3.65 x 1.80 x 1.41 đến 3.85 x 1.90 x 1.95", VehicleRangeMin = 3000, VehicleRangeMax = 3999 },
+                new PackageType
+                {
+                    WeightLimit = 2.5m,
+                    LengthMin = 4.25m,
+                    LengthMax = 5.03m,
+                    WidthMin = 1.75m,
+                    WidthMax = 2.12m,
+                    HeightMin = 1.77m,
+                    HeightMax = 2.39m,
+                    VehicleRangeMin = 3000,
+                    VehicleRangeMax = 3999
+                },
 
                 // T8: ≤ 4 Tấn
-                new PackageType { WeightLimit = 4.0m, DimensionLimit = "Từ 3.80 x 1.80 x 1.41 đến 4.10 x 1.90 x 2.05", VehicleRangeMin = 4000, VehicleRangeMax = 4999 },
+                new PackageType
+                {
+                    WeightLimit = 4.0m,
+                    LengthMin = 4.40m,
+                    LengthMax = 5.79m,
+                    WidthMin = 1.95m,
+                    WidthMax = 2.42m,
+                    HeightMin = 1.94m,
+                    HeightMax = 2.47m,
+                    VehicleRangeMin = 4000,
+                    VehicleRangeMax = 4999
+                },
 
                 // T9: ≤ 5 Tấn
-                new PackageType { WeightLimit = 5.0m, DimensionLimit = "Từ 4.15 x 1.80 x 1.78 đến 4.35 x 1.93 x 2.25", VehicleRangeMin = 5000, VehicleRangeMax = 7999 },
+                new PackageType
+                {
+                    WeightLimit = 5.0m,
+                    LengthMin = 4.30m,
+                    LengthMax = 6.75m,
+                    WidthMin = 2.03m,
+                    WidthMax = 2.42m,
+                    HeightMin = 1.83m,
+                    HeightMax = 2.47m,
+                    VehicleRangeMin = 5000,
+                    VehicleRangeMax = 7999
+                },
 
                 // T10: ≤ 8 Tấn
-                new PackageType { WeightLimit = 8.0m, DimensionLimit = "Từ 5.22 x 2.18 x 1.78 đến 5.80 x 2.35 x 2.25", VehicleRangeMin = 8000, VehicleRangeMax = 9999 },
+                new PackageType
+                {
+                    WeightLimit = 8.0m,
+                    LengthMin = 5.22m,
+                    LengthMax = 7.80m,
+                    WidthMin = 2.28m,
+                    WidthMax = 2.35m,
+                    HeightMin = 1.78m,
+                    HeightMax = 2.45m,
+                    VehicleRangeMin = 8000,
+                    VehicleRangeMax = 9999
+                },
 
                 // T11: ≤ 10 Tấn
-                new PackageType { WeightLimit = 10.0m, DimensionLimit = "Từ 6.33 x 2.50 x 1.80 đến 7.32 x 2.35 x 2.25", VehicleRangeMin = 10000, VehicleRangeMax = 14999 },
+                new PackageType
+                {
+                    WeightLimit = 10.0m,
+                    LengthMin = 6.33m,
+                    LengthMax = 7.80m,
+                    WidthMin = 2.50m,
+                    WidthMax = 2.45m,
+                    HeightMin = 1.80m,
+                    HeightMax = 2.45m,
+                    VehicleRangeMin = 10000,
+                    VehicleRangeMax = 14999
+                },
             };
+
 
             await _context.PackageTypes.AddRangeAsync(packageTypes);
             await _context.SaveChangesAsync();

@@ -19,7 +19,12 @@ namespace L_L.Data.Migrations
                     PackageTypeId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     WeightLimit = table.Column<decimal>(type: "numeric(19,2)", nullable: false),
-                    DimensionLimit = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    LengthMin = table.Column<decimal>(type: "numeric(19,2)", nullable: false),
+                    LengthMax = table.Column<decimal>(type: "numeric(19,2)", nullable: false),
+                    WidthMin = table.Column<decimal>(type: "numeric(19,2)", nullable: false),
+                    WidthMax = table.Column<decimal>(type: "numeric(19,2)", nullable: false),
+                    HeightMin = table.Column<decimal>(type: "numeric(19,2)", nullable: false),
+                    HeightMax = table.Column<decimal>(type: "numeric(19,2)", nullable: false),
                     VehicleRangeMin = table.Column<int>(type: "integer", nullable: false),
                     VehicleRangeMax = table.Column<int>(type: "integer", nullable: false)
                 },
