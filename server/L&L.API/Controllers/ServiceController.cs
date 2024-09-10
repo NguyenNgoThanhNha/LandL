@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using L_L.Business.Commons.Request;
+using Microsoft.AspNetCore.Mvc;
 
 namespace L_L.API.Controllers
 {
@@ -12,7 +13,7 @@ namespace L_L.API.Controllers
         }
 
         [HttpGet("Search")]
-        public IActionResult Get()
+        public IActionResult Get([FromBody] SearchRequest req)
         {
             return Ok();
         }

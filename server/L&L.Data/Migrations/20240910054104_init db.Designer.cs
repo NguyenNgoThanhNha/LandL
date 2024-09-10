@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240910030801_init db")]
+    [Migration("20240910054104_init db")]
     partial class initdb
     {
         /// <inheritdoc />
@@ -124,17 +124,11 @@ namespace L_L.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderId"));
 
-                    b.Property<string>("CouponCode")
-                        .HasColumnType("text");
-
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<double?>("DiscountAmount")
-                        .HasColumnType("double precision");
 
                     b.Property<int>("DriverId")
                         .HasColumnType("integer");
@@ -142,14 +136,12 @@ namespace L_L.Data.Migrations
                     b.Property<DateTime?>("ExpectedDeliveryDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("GiftMessage")
-                        .HasColumnType("text");
+                    b.Property<DateTime?>("ExpectedRecieveDate")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("InvoiceNumber")
+                    b.Property<string>("From")
+                        .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsGift")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Notes")
                         .HasColumnType("text");
@@ -157,35 +149,23 @@ namespace L_L.Data.Migrations
                     b.Property<DateTime?>("OrderDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("PaymentDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ShippingAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double?>("ShippingCost")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("ShippingMethod")
-                        .HasColumnType("text");
+                    b.Property<DateTime?>("RecieveDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double?>("TaxAmount")
-                        .HasColumnType("double precision");
+                    b.Property<string>("To")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<double>("TotalAmount")
                         .HasColumnType("double precision");
-
-                    b.Property<string>("TrackingNumber")
-                        .HasColumnType("text");
 
                     b.HasKey("OrderId");
 
@@ -236,17 +216,11 @@ namespace L_L.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderTrackingId"));
 
-                    b.Property<string>("Carrier")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CarrierTrackingUrl")
+                    b.Property<string>("ConfirmImage")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("DeliveryConfirmedDate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("DeliveryInstructions")
-                        .HasColumnType("text");
 
                     b.Property<bool>("IsDelivered")
                         .HasColumnType("boolean");
