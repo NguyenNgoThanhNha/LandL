@@ -18,15 +18,10 @@ namespace L_L.API.Controllers
         }
 
         [HttpPost("payment")]
-        public async Task<IActionResult> CreatePayment([FromBody] string phoneNumber)
+        public async Task<IActionResult> CreatePayment()
         {
             try
             {
-                if (string.IsNullOrEmpty(phoneNumber))
-                {
-                    return BadRequest(new { message = "Phone number is required" });
-                }
-
                 Random rnd = new Random();
                 var embed_data = new
                 {
@@ -39,22 +34,24 @@ namespace L_L.API.Controllers
 
                 // Prepare the request parameters
                 var param = new Dictionary<string, string>
-        {
-            { "app_id", zaloPaySetting.app_id },
-            { "app_user", phoneNumber }, // Use phone number as app_user
-            { "app_time", Utils.GetTimeStamp().ToString() },
-            { "amount", "50000" }, // Amount to send
-            { "app_trans_id", DateTime.Now.ToString("yyMMdd") + "_" + app_trans_id }, // Format: yyMMdd_xxxx
-            { "embed_data", JsonConvert.SerializeObject(embed_data) },
-            { "item", JsonConvert.SerializeObject(items) },
-            { "description", "Payment to user with phone number: " + phoneNumber },
-            { "bank_code", "" },
-            { "callback_url", "" } // when deploy, add your callback URL
-        };
+               {
+                   { "app_id", zaloPaySetting.app_id },
+                   { "app_user", "user123" },
+                   { "app_time", Utils.GetTimeStamp().ToString() },
+                   { "amount", "50000" },
+                   { "app_trans_id", DateTime.Now.ToString("yyMMdd") + "_" + app_trans_id }, // Format: yyMMdd_xxxx mã giao dịch
+                   { "embed_data", JsonConvert.SerializeObject(embed_data) },
+                   { "item", JsonConvert.SerializeObject(items) },
+                   { "description", "Lazada - Thanh toán đơn hàng #" + app_trans_id },
+                   { "bank_code", "" },
+                   { "callback_url", "" } // when deploy to add url
+               };
 
                 // Generate the MAC
                 var data = $"{zaloPaySetting.app_id}|{param["app_trans_id"]}|{param["app_user"]}|{param["amount"]}|{param["app_time"]}|{param["embed_data"]}|{param["item"]}";
                 param.Add("mac", HmacHelper.Compute(ZaloPayHMAC.HMACSHA256, zaloPaySetting.key1, data));
+
+                // add to database (app_trans_id, items, description, totalamount)
 
                 // Send the request to ZaloPay
                 var result = await HttpHelper.PostFormAsync(zaloPaySetting.create_order_url, param);
@@ -98,6 +95,8 @@ namespace L_L.API.Controllers
                     // Update the order status in your system
                     var dataJson = JsonConvert.DeserializeObject<Dictionary<string, object>>(dataStr);
                     Console.WriteLine("update order's status = success where app_trans_id = {0}", dataJson["app_trans_id"]);
+
+                    //update status database
 
                     result["return_code"] = 1;
                     result["return_message"] = "success";
