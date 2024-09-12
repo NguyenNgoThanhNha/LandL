@@ -18,6 +18,8 @@ namespace L_L.Data.Entities
         [Required]
         public double TotalPrice { get; set; }
 
+        public string Status { get; set; }
+
         [Required]
         [ForeignKey("OrderDetailInfo")]
         public int OrderId { get; set; }

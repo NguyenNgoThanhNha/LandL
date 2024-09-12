@@ -9,6 +9,8 @@ namespace L_L.Business.Mappers
         public ProfilesMapper()
         {
             CreateMap<User, UserModel>().ReverseMap();
+            CreateMap<PackageType, PacketTypeModel>().ReverseMap();
+            CreateMap<VehicleType, VehicleTypeModel>().ReverseMap();
         }
     }
 }

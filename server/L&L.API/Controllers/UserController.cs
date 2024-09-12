@@ -1,6 +1,4 @@
 ﻿using L_L.Business.Services;
-using L_L.Data.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace L_L.API.Controllers
@@ -22,6 +20,5 @@ namespace L_L.API.Controllers
             var users = userService.GetAllUser();
             return Ok(users);
         }
-
     }
 }

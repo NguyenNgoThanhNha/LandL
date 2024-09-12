@@ -12,6 +12,7 @@ namespace L_L.Data.UnitOfWorks
         private ServiceRepository _serviceRepo;
         private VehicleTypeRepository _vehicleTypeRepo;
         private PacketTypeRepository _packageTypeRepo;
+        private ShippingRateRepository _shippingRateRepo;
 
         public UnitOfWorks(AppDbContext dbContext)
         {
@@ -46,6 +47,10 @@ namespace L_L.Data.UnitOfWorks
         public PacketTypeRepository PacketTypeRepository
         {
             get { return _packageTypeRepo ??= new PacketTypeRepository(_dbContext); }
+        }
+        public ShippingRateRepository ShippingRateRepository
+        {
+            get { return _shippingRateRepo ??= new ShippingRateRepository(_dbContext); }
         }
     }
 }

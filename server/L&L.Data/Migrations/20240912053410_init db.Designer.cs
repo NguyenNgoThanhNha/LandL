@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240910054104_init db")]
+    [Migration("20240912053410_init db")]
     partial class initdb
     {
         /// <inheritdoc />
@@ -146,6 +146,9 @@ namespace L_L.Data.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
+                    b.Property<int>("OrderCount")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("OrderDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -192,6 +195,10 @@ namespace L_L.Data.Migrations
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<double>("TotalPrice")
                         .HasColumnType("double precision");
@@ -412,11 +419,17 @@ namespace L_L.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
+                    b.Property<string>("AccountBalance")
+                        .HasColumnType("text");
+
                     b.Property<string>("Address")
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("Avatar")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Bank")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("BirthDate")
@@ -465,6 +478,9 @@ namespace L_L.Data.Migrations
 
                     b.Property<int>("RoleID")
                         .HasColumnType("integer");
+
+                    b.Property<string>("STK")
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .HasColumnType("text");

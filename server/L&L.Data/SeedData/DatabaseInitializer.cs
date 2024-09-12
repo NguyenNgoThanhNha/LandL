@@ -222,7 +222,7 @@ namespace L_L.Data.SeedData
                     LengthMax = 3.47m,
                     WidthMin = 1.60m,
                     WidthMax = 1.75m,
-                    HeightMin = 1.20m,
+                    HeightMin = 1.15m,
                     HeightMax = 1.80m,
                     VehicleRangeMin = 1000,
                     VehicleRangeMax = 1249
@@ -236,44 +236,44 @@ namespace L_L.Data.SeedData
                     LengthMax = 4.40m,
                     WidthMin = 1.67m,
                     WidthMax = 1.92m,
-                    HeightMin = 1.61m,
+                    HeightMin = 1.11m,
                     HeightMax = 1.84m,
                     VehicleRangeMin = 1250,
-                    VehicleRangeMax = 1499
-                },
-
-                // T5: ≤ 1.9 Tấn
-                new PackageType
-                {
-                    WeightLimit = 1.9m,
-                    LengthMin = 3.48m,
-                    LengthMax = 4.40m,
-                    WidthMin = 1.67m,
-                    WidthMax = 1.94m,
-                    HeightMin = 1.49m,
-                    HeightMax = 1.92m,
-                    VehicleRangeMin = 1500,
                     VehicleRangeMax = 1999
                 },
 
-                // T6: ≤ 2.4 Tấn
+                // T5: ≤ 2 Tấn
                 new PackageType
                 {
-                    WeightLimit = 2.4m,
+                    WeightLimit = 2.0m,
+                    LengthMin = 3.48m,
+                    LengthMax = 4.40m,
+                    WidthMin = 1.67m,
+                    WidthMax = 1.91m,
+                    HeightMin = 1.49m,
+                    HeightMax = 1.97m,
+                    VehicleRangeMin = 2000,
+                    VehicleRangeMax = 2499
+                },
+
+                // T6: ≤ 2.5 Tấn
+                new PackageType
+                {
+                    WeightLimit = 2.5m,
                     LengthMin = 3.36m,
                     LengthMax = 4.47m,
-                    WidthMin = 1.55m,
+                    WidthMin = 1.67m,
                     WidthMax = 1.83m,
-                    HeightMin = 1.63m,
+                    HeightMin = 1.55m,
                     HeightMax = 1.78m,
                     VehicleRangeMin = 2000,
                     VehicleRangeMax = 2999
                 },
 
-                // T7: ≤ 2.5 Tấn
+                // T7: ≤ 3 Tấn
                 new PackageType
                 {
-                    WeightLimit = 2.5m,
+                    WeightLimit = 3.0m,
                     LengthMin = 4.25m,
                     LengthMax = 5.03m,
                     WidthMin = 1.75m,
@@ -291,9 +291,9 @@ namespace L_L.Data.SeedData
                     LengthMin = 4.40m,
                     LengthMax = 5.79m,
                     WidthMin = 1.95m,
-                    WidthMax = 2.42m,
-                    HeightMin = 1.94m,
-                    HeightMax = 2.47m,
+                    WidthMax = 2.10m,
+                    HeightMin = 1.49m,
+                    HeightMax = 2.42m,
                     VehicleRangeMin = 4000,
                     VehicleRangeMax = 4999
                 },
@@ -302,10 +302,10 @@ namespace L_L.Data.SeedData
                 new PackageType
                 {
                     WeightLimit = 5.0m,
-                    LengthMin = 4.30m,
+                    LengthMin = 4.92m,
                     LengthMax = 6.75m,
                     WidthMin = 2.03m,
-                    WidthMax = 2.42m,
+                    WidthMax = 2.33m,
                     HeightMin = 1.83m,
                     HeightMax = 2.47m,
                     VehicleRangeMin = 5000,
@@ -319,9 +319,9 @@ namespace L_L.Data.SeedData
                     LengthMin = 5.22m,
                     LengthMax = 7.80m,
                     WidthMin = 2.28m,
-                    WidthMax = 2.35m,
+                    WidthMax = 2.36m,
                     HeightMin = 1.78m,
-                    HeightMax = 2.45m,
+                    HeightMax = 2.5m,
                     VehicleRangeMin = 8000,
                     VehicleRangeMax = 9999
                 },
@@ -331,11 +331,11 @@ namespace L_L.Data.SeedData
                 {
                     WeightLimit = 10.0m,
                     LengthMin = 6.33m,
-                    LengthMax = 7.80m,
-                    WidthMin = 2.50m,
-                    WidthMax = 2.45m,
-                    HeightMin = 1.80m,
-                    HeightMax = 2.45m,
+                    LengthMax = 9.20m,
+                    WidthMin = 2.25m,
+                    WidthMax = 2.39m,
+                    HeightMin = 2.07m,
+                    HeightMax = 2.53m,
                     VehicleRangeMin = 10000,
                     VehicleRangeMax = 14999
                 },
