@@ -13,7 +13,7 @@ import { Calendar } from '@/components/atoms/ui/calendar.tsx'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/atoms/ui/popover.tsx'
 import { Button } from '@/components/atoms/ui/button.tsx'
 import { cn } from '@/utils/cn.ts'
-import { addDays, format, subDays } from 'date-fns'
+import { addDays, format, subDays } from "date-fns"
 
 interface FormInputProps<T extends FieldValues> {
   classContent?: string
@@ -23,7 +23,7 @@ interface FormInputProps<T extends FieldValues> {
   subDay?: number,
 }
 
-const FormDatePicker = <T extends FieldValues>({ classContent, name, form, addDay = 365, subDay=365 }: FormInputProps<T>) => {
+const FormDatePicker = <T extends FieldValues>({ classContent, name, form, addDay = 365, subDay = 365 }: FormInputProps<T>) => {
   return (
     <FormField
       control={form.control}
@@ -48,7 +48,7 @@ const FormDatePicker = <T extends FieldValues>({ classContent, name, form, addDa
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
               </FormControl>
-            
+
             </PopoverTrigger>
             <FormLabel
               className="absolute font-normal bg-white blur-10 w-fit px-2 -top-5 py-1 rounded left-3 peer-focus:font-semibold">

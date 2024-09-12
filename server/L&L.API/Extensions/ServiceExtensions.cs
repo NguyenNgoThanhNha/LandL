@@ -47,6 +47,11 @@ namespace L_L.API.Extensions
             services.Configure<ZaloPaySetting>(configuration.GetSection(nameof(ZaloPaySetting)));
             services.AddSingleton(sp => sp.GetRequiredService<IOptions<ZaloPaySetting>>().Value);
 
+            // payOs
+            var payOsSetting = configuration.GetSection(nameof(PayOSSetting)).Get<PayOSSetting>();
+            services.Configure<PayOSSetting>(configuration.GetSection(nameof(PayOSSetting)));
+            services.AddSingleton(sp => sp.GetRequiredService<IOptions<PayOSSetting>>().Value);
+
             // mail
             services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
 
