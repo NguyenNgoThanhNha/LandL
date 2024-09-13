@@ -12,7 +12,7 @@ namespace L_L.Data.Entities
 
         [Required]
         [MaxLength(50)]
-        public string VehicleTypeName { get; set; }
+        public string VehicleTypeName { get; set; } // số tấn của xe
 
         [Column(TypeName = "decimal(19, 2)")]
         public decimal BaseRate { get; set; }

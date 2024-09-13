@@ -1,7 +1,6 @@
 ﻿using L_L.Business.Commons;
 using L_L.Business.Commons.Request;
 using L_L.Business.Commons.Response;
-using L_L.Business.Models;
 using L_L.Business.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,14 +42,17 @@ namespace L_L.API.Controllers
                 }));
             }
 
+            // Convert weight from kg to tons (1 ton = 1000 kg)
+            decimal weightTons = weightDecimal / 1000m;
+
             // Tìm package type phù hợp với yêu cầu
-            var packetTypeMatch = await packageTypeService.FilterPacketType(weightDecimal, lengthDecimal, widthDecimal, heightDecimal);
+            var packetTypeMatch = await packageTypeService.FilterPacketType(weightTons, lengthDecimal, widthDecimal, heightDecimal);
 
             // Nếu không tìm thấy gói phù hợp
             if (packetTypeMatch == null)
             {
                 // Gọi hàm recommend để gợi ý các gói gần nhất
-                var recommendedPackages = await packageTypeService.RecommendPacketTypes(weightDecimal, lengthDecimal, widthDecimal, heightDecimal);
+                var recommendedPackages = await packageTypeService.RecommendPacketTypes(weightTons, lengthDecimal, widthDecimal, heightDecimal);
 
                 if (recommendedPackages == null || !recommendedPackages.Any())
                 {
@@ -71,24 +73,25 @@ namespace L_L.API.Controllers
             // Get the list of vehicle types based on the matched package type
             var listVehicleType = await packageTypeService.MatchingBaseOnPacketType(packetTypeMatch);
 
-            if (listVehicleType != null && !listVehicleType.Any())
-            {
-                // khối lượng package
-                var weight = lengthDecimal * heightDecimal * widthDecimal;
+            Dictionary<int, decimal> listCost = new Dictionary<int, decimal>();
 
+            if (listVehicleType != null && listVehicleType.Any())
+            {
                 // get order count
                 var oderCount = 1;
 
-                Dictionary<int, decimal> listCost = new Dictionary<int, decimal>();
-
                 foreach (var vehicleType in listVehicleType)
                 {
-                    var cost = await packageTypeService.CaculatorService(distanceDecimal, weight, vehicleType, oderCount);
-                    listCost.Add(vehicleType.VehicleTypeId, cost);
+                    var cost = await packageTypeService.CaculatorService(distanceDecimal, weightTons, vehicleType, oderCount);
+                    listCost.Add(vehicleType.VehicleTypeId, Math.Round(cost, 2));
                 }
             }
 
-            return Ok(ApiResult<List<VehicleTypeModel>>.Succeed(listVehicleType));
+            return Ok(ApiResult<SearchResponse>.Succeed(new SearchResponse
+            {
+                VehicleTypes = listVehicleType,
+                VehicleCost = listCost
+            }));
         }
 
     }

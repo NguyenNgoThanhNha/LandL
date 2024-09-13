@@ -11,6 +11,7 @@ namespace L_L.Business.Mappers
             CreateMap<User, UserModel>().ReverseMap();
             CreateMap<PackageType, PacketTypeModel>().ReverseMap();
             CreateMap<VehicleType, VehicleTypeModel>().ReverseMap();
+            CreateMap<ShippingRate, ShippingRateModel>().ReverseMap();
         }
     }
 }

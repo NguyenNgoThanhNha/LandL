@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using L_L.Business.Models;
-using L_L.Data.Entities;
 using L_L.Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 
@@ -111,58 +110,52 @@ namespace L_L.Business.Services
         public async Task<decimal> CaculatorService(decimal distance, decimal weight, VehicleTypeModel vehicleType, int orderCount)
         {
             // Constants
-            decimal baseDistance = 4; // 4 km đầu
-            decimal discountFactor = 1 - (orderCount * 0.1m); // Giảm giá dựa trên số đơn H
+            decimal baseDistance = 4; // 4 km đầu tiên
+            decimal discountFactor = 1 - (orderCount * 0.1m); // Giảm giá dựa trên số đơn hàng
             if (discountFactor < 0) discountFactor = 0; // Không cho phép giảm giá quá 100%
 
             // Base cost cho 4 km đầu
             decimal baseCostForFirst4Km = vehicleType.BaseRate;
 
-            // Nếu distance >= 5km, tính chi phí theo ShippingRate cho phần vượt quá 4km
+            // Tính chi phí cho 4 km đầu tiên
+            decimal totalCost = (baseCostForFirst4Km / discountFactor);
+
+            // Tính chi phí cho các khoảng cách vượt quá 4 km
+            decimal remainingDistance = distance - baseDistance;
             decimal additionalCost = 0;
-            if (distance > baseDistance)
+
+            if (remainingDistance > 0)
             {
-                var shippingRate = await GetShippingRate(vehicleType.VehicleTypeId, distance);
-                if (shippingRate != null)
+                // Lấy tất cả các ShippingRate phù hợp với VehicleTypeId và bỏ qua những bản ghi có DistanceFrom và DistanceTo bằng 4
+                var shippingRates = await unitOfWorks.ShippingRateRepository
+                    .FindByCondition(sr => sr.VehicleTypeId == vehicleType.VehicleTypeId &&
+                                           !(sr.DistanceFrom == 4 && sr.DistanceTo == 4)) // Điều kiện loại bỏ
+                    .OrderBy(sr => sr.DistanceFrom)
+                    .ToListAsync();
+
+                foreach (var shippingRate in shippingRates)
                 {
-                    // Tính khoảng cách vượt quá 4km
-                    decimal extraDistance = distance - baseDistance;
-                    additionalCost = extraDistance * shippingRate.RatePerKM;
+                    if (remainingDistance <= 0) break; // Nếu không còn khoảng cách để tính
+
+                    // Kiểm tra nếu DistanceTo là null (nghĩa là cho bất kỳ khoảng cách nào lớn hơn giá trị DistanceFrom)
+                    decimal maxDistanceForCurrentRate = shippingRate.DistanceTo.HasValue ? shippingRate.DistanceTo.Value : decimal.MaxValue;
+
+                    // Tính toán khoảng cách áp dụng cho từng mức giá
+                    decimal applicableDistance = Math.Min(remainingDistance, maxDistanceForCurrentRate - shippingRate.DistanceFrom + 1);
+
+                    // Tính chi phí cho khoảng cách này
+                    additionalCost += applicableDistance * shippingRate.RatePerKM;
+
+                    // Giảm khoảng cách còn lại
+                    remainingDistance -= applicableDistance;
                 }
             }
 
-            // Tính toán tỷ lệ chi phí theo tấn
-            decimal ratePerTon = await GetRatePerTon(vehicleType);
+            // Tổng chi phí: bao gồm chi phí cho các khoảng cách sau 4km và nhân với trọng lượng
+            totalCost += (additionalCost * weight);
 
-            // Phương trình tính chi phí
-            decimal cost = (baseCostForFirst4Km / discountFactor) + (weight * ratePerTon) + additionalCost;
-
-            return cost;
+            return totalCost;
         }
-
-        // Lấy ShippingRate dựa trên VehicleTypeId và khoảng cách
-        private async Task<ShippingRate> GetShippingRate(int vehicleTypeId, decimal distance)
-        {
-            return await unitOfWorks.ShippingRateRepository
-                .FindByCondition(sr => sr.VehicleTypeId == vehicleTypeId && sr.DistanceFrom <= distance &&
-                    (sr.DistanceTo == null || sr.DistanceTo >= distance))
-                .OrderByDescending(sr => sr.DistanceTo) // Chọn ShippingRate với DistanceTo gần nhất nhưng không nhỏ hơn distance
-                .FirstOrDefaultAsync();
-        }
-
-        // Lấy tỷ lệ chi phí theo tấn (RatePerTon) từ bảng ShippingRate
-        private async Task<decimal> GetRatePerTon(VehicleType vehicleType)
-        {
-            // Giả định rằng bạn có thể tính tỷ lệ chi phí theo tấn từ ShippingRate
-            // Bạn có thể cần phải điều chỉnh tùy thuộc vào cách bạn lưu trữ hoặc tính toán tỷ lệ này
-            // Ví dụ:
-            // return vehicleType.BaseRate / 1000; // Ví dụ tỷ lệ theo tấn nếu base rate đại diện cho 1000 kg
-
-            // Hoặc nếu bạn có một bảng hoặc công thức khác để tính tỷ lệ theo tấn, hãy sử dụng nó
-            // Trong trường hợp này, bạn có thể cần điều chỉnh cách tính toán theo tỷ lệ thực tế
-            throw new NotImplementedException("Chưa có cách tính tỷ lệ chi phí theo tấn.");
-        }
-
 
 
     }

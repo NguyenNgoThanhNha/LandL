@@ -366,7 +366,7 @@ namespace L_L.Data.SeedData
             // Define specific constraints for each vehicle type
             var vehicleConstraints = new Dictionary<int, List<decimal>>
             {
-                { 1, new List<decimal> {  } },
+                { 1, new List<decimal> { 0.5m } },
                 { 2, new List<decimal> { 0.5m, 0.8m, 1.0m } },
                 { 3, new List<decimal> { 0.5m, 0.8m, 1.0m, 1.25m } },
                 { 4, new List<decimal> { 0.5m, 0.8m, 1.0m, 1.25m, 1.9m } },
