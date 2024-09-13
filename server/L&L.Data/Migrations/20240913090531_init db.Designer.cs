@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240912053410_init db")]
+    [Migration("20240913090531_init db")]
     partial class initdb
     {
         /// <inheritdoc />
@@ -89,6 +89,52 @@ namespace L_L.Data.Migrations
                     b.ToTable("BlogRating");
                 });
 
+            modelBuilder.Entity("L_L.Data.Entities.DeliveryInfo", b =>
+                {
+                    b.Property<int>("DeliveryInfoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DeliveryInfoId"));
+
+                    b.Property<DateTime?>("DeliveryDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("DeliveryLocaTion")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ExpectedDeliveryDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("ExpectedRecieveDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("OrderDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("PickUpLocation")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReceiverName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReceiverPhone")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RecieveDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("SenderName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SenderPhone")
+                        .HasColumnType("text");
+
+                    b.HasKey("DeliveryInfoId");
+
+                    b.ToTable("DeliveryInfo");
+                });
+
             modelBuilder.Entity("L_L.Data.Entities.Hub", b =>
                 {
                     b.Property<int>("HubId")
@@ -124,55 +170,24 @@ namespace L_L.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderId"));
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("DriverId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime?>("DeliveryDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("DriverId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("ExpectedDeliveryDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("ExpectedRecieveDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("From")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<int>("OrderCount")
+                    b.Property<int?>("OrderCount")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime?>("OrderDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("RecieveDate")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("To")
+                    b.Property<decimal?>("TotalAmount")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("double precision");
+                        .HasColumnType("numeric");
 
                     b.HasKey("OrderId");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DriverId");
 
@@ -187,30 +202,48 @@ namespace L_L.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderDetailId"));
 
+                    b.Property<int>("DeliveryInfoId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Quantity")
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ServiceId")
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SenderId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("TotalPrice")
-                        .HasColumnType("double precision");
+                    b.Property<decimal?>("TotalPrice")
+                        .HasColumnType("numeric");
 
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("double precision");
+                    b.Property<int>("TruckId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("UnitPrice")
+                        .HasColumnType("numeric");
 
                     b.HasKey("OrderDetailId");
 
+                    b.HasIndex("DeliveryInfoId");
+
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ServiceId");
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("TruckId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -292,32 +325,41 @@ namespace L_L.Data.Migrations
                     b.ToTable("PackageType");
                 });
 
-            modelBuilder.Entity("L_L.Data.Entities.Service", b =>
+            modelBuilder.Entity("L_L.Data.Entities.Product", b =>
                 {
-                    b.Property<int>("ServiceId")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ServiceId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProductId"));
 
-                    b.Property<int?>("PackageTypeId")
+                    b.Property<string>("Image")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProductDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("Quantity")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ShippingRateRateId")
+                    b.Property<int?>("SenderId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("TruckId")
-                        .HasColumnType("integer");
+                    b.Property<string>("TotalDismension")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.HasKey("ServiceId");
+                    b.Property<string>("Weight")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.HasIndex("PackageTypeId");
+                    b.HasKey("ProductId");
 
-                    b.HasIndex("ShippingRateRateId");
-
-                    b.HasIndex("TruckId");
-
-                    b.ToTable("Service");
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("L_L.Data.Entities.ShippingRate", b =>
@@ -612,40 +654,54 @@ namespace L_L.Data.Migrations
 
             modelBuilder.Entity("L_L.Data.Entities.Order", b =>
                 {
-                    b.HasOne("L_L.Data.Entities.User", "UserOrder")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("L_L.Data.Entities.User", "OrderDriver")
                         .WithMany()
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DriverId");
 
                     b.Navigation("OrderDriver");
-
-                    b.Navigation("UserOrder");
                 });
 
             modelBuilder.Entity("L_L.Data.Entities.OrderDetails", b =>
                 {
+                    b.HasOne("L_L.Data.Entities.DeliveryInfo", "DeliveryInfoDetail")
+                        .WithMany()
+                        .HasForeignKey("DeliveryInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("L_L.Data.Entities.Order", "OrderInfo")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("L_L.Data.Entities.Service", "ServiceInfo")
+                    b.HasOne("L_L.Data.Entities.Product", "ProductInfo")
                         .WithMany()
-                        .HasForeignKey("ServiceId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("L_L.Data.Entities.User", "UserOrder")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("L_L.Data.Entities.Truck", "TruckInfo")
+                        .WithMany()
+                        .HasForeignKey("TruckId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DeliveryInfoDetail");
+
                     b.Navigation("OrderInfo");
 
-                    b.Navigation("ServiceInfo");
+                    b.Navigation("ProductInfo");
+
+                    b.Navigation("TruckInfo");
+
+                    b.Navigation("UserOrder");
                 });
 
             modelBuilder.Entity("L_L.Data.Entities.OrderTracking", b =>
@@ -657,27 +713,6 @@ namespace L_L.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("OrderInfo");
-                });
-
-            modelBuilder.Entity("L_L.Data.Entities.Service", b =>
-                {
-                    b.HasOne("L_L.Data.Entities.PackageType", "PackageType")
-                        .WithMany()
-                        .HasForeignKey("PackageTypeId");
-
-                    b.HasOne("L_L.Data.Entities.ShippingRate", "ShippingRate")
-                        .WithMany()
-                        .HasForeignKey("ShippingRateRateId");
-
-                    b.HasOne("L_L.Data.Entities.Truck", "Truck")
-                        .WithMany()
-                        .HasForeignKey("TruckId");
-
-                    b.Navigation("PackageType");
-
-                    b.Navigation("ShippingRate");
-
-                    b.Navigation("Truck");
                 });
 
             modelBuilder.Entity("L_L.Data.Entities.ShippingRate", b =>

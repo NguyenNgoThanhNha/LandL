@@ -8,17 +8,16 @@ namespace L_L.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderDetailId { get; set; }
-
-        [Required]
-        public int Quantity { get; set; }
-
-        [Required]
-        public double UnitPrice { get; set; }
-
-        [Required]
-        public double TotalPrice { get; set; }
-
+        public int? Quantity { get; set; }
+        public string? PaymentMethod { get; set; } = string.Empty;
+        public decimal? UnitPrice { get; set; }
+        public decimal? TotalPrice { get; set; }
         public string Status { get; set; }
+
+
+        [ForeignKey("UserOrder")]
+        public int SenderId { get; set; }
+        public virtual User UserOrder { get; set; }
 
         [Required]
         [ForeignKey("OrderDetailInfo")]
@@ -26,9 +25,19 @@ namespace L_L.Data.Entities
         public virtual Order OrderInfo { get; set; }
 
         [Required]
-        [ForeignKey("ServiceInfo")]
-        public int ServiceId { get; set; }
-        public virtual Service ServiceInfo { get; set; }
+        [ForeignKey("OrderProduct")]
+        public int ProductId { get; set; }
+        public virtual Product ProductInfo { get; set; }
+
+        [Required]
+        [ForeignKey("OrderTruck")]
+        public int TruckId { get; set; }
+        public virtual Truck TruckInfo { get; set; }
+
+        [Required]
+        [ForeignKey("OrderDelivery")]
+        public int DeliveryInfoId { get; set; }
+        public virtual DeliveryInfo DeliveryInfoDetail { get; set; }
     }
 
 }

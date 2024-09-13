@@ -9,10 +9,11 @@ namespace L_L.Data.UnitOfWorks
         private UserRepository _userRepo;
         private AuthRepository _authRepo;
         private UserRoleRepository _userRoleRepo;
-        private ServiceRepository _serviceRepo;
         private VehicleTypeRepository _vehicleTypeRepo;
         private PacketTypeRepository _packageTypeRepo;
         private ShippingRateRepository _shippingRateRepo;
+        private OrderRepository _orderRepo;
+        private OrderDetailRepository _orderDetailRepo;
 
         public UnitOfWorks(AppDbContext dbContext)
         {
@@ -34,11 +35,6 @@ namespace L_L.Data.UnitOfWorks
             get { return _userRoleRepo ??= new UserRoleRepository(_dbContext); }
         }
 
-        public ServiceRepository ServiceRepository
-        {
-            get { return _serviceRepo ??= new ServiceRepository(_dbContext); }
-        }
-
         public VehicleTypeRepository VehicleTypeRepository
         {
             get { return _vehicleTypeRepo ??= new VehicleTypeRepository(_dbContext); }
@@ -51,6 +47,14 @@ namespace L_L.Data.UnitOfWorks
         public ShippingRateRepository ShippingRateRepository
         {
             get { return _shippingRateRepo ??= new ShippingRateRepository(_dbContext); }
+        }
+        public OrderRepository OrderRepository
+        {
+            get { return _orderRepo ??= new OrderRepository(_dbContext); }
+        }
+        public OrderDetailRepository OrderDetailRepository
+        {
+            get { return _orderDetailRepo ??= new OrderDetailRepository(_dbContext); }
         }
     }
 }

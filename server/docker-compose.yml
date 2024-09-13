@@ -17,6 +17,8 @@ services:
       dockerfile: L&L.API/Dockerfile
     ports:
       - "5000:5000"
+    networks:
+      - dev-network
 
   ll.database:
     image: postgres:latest
@@ -26,6 +28,14 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./.containers/server-db:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
     ports:
       - 5435:5432
+    networks:
+      - dev-network
+
+networks: 
+  dev-network:
+
+volumes:
+  pg_data:

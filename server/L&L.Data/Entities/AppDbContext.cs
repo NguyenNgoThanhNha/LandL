@@ -21,7 +21,8 @@ namespace L_L.Data.Entities
         public DbSet<OrderTracking> OrderTrackings { get; set; }
         public DbSet<Hub> Hubs { get; set; }
         public DbSet<Truck> Trucks { get; set; }
-        public DbSet<Service> Services { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<DeliveryInfo> DeliveryInfos { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<PackageType> PackageTypes { get; set; }
         public DbSet<ShippingRate> ShippingRates { get; set; }

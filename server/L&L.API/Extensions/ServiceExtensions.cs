@@ -100,6 +100,8 @@ namespace L_L.API.Extensions
             services.AddScoped<MailService>();
             services.AddScoped<PackageTypeService>();
             services.AddScoped<VehicleTypeService>();
+            services.AddScoped<OrderService>();
+            services.AddScoped<OrderDetailService>();
 
             return services;
         }

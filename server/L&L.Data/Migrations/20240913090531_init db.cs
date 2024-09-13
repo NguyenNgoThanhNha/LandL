@@ -13,6 +13,29 @@ namespace L_L.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "DeliveryInfo",
+                columns: table => new
+                {
+                    DeliveryInfoId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ReceiverName = table.Column<string>(type: "text", nullable: true),
+                    SenderName = table.Column<string>(type: "text", nullable: true),
+                    ReceiverPhone = table.Column<string>(type: "text", nullable: true),
+                    SenderPhone = table.Column<string>(type: "text", nullable: true),
+                    DeliveryLocaTion = table.Column<string>(type: "text", nullable: true),
+                    PickUpLocation = table.Column<string>(type: "text", nullable: true),
+                    OrderDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    RecieveDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ExpectedRecieveDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ExpectedDeliveryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    DeliveryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryInfo", x => x.DeliveryInfoId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PackageType",
                 columns: table => new
                 {
@@ -31,6 +54,25 @@ namespace L_L.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PackageType", x => x.PackageTypeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProductName = table.Column<string>(type: "text", nullable: true),
+                    Quantity = table.Column<int>(type: "integer", nullable: true),
+                    ProductDescription = table.Column<string>(type: "text", nullable: false),
+                    TotalDismension = table.Column<string>(type: "text", nullable: false),
+                    Weight = table.Column<string>(type: "text", nullable: false),
+                    Image = table.Column<string>(type: "text", nullable: true),
+                    SenderId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.ProductId);
                 });
 
             migrationBuilder.CreateTable(
@@ -235,66 +277,20 @@ namespace L_L.Data.Migrations
                 {
                     OrderId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    OrderDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    RecieveDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    ExpectedRecieveDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    ExpectedDeliveryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    DeliveryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    From = table.Column<string>(type: "text", nullable: false),
-                    To = table.Column<string>(type: "text", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "text", nullable: false),
-                    TotalAmount = table.Column<double>(type: "double precision", nullable: false),
-                    OrderCount = table.Column<int>(type: "integer", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "numeric", nullable: false),
+                    OrderCount = table.Column<int>(type: "integer", nullable: true),
                     Status = table.Column<string>(type: "text", nullable: false),
                     Notes = table.Column<string>(type: "text", nullable: true),
-                    CustomerId = table.Column<int>(type: "integer", nullable: false),
-                    DriverId = table.Column<int>(type: "integer", nullable: false)
+                    DriverId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Order_User_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Order_User_DriverId",
                         column: x => x.DriverId,
                         principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Service",
-                columns: table => new
-                {
-                    ServiceId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TruckId = table.Column<int>(type: "integer", nullable: true),
-                    PackageTypeId = table.Column<int>(type: "integer", nullable: true),
-                    ShippingRateRateId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Service", x => x.ServiceId);
-                    table.ForeignKey(
-                        name: "FK_Service_PackageType_PackageTypeId",
-                        column: x => x.PackageTypeId,
-                        principalTable: "PackageType",
-                        principalColumn: "PackageTypeId");
-                    table.ForeignKey(
-                        name: "FK_Service_ShippingRate_ShippingRateRateId",
-                        column: x => x.ShippingRateRateId,
-                        principalTable: "ShippingRate",
-                        principalColumn: "RateId");
-                    table.ForeignKey(
-                        name: "FK_Service_Truck_TruckId",
-                        column: x => x.TruckId,
-                        principalTable: "Truck",
-                        principalColumn: "TruckId");
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
@@ -326,6 +322,58 @@ namespace L_L.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    OrderDetailId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Quantity = table.Column<int>(type: "integer", nullable: true),
+                    PaymentMethod = table.Column<string>(type: "text", nullable: true),
+                    UnitPrice = table.Column<decimal>(type: "numeric", nullable: true),
+                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: true),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    SenderId = table.Column<int>(type: "integer", nullable: false),
+                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    ProductId = table.Column<int>(type: "integer", nullable: false),
+                    TruckId = table.Column<int>(type: "integer", nullable: false),
+                    DeliveryInfoId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.OrderDetailId);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_DeliveryInfo_DeliveryInfoId",
+                        column: x => x.DeliveryInfoId,
+                        principalTable: "DeliveryInfo",
+                        principalColumn: "DeliveryInfoId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Truck_TruckId",
+                        column: x => x.TruckId,
+                        principalTable: "Truck",
+                        principalColumn: "TruckId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_User_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderTracking",
                 columns: table => new
                 {
@@ -347,36 +395,6 @@ namespace L_L.Data.Migrations
                         column: x => x.OrderId,
                         principalTable: "Order",
                         principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderDetails",
-                columns: table => new
-                {
-                    OrderDetailId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Quantity = table.Column<int>(type: "integer", nullable: false),
-                    UnitPrice = table.Column<double>(type: "double precision", nullable: false),
-                    TotalPrice = table.Column<double>(type: "double precision", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false),
-                    OrderId = table.Column<int>(type: "integer", nullable: false),
-                    ServiceId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderDetails", x => x.OrderDetailId);
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_Order_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Order",
-                        principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_Service_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "Service",
-                        principalColumn: "ServiceId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -406,14 +424,14 @@ namespace L_L.Data.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_CustomerId",
-                table: "Order",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Order_DriverId",
                 table: "Order",
                 column: "DriverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_DeliveryInfoId",
+                table: "OrderDetails",
+                column: "DeliveryInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderId",
@@ -421,29 +439,24 @@ namespace L_L.Data.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_ServiceId",
+                name: "IX_OrderDetails_ProductId",
                 table: "OrderDetails",
-                column: "ServiceId");
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_SenderId",
+                table: "OrderDetails",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_TruckId",
+                table: "OrderDetails",
+                column: "TruckId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderTracking_OrderId",
                 table: "OrderTracking",
                 column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Service_PackageTypeId",
-                table: "Service",
-                column: "PackageTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Service_ShippingRateRateId",
-                table: "Service",
-                column: "ShippingRateRateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Service_TruckId",
-                table: "Service",
-                column: "TruckId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShippingRate_VehicleTypeId",
@@ -482,13 +495,22 @@ namespace L_L.Data.Migrations
                 name: "OrderTracking");
 
             migrationBuilder.DropTable(
+                name: "ShippingRate");
+
+            migrationBuilder.DropTable(
                 name: "VehiclePackageRelation");
 
             migrationBuilder.DropTable(
                 name: "Blog");
 
             migrationBuilder.DropTable(
-                name: "Service");
+                name: "DeliveryInfo");
+
+            migrationBuilder.DropTable(
+                name: "Product");
+
+            migrationBuilder.DropTable(
+                name: "Truck");
 
             migrationBuilder.DropTable(
                 name: "Order");
@@ -497,16 +519,10 @@ namespace L_L.Data.Migrations
                 name: "PackageType");
 
             migrationBuilder.DropTable(
-                name: "ShippingRate");
-
-            migrationBuilder.DropTable(
-                name: "Truck");
+                name: "VehicleType");
 
             migrationBuilder.DropTable(
                 name: "User");
-
-            migrationBuilder.DropTable(
-                name: "VehicleType");
 
             migrationBuilder.DropTable(
                 name: "UserRole");
