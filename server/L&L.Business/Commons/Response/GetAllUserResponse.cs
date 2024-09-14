@@ -1,6 +1,8 @@
-﻿namespace L_L.Business.Commons.Response;
+﻿using L_L.Business.Models;
+
+namespace L_L.Business.Commons.Response;
 
 public class GetAllUserResponse
 {
-    
+    public List<UserModel> ListUser { get; set; }
 }

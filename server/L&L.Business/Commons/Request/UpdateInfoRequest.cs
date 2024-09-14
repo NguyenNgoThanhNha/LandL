@@ -1,31 +1,19 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
 
 namespace L_L.Business.Commons.Request
 {
     public class UpdateInfoRequest
     {
         public string? UserName { get; set; }
-
-        [MaxLength(100)]
         public string? Password { get; set; }
-
-        [MaxLength(50)]
         public string? FullName { get; set; }
-
-        [MaxLength(100)]
-        public string? Gender { get; set; }
-
-        [MaxLength(100)]
-        public string? Level { get; set; }
-
-        [MaxLength(255)]
+        public string? City { get; set; }
         public string? Address { get; set; }
-
+        public string? Gender { get; set; }
         public DateTime? BirthDate { get; set; }
-
-        [MaxLength(15)]
         public string? PhoneNumber { get; set; }
+        public string? STK { get; set; }
+        public string? Bank { get; set; }
         public IFormFile? Avatar { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class initdb : Migration
+    public partial class updatedatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -121,7 +121,7 @@ namespace L_L.Data.Migrations
                     PhoneNumber = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
                     STK = table.Column<string>(type: "text", nullable: true),
                     Bank = table.Column<string>(type: "text", nullable: true),
-                    AccountBalance = table.Column<string>(type: "text", nullable: true),
+                    AccountBalance = table.Column<decimal>(type: "numeric", nullable: true),
                     CreateBy = table.Column<string>(type: "text", nullable: true),
                     CreateDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     ModifyBy = table.Column<string>(type: "text", nullable: true),

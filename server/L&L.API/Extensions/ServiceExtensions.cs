@@ -102,6 +102,7 @@ namespace L_L.API.Extensions
             services.AddScoped<VehicleTypeService>();
             services.AddScoped<OrderService>();
             services.AddScoped<OrderDetailService>();
+            services.AddScoped<CloudService>();
 
             return services;
         }

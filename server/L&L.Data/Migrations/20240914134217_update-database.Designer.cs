@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240913090531_init db")]
-    partial class initdb
+    [Migration("20240914134217_update-database")]
+    partial class updatedatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -461,8 +461,8 @@ namespace L_L.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("AccountBalance")
-                        .HasColumnType("text");
+                    b.Property<decimal?>("AccountBalance")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("Address")
                         .HasMaxLength(255)

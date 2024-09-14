@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using L_L.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace L_L.Business.Models
 {
@@ -40,6 +41,8 @@ namespace L_L.Business.Models
         [MaxLength(15)]
         [Phone(ErrorMessage = "Invalid Phone Number")]
         public string? PhoneNumber { get; set; }
+        public string? STK { get; set; }
+        public string? Bank { get; set; }
 
         public string? CreateBy { get; set; }
 
@@ -54,5 +57,6 @@ namespace L_L.Business.Models
         public string TypeLogin { get; set; }
 
         public int RoleID { get; set; }
+        public virtual UserRole UserRole { get; set; }
     }
 }

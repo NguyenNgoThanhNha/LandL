@@ -458,8 +458,8 @@ namespace L_L.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("AccountBalance")
-                        .HasColumnType("text");
+                    b.Property<decimal?>("AccountBalance")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("Address")
                         .HasMaxLength(255)
