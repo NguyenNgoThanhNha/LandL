@@ -1,6 +1,8 @@
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mobile/commons/widgets/appbar/appbar.dart';
 import 'package:mobile/commons/widgets/images/circular_image.dart';
+import 'package:mobile/features/personalization/screens/notification/notification.dart';
 import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/constants/image_strings.dart';
 import 'package:mobile/utils/constants/text_strings.dart';
@@ -48,7 +50,7 @@ class THomeAppBar extends StatelessWidget {
       ),
       actions: [
         TNotificationIcon(
-            onPressed: () {}, iconColor: dark ? TColors.white : Colors.black),
+            onPressed: () => Get.to(()=> const NotificationScreen()), iconColor: dark ? TColors.white : Colors.black),
         GestureDetector(
           onTap: () {},
           child: const TCircularImage(image: TImages.avatar),

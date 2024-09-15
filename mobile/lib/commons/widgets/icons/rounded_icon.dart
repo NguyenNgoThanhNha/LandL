@@ -3,17 +3,18 @@ import 'package:mobile/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 
 class TRoundedIcon extends StatelessWidget {
-  const TRoundedIcon(
-      {super.key,
-      this.height,
-      this.width,
-      this.size = TSizes.lg,
-      required this.icon,
-      this.color,
-      this.backgroundColor,
-      this.onPressed});
+  const TRoundedIcon({super.key,
+    this.height,
+    this.width,
+    this.size = TSizes.lg,
+    required this.icon,
+    this.color,
+    this.borderRadius = 100,
+    this.backgroundColor,
+    this.onPressed});
 
   final double? height, width, size;
+  final double borderRadius;
   final IconData icon;
   final Color? color;
   final Color? backgroundColor;
@@ -30,7 +31,7 @@ class TRoundedIcon extends StatelessWidget {
             (dark
                 ? Colors.black.withOpacity(0.9)
                 : Colors.white.withOpacity(0.9)),
-        borderRadius: BorderRadius.circular(100),
+        borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: IconButton(
         onPressed: onPressed,

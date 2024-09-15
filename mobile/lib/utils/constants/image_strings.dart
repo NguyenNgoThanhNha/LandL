@@ -32,4 +32,12 @@ class TImages {
   //checkout
 
 
+//contract
+  static const String idCard ='assets/icons/icons8-id-card-64.png';
+  static const String licenceCard ='assets/icons/icons8-driver-license-64.png';
+
+
+
+
+
 }

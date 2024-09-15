@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:mobile/utils/constants/sizes.dart';
 
 class TWarningAction extends StatelessWidget {
@@ -47,7 +46,7 @@ class TWarningAction extends StatelessWidget {
               width: TSizes.spacebtwItems / 2,
             ),
             const Icon(
-              Iconsax.alarm,
+              Icons.warning_amber_outlined,
               color: Colors.red,
             )
           ],

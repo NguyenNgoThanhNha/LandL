@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mobile/commons/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:mobile/commons/widgets/icons/rounded_icon.dart';
+import 'package:mobile/features/service/screens/delivery_detail/delivery_detail.dart';
 import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/constants/sizes.dart';
 import 'package:mobile/utils/constants/text_strings.dart';
@@ -15,10 +17,11 @@ class TDeliveryPackage extends StatelessWidget {
   Widget build(BuildContext context) {
     return TRoundedContainer(
         padding: const EdgeInsets.all(TSizes.md),
-        margin: const EdgeInsets.symmetric(vertical: TSizes.spacebtwItems/2),
         backgroundColor: TColors.accent.withOpacity(0.5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
               'Electronics/Gadgets',
@@ -107,7 +110,8 @@ class TDeliveryPackage extends StatelessWidget {
                 ),
                 Expanded(
                     child: ElevatedButton(
-                        onPressed: () {}, child: const Text('View')))
+                        onPressed: () => Get.to(() => const DeliveryDetailScreen()),
+                        child: const Text('View')))
               ],
             )
           ],

@@ -21,11 +21,11 @@ class TSettingsMenuTile extends StatelessWidget {
       leading: Icon(
         icon,
         size: 28,
-        color: TColors.primary,
+        color: TColors.black,
       ),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleMedium,
+        style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w700),
       ),
       subtitle: Text(
         subTitle,

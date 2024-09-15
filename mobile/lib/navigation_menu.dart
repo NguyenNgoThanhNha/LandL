@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:mobile/features/personalization/screens/setting/setting.dart';
+import 'package:mobile/features/service/screens/earnings/earnings.dart';
 import 'package:mobile/features/service/screens/home/home.dart';
 import 'package:mobile/features/service/screens/manage_delivery/manage_delivery.dart';
 import 'package:mobile/utils/constants/colors.dart';
@@ -31,7 +33,7 @@ class NavigationMenu extends StatelessWidget {
                 icon: Icon(Iconsax.calendar), label: 'Delivery'),
             NavigationDestination(
                 icon: Icon(Iconsax.money_recive4), label: 'Earnings'),
-            NavigationDestination(icon: Icon(Iconsax.user), label: 'Profile'),
+            NavigationDestination(icon: Icon(Iconsax.setting_2), label: 'Setting'),
           ],
         ),
       ),
@@ -46,11 +48,7 @@ class NavigationController extends GetxController {
   final screens = [
     const HomeScreen(),
     const ManageDeliveryScreen(),
-    Container(
-      color: Colors.blue,
-    ),
-    Container(
-      color: Colors.pink,
-    ),
+    const EarningsScreen(),
+    const SettingsScreen()
   ];
 }
