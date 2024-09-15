@@ -14,6 +14,7 @@ namespace L_L.Data.Entities
         #region Dbset
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<BlogRating> BlogRatings { get; set; }
         public DbSet<Order> Orders { get; set; }

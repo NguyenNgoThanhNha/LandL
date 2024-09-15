@@ -386,6 +386,38 @@ namespace L_L.Data.Migrations
                     b.ToTable("ShippingRate");
                 });
 
+            modelBuilder.Entity("L_L.Data.Entities.Transaction", b =>
+                {
+                    b.Property<int>("TransactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TransactionId"));
+
+                    b.Property<int>("AdminId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.HasKey("TransactionId");
+
+                    b.HasIndex("AdminId");
+
+                    b.HasIndex("DriverId");
+
+                    b.ToTable("Transaction");
+                });
+
             modelBuilder.Entity("L_L.Data.Entities.Truck", b =>
                 {
                     b.Property<int>("TruckId")
@@ -458,8 +490,8 @@ namespace L_L.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
-                    b.Property<decimal?>("AccountBalance")
-                        .HasColumnType("numeric");
+                    b.Property<string>("AccountBalance")
+                        .HasColumnType("text");
 
                     b.Property<string>("Address")
                         .HasMaxLength(255)
@@ -514,6 +546,9 @@ namespace L_L.Data.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)");
+
+                    b.Property<string>("QRCode")
+                        .HasColumnType("text");
 
                     b.Property<int>("RoleID")
                         .HasColumnType("integer");
@@ -721,6 +756,25 @@ namespace L_L.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("VehicleType");
+                });
+
+            modelBuilder.Entity("L_L.Data.Entities.Transaction", b =>
+                {
+                    b.HasOne("L_L.Data.Entities.User", "Admin")
+                        .WithMany()
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("L_L.Data.Entities.User", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Admin");
+
+                    b.Navigation("Driver");
                 });
 
             modelBuilder.Entity("L_L.Data.Entities.Truck", b =>

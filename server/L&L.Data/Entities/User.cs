@@ -46,7 +46,8 @@ namespace L_L.Data.Entities
         public string? PhoneNumber { get; set; }
         public string? STK { get; set; }
         public string? Bank { get; set; }
-        public decimal? AccountBalance { get; set; }
+        public string? QRCode { get; set; }
+        public string? AccountBalance { get; set; }
 
         public string? CreateBy { get; set; }
 
@@ -61,7 +62,6 @@ namespace L_L.Data.Entities
         public string TypeLogin { get; set; }
 
         [ForeignKey("UserRole")]
-        [Required(ErrorMessage = "RoleID is required")]
         public int RoleID { get; set; }
         public virtual UserRole UserRole { get; set; }
     }

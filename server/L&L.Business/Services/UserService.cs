@@ -157,11 +157,6 @@ namespace L_L.Business.Services
 
         public async Task<bool> UpdateCost(string cost, string email)
         {
-            if (!decimal.TryParse(cost, out var parsedCost))
-            {
-                throw new BadRequestException("Invalid cost value provided.");
-            }
-
             // Retrieve the user from the repository based on the email condition
             var user = unitOfWorks.UserRepository.FirstOrDefault(x => x.Email == email);
 
@@ -171,7 +166,12 @@ namespace L_L.Business.Services
             }
 
             // Update only the AccountBalance
-            user.AccountBalance = parsedCost;
+            /*            user.AccountBalance = SecurityUtil.Encrypt(cost);*/
+            var text = SecurityUtil.Encrypt(cost);
+
+            /*            var test = SecurityUtil.Decrypt(text);*/
+
+            user.AccountBalance = text;
 
             // Update user in the repository
             unitOfWorks.UserRepository.Update(user);
