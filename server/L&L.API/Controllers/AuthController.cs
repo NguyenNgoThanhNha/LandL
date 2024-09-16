@@ -27,12 +27,14 @@ namespace L_L.API.Controllers
         [HttpPost("FirstStep")]
         public async Task<IActionResult> FirstStepResgisterInfo(FirstStepResquest req)
         {
-            if (req == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
-                {
-                    message = "Invalid request data!"
-                }));
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
             }
             if (req.TypeAccount == null)
             {
@@ -134,12 +136,14 @@ namespace L_L.API.Controllers
         [HttpPost("SubmitOTP")]
         public async Task<IActionResult> SubmitOTP(SubmitOTPResquest req)
         {
-            if (req == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
-                {
-                    message = "Invalid request data!"
-                }));
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
             }
             var result = await authService.SubmitOTP(req);
             if (!result)
@@ -156,12 +160,14 @@ namespace L_L.API.Controllers
         [HttpGet("GetTimeOTP")]
         public async Task<IActionResult> GetTimeOTP(string email)
         {
-            if (email == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
-                {
-                    message = "Invalid request data!"
-                }));
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
             }
             var user = await authService.GetUserByEmail(email);
             if (user == null)
@@ -188,12 +194,14 @@ namespace L_L.API.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] SignInRequest req)
         {
-            if (req == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ApiResult<SignInResponse>.Error(new SignInResponse
-                {
-                    message = "Invalid request data!"
-                }));
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
             }
 
             var loginResult = authService.SignIn(req.Email, req.Password);
@@ -207,7 +215,7 @@ namespace L_L.API.Controllers
             var res = new SignInResponse
             {
                 message = "Sign In Successfully",
-                Token = handler.WriteToken(loginResult.Token)
+                data = handler.WriteToken(loginResult.Token)
             };
             return Ok(ApiResult<SignInResponse>.Succeed(res));
         }
@@ -216,12 +224,14 @@ namespace L_L.API.Controllers
         [HttpPost("login-google")]
         public async Task<IActionResult> LoginWithGoogle([FromBody] SignInRequest req)
         {
-            if (req == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ApiResult<SignInResponse>.Error(new SignInResponse
-                {
-                    message = "Invalid request data!"
-                }));
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
             }
 
             var loginResult = await authService.SignInWithGG(req);

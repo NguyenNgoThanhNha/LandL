@@ -3,6 +3,6 @@
     public class SignInResponse
     {
         public string? message { get; set; }
-        public string? Token { get; set; }
+        public string? data { get; set; }
     }
 }
