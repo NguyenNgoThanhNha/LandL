@@ -95,5 +95,12 @@ namespace L_L.API.Controllers
             }));
         }
 
+        [HttpGet("public-order")]
+        public async Task<IActionResult> PublicOrder()
+        {
+            var listOrderDetail = await orderService.PublicOrder();
+            return Ok(ApiResult<List<OrderDetailsModel>>.Succeed(listOrderDetail));
+        }
+
     }
 }

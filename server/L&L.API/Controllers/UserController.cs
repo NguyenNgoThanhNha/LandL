@@ -2,6 +2,7 @@
 using L_L.Business.Commons.Request;
 using L_L.Business.Commons.Response;
 using L_L.Business.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace L_L.API.Controllers
@@ -27,9 +28,9 @@ namespace L_L.API.Controllers
             }));
         }
 
-        /*        [Authorize(Roles = "Admin")]*/
+        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateCost")]
-        public async Task<IActionResult> UpdateCost([FromQuery] string email, [FromBody] string cost)
+        public async Task<IActionResult> UpdateCost([FromQuery] string email, [FromBody] UpdateCostRequest req)
         {
             var currentUser = await userService.GetUserByEmail(email);
 
@@ -41,7 +42,7 @@ namespace L_L.API.Controllers
                 }));
             }
 
-            var result = await userService.UpdateCost(cost, email);
+            var result = await userService.UpdateCost(req.cost, email);
 
             if (result)
             {

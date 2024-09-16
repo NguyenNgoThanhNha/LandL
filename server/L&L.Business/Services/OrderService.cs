@@ -65,5 +65,19 @@ namespace L_L.Business.Services
             return true;
         }
 
+        public async Task<List<OrderDetailsModel>> PublicOrder()
+        {
+            var listOrderDetail = await unitOfWorks.OrderDetailRepository.GetAll()
+                .Include(o => o.DeliveryInfoDetail)  // Include bảng DeliveryInfo
+                /*                .Include(o => o.TruckInfo)           // Include bảng Truck*/
+                .Include(o => o.ProductInfo)         // Include bảng Product
+                /*                .Include(o => o.OrderInfo)           // Include bảng Order*/
+                /*                .Include(o => o.UserOrder)           // Include bảng User*/
+                .Where(o => o.Status == StatusEnums.Processing.ToString())
+                .ToListAsync();
+            return _mapper.Map<List<OrderDetailsModel>>(listOrderDetail);
+        }
+
+
     }
 }
