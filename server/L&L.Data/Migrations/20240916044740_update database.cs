@@ -399,10 +399,10 @@ namespace L_L.Data.Migrations
                     TotalPrice = table.Column<decimal>(type: "numeric", nullable: true),
                     Status = table.Column<string>(type: "text", nullable: false),
                     SenderId = table.Column<int>(type: "integer", nullable: true),
-                    OrderId = table.Column<int>(type: "integer", nullable: false),
-                    ProductId = table.Column<int>(type: "integer", nullable: false),
-                    TruckId = table.Column<int>(type: "integer", nullable: false),
-                    DeliveryInfoId = table.Column<int>(type: "integer", nullable: false)
+                    OrderId = table.Column<int>(type: "integer", nullable: true),
+                    ProductId = table.Column<int>(type: "integer", nullable: true),
+                    TruckId = table.Column<int>(type: "integer", nullable: true),
+                    DeliveryInfoId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -411,26 +411,22 @@ namespace L_L.Data.Migrations
                         name: "FK_OrderDetails_DeliveryInfo_DeliveryInfoId",
                         column: x => x.DeliveryInfoId,
                         principalTable: "DeliveryInfo",
-                        principalColumn: "DeliveryInfoId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "DeliveryInfoId");
                     table.ForeignKey(
                         name: "FK_OrderDetails_Order_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Order",
-                        principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "OrderId");
                     table.ForeignKey(
                         name: "FK_OrderDetails_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ProductId");
                     table.ForeignKey(
                         name: "FK_OrderDetails_Truck_TruckId",
                         column: x => x.TruckId,
                         principalTable: "Truck",
-                        principalColumn: "TruckId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "TruckId");
                     table.ForeignKey(
                         name: "FK_OrderDetails_User_SenderId",
                         column: x => x.SenderId,

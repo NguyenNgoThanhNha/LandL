@@ -1,11 +1,6 @@
 ﻿using L_L.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace L_L.Data.Base
 {
@@ -41,9 +36,20 @@ namespace L_L.Data.Base
 
         public TEntity Update(TEntity entity)
         {
-            var entityEntry = _dbContext.Set<TEntity>().Update(entity);
-            return entityEntry.Entity;
+            var trackedEntity = _dbContext.Set<TEntity>().Local.FirstOrDefault(e => e == entity);
+            if (trackedEntity != null)
+            {
+                // Nếu thực thể đã được theo dõi, tách thực thể trước khi cập nhật
+                _dbContext.Entry(trackedEntity).State = EntityState.Detached;
+            }
+
+            // Tiếp tục cập nhật thực thể
+            var tracker = _dbContext.Attach(entity);
+            tracker.State = EntityState.Modified;
+            return entity;
         }
+
+
 
         public TEntity Remove(TKey id)
         {

@@ -42,7 +42,7 @@ namespace L_L.API.Controllers
             }
 
             // create order
-            var orderCreate = await orderService.CreateOrder();
+            var orderCreate = await orderService.CreateOrder(request.TotalAmount);
             if (orderCreate == null)
             {
                 return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
@@ -67,8 +67,8 @@ namespace L_L.API.Controllers
             }));
         }
 
-        [HttpPut("Update-Status")]
-        public async Task<IActionResult> UpdateStatusOrder([FromQuery] string id, [FromBody] StatusEnums status)
+        [HttpPut("Update-Status/{id}")]
+        public async Task<IActionResult> UpdateStatusOrder([FromRoute] string id, [FromBody] StatusEnums status)
         {
             var order = await orderService.GetOrder(int.Parse(id));
             if (order == null)

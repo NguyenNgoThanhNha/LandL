@@ -19,22 +19,18 @@ namespace L_L.Data.Entities
         public int? SenderId { get; set; }
         public virtual User UserOrder { get; set; }
 
-        [Required]
         [ForeignKey("OrderDetailInfo")]
         public int? OrderId { get; set; }
         public virtual Order OrderInfo { get; set; }
 
-        [Required]
         [ForeignKey("OrderProduct")]
         public int? ProductId { get; set; }
         public virtual Product ProductInfo { get; set; }
 
-        [Required]
         [ForeignKey("OrderTruck")]
         public int? TruckId { get; set; }
         public virtual Truck TruckInfo { get; set; }
 
-        [Required]
         [ForeignKey("OrderDelivery")]
         public int? DeliveryInfoId { get; set; }
         public virtual DeliveryInfo DeliveryInfoDetail { get; set; }

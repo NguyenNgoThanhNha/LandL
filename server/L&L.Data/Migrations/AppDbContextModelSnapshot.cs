@@ -212,18 +212,15 @@ namespace L_L.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderDetailId"));
 
                     b.Property<int?>("DeliveryInfoId")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<int?>("OrderId")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("text");
 
                     b.Property<int?>("ProductId")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<int?>("Quantity")
@@ -240,7 +237,6 @@ namespace L_L.Data.Migrations
                         .HasColumnType("numeric");
 
                     b.Property<int?>("TruckId")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<decimal?>("UnitPrice")
@@ -717,21 +713,15 @@ namespace L_L.Data.Migrations
                 {
                     b.HasOne("L_L.Data.Entities.DeliveryInfo", "DeliveryInfoDetail")
                         .WithMany()
-                        .HasForeignKey("DeliveryInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DeliveryInfoId");
 
                     b.HasOne("L_L.Data.Entities.Order", "OrderInfo")
                         .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.HasOne("L_L.Data.Entities.Product", "ProductInfo")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.HasOne("L_L.Data.Entities.User", "UserOrder")
                         .WithMany()
@@ -739,9 +729,7 @@ namespace L_L.Data.Migrations
 
                     b.HasOne("L_L.Data.Entities.Truck", "TruckInfo")
                         .WithMany()
-                        .HasForeignKey("TruckId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TruckId");
 
                     b.Navigation("DeliveryInfoDetail");
 

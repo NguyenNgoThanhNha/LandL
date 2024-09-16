@@ -23,11 +23,11 @@ namespace L_L.Business.Services
             return _mapper.Map<List<OrderModel>>(await unitOfWorks.OrderRepository.GetAll().ToListAsync());
         }
 
-        public async Task<OrderModel> CreateOrder()
+        public async Task<OrderModel> CreateOrder(string amount)
         {
             var order = new OrderModel();
             order.Status = StatusEnums.Processing.ToString();
-            order.TotalAmount = 0;
+            order.TotalAmount = decimal.Parse(amount);
             var orderCreate = await unitOfWorks.OrderRepository.AddAsync(_mapper.Map<Order>(order));
             var result = await unitOfWorks.OrderRepository.Commit();
             if (result > 0)
@@ -50,13 +50,20 @@ namespace L_L.Business.Services
         public async Task<bool> UpdateStatus(StatusEnums status, OrderModel order)
         {
             order.Status = status.ToString();
-            var orderStatusUpdate = unitOfWorks.OrderRepository.Update(_mapper.Map<Order>(order));
-            if (orderStatusUpdate != null)
+
+            var existingOrder = await unitOfWorks.OrderRepository.GetByIdAsync(order.OrderId);
+            if (existingOrder == null)
             {
-                await unitOfWorks.OrderRepository.Commit();
-                return true;
+                return false;
             }
-            return false;
+
+            _mapper.Map(order, existingOrder);
+
+            unitOfWorks.OrderRepository.Update(existingOrder);
+
+            await unitOfWorks.OrderRepository.Commit();
+            return true;
         }
+
     }
 }

@@ -29,4 +29,6 @@ public class CreateOrderRequest
 
     public string Email { get; set; }
 
+    public string TotalAmount { get; set; }
+
 }

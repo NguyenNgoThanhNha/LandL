@@ -2,6 +2,7 @@
 using L_L.Business.Commons.Request;
 using L_L.Business.Exceptions;
 using L_L.Business.Models;
+using L_L.Business.Ultils;
 using L_L.Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,11 +32,53 @@ namespace L_L.Business.Services
                 throw new BadRequestException("Order not found!");
             }
 
+            var userSender = await unitOfWorks.UserRepository.FindByCondition(x => x.Email == req.Email).FirstOrDefaultAsync();
+            if (userSender == null)
+            {
+                throw new BadRequestException("User Sender not found!");
+            }
+
             // create product
             var product = await unitOfWorks.ProductRepository.AddAsync(new Data.Entities.Product()
             {
-
+                TotalDismension = $"{req.Width} x {req.Height} x {req.Length}",
+                Weight = req.Weight,
             });
+            var resultProduct = await unitOfWorks.ProductRepository.Commit();
+
+            // create delivery info
+            var delivery = await unitOfWorks.DeliveryInfoRepository.AddAsync(new Data.Entities.DeliveryInfo()
+            {
+                PickUpLocation = req.From,
+                DeliveryLocaTion = req.To,
+                LongPickUp = req.longFrom,
+                LatPickUp = req.latFrom,
+                LongDelivery = req.longTo,
+                LatDelivery = req.latTo,
+                OrderDate = DateTime.Now,
+                RecieveDate = req.PickupTime,
+                SenderName = userSender?.UserName
+            });
+            var resultDeliveryInfo = await unitOfWorks.DeliveryInfoRepository.Commit();
+
+            // create order detail
+            var orderDetail = await unitOfWorks.OrderDetailRepository.AddAsync(new Data.Entities.OrderDetails()
+            {
+                Status = StatusEnums.Processing.ToString(),
+                ProductId = product.ProductId,
+                DeliveryInfoId = delivery.DeliveryInfoId,
+                SenderId = userSender?.UserId,
+                OrderId = order.OrderId,
+                TotalPrice = decimal.Parse(req.TotalAmount),
+            });
+
+            var result = await unitOfWorks.OrderDetailRepository.Commit();
+
+            if (orderDetail != null && result > 0 && resultProduct > 0 && resultDeliveryInfo > 0)
+            {
+                return mapper.Map<OrderDetailsModel>(orderDetail);
+            }
+
             return null;
         }
     }
