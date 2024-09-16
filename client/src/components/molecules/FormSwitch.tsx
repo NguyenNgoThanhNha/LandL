@@ -19,7 +19,7 @@ const FormSwitch = <T extends FieldValues>({ classContent, name, content, form }
         <FormItem className={classContent}>
           <FormControl>
             <div className='flex items-center space-x-2 w-full'>
-              <Switch id={name} {...field} />
+              <Switch id={name} {...field} defaultChecked={field.value} />
               <Label htmlFor={name} className={'font-light'}>
                 {content}
               </Label>

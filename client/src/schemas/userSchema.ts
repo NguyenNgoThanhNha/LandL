@@ -6,7 +6,7 @@ export const UserSignupSchema = z.object({
       required_error: 'Email is required'
     })
     .email({ message: 'Email is not a valid email' }),
-  username: z.string({
+  userName: z.string({
     required_error: 'Username is required'
   }),
   password: z.string({
@@ -15,7 +15,7 @@ export const UserSignupSchema = z.object({
   confirmPassword: z.string({
     required_error: 'Confirm password is required'
   }),
-  phoneNumber: z
+  phone: z
     .string()
     .length(10, 'Phone number must be exactly 10 digits')
     .regex(/^\d+$/, 'Phone number must contain only digits')

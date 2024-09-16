@@ -1,5 +1,5 @@
 import { Form } from '@/components/atoms/ui/form.tsx'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import FormInput from '@/components/molecules/FormInput.tsx'
 import { UserSignupSchema, UserSignupType } from '@/schemas/userSchema.ts'
 import FormSwitch from '@/components/molecules/FormSwitch.tsx'
@@ -8,21 +8,23 @@ import { Separator } from '@/components/atoms/ui/separator.tsx'
 import OptionFormFooter from '@/components/molecules/OptionFormFooter.tsx'
 import { Link } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
+import auth from '@/services/authService.ts'
 
 const SignupForm = () => {
   const form = useForm<UserSignupType>({
     resolver: zodResolver(UserSignupSchema),
     defaultValues: {
       email: '',
-      username: '',
-      phoneNumber: '',
+      userName: '',
+      phone: '',
       password: '',
       confirmPassword: '',
       policy: true
     }
   })
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<UserSignupType> = async (data: UserSignupType): Promise<void> => {
+    const result = await auth.register({ data })
+    console.log(result)
   }
   
   return (
@@ -36,8 +38,8 @@ const SignupForm = () => {
             classContent={'md:col-span-3'}
             autoFocus
           />
-          <FormInput name={'username'} form={form} placeholder={'Ex:customer'} classContent={'md:col-span-3'} />
-          <FormInput name={'phoneNumber'} form={form} placeholder={'Ex:0867 653 653'} classContent={'md:col-span-3'} />
+          <FormInput name={'userName'} form={form} placeholder={'Ex:customer'} classContent={'md:col-span-3'} />
+          <FormInput name={'phone'} form={form} placeholder={'Ex:0867 653 653'} classContent={'md:col-span-3'} />
           <FormInput name={'password'} form={form} type={'password'} classContent={'md:col-span-6'} />
           <FormInput name={'confirmPassword'} form={form} type={'password'} classContent={'md:col-span-6'} />
           <FormSwitch

@@ -1,8 +1,13 @@
 export type TUser = {
   id: string
   email: string
-  username: string
-  phone_number: number
+  userName: string
+  phone: number
+  fullName:string
+  city:string
+  address:string
   avatar?: string
   password?: string
+  link:string
+  otp:string
 }
