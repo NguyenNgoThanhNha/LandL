@@ -1,4 +1,5 @@
 using L_L.API.Extensions;
+using L_L.Business.Middlewares;
 using L_L.Data.Entities;
 using L_L.Data.SeedData;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +60,8 @@ namespace L_L.API
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                var connectionString = builder.Configuration.GetConnectionString("PgDbConnection");
+                Console.WriteLine($"PgDbConnection Program: {connectionString}");
                 await using (var scope = app.Services.CreateAsyncScope())
                 {
                     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -73,7 +76,7 @@ namespace L_L.API
 
             app.UseHttpsRedirection();
 
-            /*        app.UseMiddleware<ExceptionMiddleware>();*/
+            app.UseMiddleware<ExceptionMiddleware>();
 
 
             app.UseAuthentication();

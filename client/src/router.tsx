@@ -14,9 +14,11 @@ import BlogPage from '@/components/pages/Blog/BlogPage.tsx'
 import AboutUsPage from '@/components/pages/AboutUs/AboutUsPage.tsx'
 import ProfilePage from '@/components/pages/Profile/ProfilePage.tsx'
 import BlogDetailPage from '@/components/pages/Blog/BlogDetailPage.tsx'
+import PaymentPage from './components/pages/PayOsPay/PaymentPage'
 
 const router = createBrowserRouter(
   createRoutesFromElements([
+    <Route path='/payos' element={<PaymentPage />} />,
     <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />,
     <Route path={ROUTES.LOGIN} element={<LoginPage />} />,
     <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />,

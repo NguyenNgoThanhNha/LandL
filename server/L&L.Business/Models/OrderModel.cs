@@ -1,0 +1,23 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using L_L.Data.Entities;
+
+namespace L_L.Business.Models;
+
+public class OrderModel
+{
+    public int OrderId { get; set; }
+
+    [Required]
+    public decimal? TotalAmount { get; set; }
+
+    public int? OrderCount { get; set; }
+
+    public string Status { get; set; } = string.Empty;
+
+    public string? Notes { get; set; }
+
+    [ForeignKey("OrderDriver")]
+    public int? DriverId { get; set; }
+    public virtual User OrderDriver { get; set; }
+}

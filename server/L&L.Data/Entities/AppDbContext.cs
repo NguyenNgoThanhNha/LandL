@@ -1,13 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 
 namespace L_L.Data.Entities
 {
@@ -15,7 +6,7 @@ namespace L_L.Data.Entities
     {
         public AppDbContext()
         {
-            
+
         }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -23,21 +14,41 @@ namespace L_L.Data.Entities
         #region Dbset
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<BlogRating> BlogRatings { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<OrderTracking> OrderTrackings { get; set; }
+        public DbSet<Hub> Hubs { get; set; }
+        public DbSet<Truck> Trucks { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<DeliveryInfo> DeliveryInfos { get; set; }
+        public DbSet<VehicleType> VehicleTypes { get; set; }
+        public DbSet<PackageType> PackageTypes { get; set; }
+        public DbSet<ShippingRate> ShippingRates { get; set; }
+        public DbSet<VehiclePackageRelation> VehiclePackageRelations { get; set; }
+
         #endregion
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            optionsBuilder.UseNpgsql(GetConnectionString());
-        }
+            modelBuilder.Entity<VehiclePackageRelation>(e =>
+            {
+                e.ToTable("VehiclePackageRelation");
+                e.HasKey(e => new { e.VehicleTypeId, e.PackageTypeId });
 
-        private string GetConnectionString()
-        {
-            IConfiguration config = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
+                e.HasOne(e => e.VehicleType)
+                .WithMany(e => e.VehiclePackageRelations)
+                .HasForeignKey(e => e.VehicleTypeId)
+                .HasConstraintName("FK_VehiclePackageRelation1");
 
-            return config.GetConnectionString("PgDbConnection")!;
+                e.HasOne(e => e.PackageType)
+                .WithMany(e => e.VehiclePackageRelations)
+                .HasForeignKey(e => e.PackageTypeId)
+                .HasConstraintName("FK_VehiclePackageRelation2");
+
+            });
         }
     }
 }

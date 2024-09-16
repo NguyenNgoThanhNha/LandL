@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using L_L.Business.Models;
+using L_L.Data.Entities;
 
 namespace L_L.Business.Mappers
 {
@@ -11,7 +8,12 @@ namespace L_L.Business.Mappers
     {
         public ProfilesMapper()
         {
-
+            CreateMap<User, UserModel>().ReverseMap();
+            CreateMap<PackageType, PacketTypeModel>().ReverseMap();
+            CreateMap<VehicleType, VehicleTypeModel>().ReverseMap();
+            CreateMap<ShippingRate, ShippingRateModel>().ReverseMap();
+            CreateMap<Order, OrderModel>().ReverseMap();
+            CreateMap<OrderDetails, OrderDetailsModel>().ReverseMap();
         }
     }
 }

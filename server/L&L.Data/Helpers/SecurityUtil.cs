@@ -1,14 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace L_L.Data.Helpers
 {
     public static class SecurityUtil
     {
+        private static readonly string key = "ZrF&~S:YK{R6y8N5)Bpx.@_-`dv7LtQz"; // Phải đủ 32 ký tự cho AES-256
+        private static readonly string iv = "XJzn/Ff8R_3,h%g?"; // Phải đủ 16 ký tự
+        public static string Encrypt(string plainText)
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = Encoding.UTF8.GetBytes(key);
+                aesAlg.IV = Encoding.UTF8.GetBytes(iv);
+
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                    {
+                        swEncrypt.Write(plainText);
+                    }
+                    return Convert.ToBase64String(msEncrypt.ToArray());
+                }
+            }
+        }
+
+        public static string Decrypt(string cipherText)
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = Encoding.UTF8.GetBytes(key);
+                aesAlg.IV = Encoding.UTF8.GetBytes(iv);
+
+                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
+                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                {
+                    return srDecrypt.ReadToEnd();
+                }
+            }
+        }
         public static string Hash(string input)
         {
             using var sha256 = SHA256.Create();
