@@ -35,10 +35,12 @@ namespace L_L.API.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
-                {
-                    message = "All request are required!"
-                }));
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
             }
 
             // create order
@@ -89,7 +91,7 @@ namespace L_L.API.Controllers
                 }));
             }
 
-            return Ok(ApiResult<ResponseMessage>.Error(new ResponseMessage()
+            return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
             {
                 message = "Update order status error!"
             }));
@@ -102,5 +104,30 @@ namespace L_L.API.Controllers
             return Ok(ApiResult<List<OrderDetailsModel>>.Succeed(listOrderDetail));
         }
 
+        [HttpPost("accept-driver")]
+        public async Task<IActionResult> AddDriverToOrderDetail([FromBody] AcceptDriverRequest req)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
+            }
+            var result = await orderService.AddDriverToOrderDetail(req);
+            if (!result)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
+                {
+                    message = "Error in accept order!"
+                }));
+            }
+            return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
+            {
+                message = "Accept order success"
+            }));
+        }
     }
 }

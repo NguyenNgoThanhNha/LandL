@@ -20,12 +20,14 @@ namespace L_L.API.Controllers
         [HttpPost("Search")]
         public async Task<IActionResult> Search([FromBody] SearchRequest req)
         {
-            if (req == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
-                {
-                    message = "Request data cannot be null."
-                }));
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
             }
 
             // Validate request parameters
