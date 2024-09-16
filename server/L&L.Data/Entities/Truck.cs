@@ -45,5 +45,9 @@ namespace L_L.Data.Entities
         public int TypeId { get; set; }
         public virtual VehicleType TruckType { get; set; }
 
+        [ForeignKey("TruckUser")]
+        public int UserId { get; set; }
+        public virtual User TruckUser { get; set; }
+
     }
 }

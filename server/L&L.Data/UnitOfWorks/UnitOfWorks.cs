@@ -14,6 +14,8 @@ namespace L_L.Data.UnitOfWorks
         private ShippingRateRepository _shippingRateRepo;
         private OrderRepository _orderRepo;
         private OrderDetailRepository _orderDetailRepo;
+        private ProductRepository _productRepo;
+        private DeliveryInfoRepository _deliveryInfoRepo;
 
         public UnitOfWorks(AppDbContext dbContext)
         {
@@ -55,6 +57,16 @@ namespace L_L.Data.UnitOfWorks
         public OrderDetailRepository OrderDetailRepository
         {
             get { return _orderDetailRepo ??= new OrderDetailRepository(_dbContext); }
+        }
+
+        public ProductRepository ProductRepository
+        {
+            get { return _productRepo ??= new ProductRepository(_dbContext); }
+        }
+
+        public DeliveryInfoRepository DeliveryInfoRepository
+        {
+            get { return _deliveryInfoRepo ??= new DeliveryInfoRepository(_dbContext); }
         }
     }
 }

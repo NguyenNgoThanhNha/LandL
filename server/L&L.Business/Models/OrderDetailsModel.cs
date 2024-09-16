@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using L_L.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace L_L.Data.Entities
+namespace L_L.Business.Models
 {
-    public class OrderDetails
+    public class OrderDetailsModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderDetailId { get; set; }
         public int? Quantity { get; set; }
         public string? PaymentMethod { get; set; } = string.Empty;
@@ -16,28 +15,27 @@ namespace L_L.Data.Entities
 
 
         [ForeignKey("UserOrder")]
-        public int? SenderId { get; set; }
+        public int SenderId { get; set; }
         public virtual User UserOrder { get; set; }
 
         [Required]
         [ForeignKey("OrderDetailInfo")]
-        public int? OrderId { get; set; }
+        public int OrderId { get; set; }
         public virtual Order OrderInfo { get; set; }
 
         [Required]
         [ForeignKey("OrderProduct")]
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public virtual Product ProductInfo { get; set; }
 
         [Required]
         [ForeignKey("OrderTruck")]
-        public int? TruckId { get; set; }
+        public int TruckId { get; set; }
         public virtual Truck TruckInfo { get; set; }
 
         [Required]
         [ForeignKey("OrderDelivery")]
-        public int? DeliveryInfoId { get; set; }
+        public int DeliveryInfoId { get; set; }
         public virtual DeliveryInfo DeliveryInfoDetail { get; set; }
     }
-
 }

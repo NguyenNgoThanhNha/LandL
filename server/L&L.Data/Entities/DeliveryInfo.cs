@@ -14,7 +14,11 @@ namespace L_L.Data.Entities
         public string? ReceiverPhone { get; set; }
         public string? SenderPhone { get; set; }
         public string? DeliveryLocaTion { get; set; }
+        public string? LongDelivery { get; set; }
+        public string? LatDelivery { get; set; }
         public string? PickUpLocation { get; set; }
+        public string? LongPickUp { get; set; }
+        public string? LatPickUp { get; set; }
         public DateTime? OrderDate { get; set; }
         public DateTime? RecieveDate { get; set; } // ngày nhận hàng
         public DateTime? ExpectedRecieveDate { get; set; } // ngày dự kiến nhận hàng

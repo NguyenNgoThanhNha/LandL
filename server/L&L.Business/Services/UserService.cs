@@ -6,6 +6,7 @@ using L_L.Data.Entities;
 using L_L.Data.Helpers;
 using L_L.Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text.RegularExpressions;
 
 namespace L_L.Business.Services
@@ -180,6 +181,32 @@ namespace L_L.Business.Services
             var result = await unitOfWorks.UserRepository.Commit();
 
             return result > 0;
+        }
+
+        public async Task<UserModel> GetUserInToken(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                throw new BadRequestException("Authorization header is missing or invalid.");
+            }
+            // Decode the JWT token
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            // Check if the token is expired
+            if (jwtToken.ValidTo < DateTime.UtcNow)
+            {
+                throw new BadRequestException("Token has expired.");
+            }
+
+            string email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+
+            var user = await unitOfWorks.UserRepository.FindByCondition(x => x.Email == email).FirstOrDefaultAsync();
+            if (user is null)
+            {
+                throw new BadRequestException("Can not found User");
+            }
+            return _mapper.Map<UserModel>(user);
         }
 
 
