@@ -7,7 +7,9 @@
     <key>MGLMapboxAccessToken</key>
     <string>sk.eyJ1IjoiaGlldXNlcnZpY2VzIiwiYSI6ImNtMHkxazFjaTBlZWUyanF2ZTJqdm12MTMifQ.crpnU_ZK_zR5aqvSleOQxA</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Shows your location on the map and helps improve the map</string>
+    <string>We need your location to show on the map.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>We need your location to always update the map.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

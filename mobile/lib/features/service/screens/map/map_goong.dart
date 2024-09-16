@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/commons/widgets/appbar/appbar.dart';
 import 'package:mobile/features/service/controllers/map/map_goong_controller.dart';
+import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/helpers/helper_functions.dart';
 
 class MapGoongScreen extends StatelessWidget {
@@ -22,6 +23,7 @@ class MapGoongScreen extends StatelessWidget {
             SizedBox(
               height: THelperFunctions.screenHeight(),
               child: MapboxMap(
+                onMapCreated: mapController.onMapCreated,
                 accessToken: dotenv.env['MAPBOX_ACCESS_TOKEN'],
                 initialCameraPosition: mapController.initialCameraPosition,
                 zoomGesturesEnabled: true,
@@ -31,9 +33,8 @@ class MapGoongScreen extends StatelessWidget {
                 myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
                 styleString: MapboxStyles.OUTDOORS,
                 compassEnabled: true,
-                onMapCreated: mapController.onMapCreated,
                 onStyleLoadedCallback: mapController.onStyleLoadedCallback,
-                minMaxZoomPreference: const MinMaxZoomPreference(4, 20),
+                minMaxZoomPreference: const MinMaxZoomPreference(3, 20),
               ),
             ),
           ],
@@ -47,7 +48,7 @@ class MapGoongScreen extends StatelessWidget {
             zoom: 14.0,
           ),
         )),
-        child: const Icon(Icons.my_location_sharp),
+        child: const Icon(Icons.my_location_sharp, color: TColors.primary,),
       ),
     );
   }

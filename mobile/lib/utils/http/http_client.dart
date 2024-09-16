@@ -35,7 +35,6 @@ class THttpClient {
 
   static Map<String, dynamic> _handleResponse(http.Response response) {
     if (response.statusCode == 200) {
-      print('${json.decode(response.body)}');
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');

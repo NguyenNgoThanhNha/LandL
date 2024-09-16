@@ -11,7 +11,7 @@ String navType = 'driving';
 Future<Map<String, dynamic>> getCyclingRouteUsingGoong(
     LatLng source, LatLng destination) async {
   String url =
-      '$baseUrl?origin=${source.longitude},${source.latitude}&destination=${destination.longitude},${destination.latitude}&vehicle=car&api_key=$apiKey';
+      '$baseUrl?origin=${source.latitude},${source.longitude}&destination=${destination.latitude},${destination.longitude}&vehicle=car&api_key=$apiKey';
 
   return await THttpClient.getDynamic(url);
 }

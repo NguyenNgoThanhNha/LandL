@@ -37,6 +37,10 @@ class TImages {
   static const String licenceCard ='assets/icons/icons8-driver-license-64.png';
 
 
+  //map
+static const String package ='assets/icons/orange-drone-with-a-package-bottom-view.png';
+
+
 
 
 

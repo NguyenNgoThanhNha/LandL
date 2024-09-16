@@ -1,12 +1,18 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/constants/image_strings.dart';
 import 'package:mobile/utils/constants/package_list.dart';
 import 'package:mobile/utils/helpers/get_storage.dart';
 import 'package:mobile/utils/helpers/goong_handler.dart';
+import 'package:mobile/utils/requests/goong/direction.dart';
+
 class MapGoongController extends GetxController {
   static MapGoongController get instance => Get.find();
 
@@ -16,35 +22,48 @@ class MapGoongController extends GetxController {
   late MapboxMapController controller;
   late List<CameraPosition> _kPackageList;
   List<Map> carouselData = [];
-  // PolylinePoints polylinePoints = PolylinePoints();
+  StreamSubscription<Position>? positionStream;
+
+  // CircleAnnotationManager? _circleAnnotationManagerStart;
+  // CircleAnnotationManager? _circleAnnotationManagerEnd;
+
+  final isShowStart = false.obs;
+  final isShowEnd = false;
+  final isHidden = true.obs;
 
   // 10.844821, 106.761512
+  LatLng d1 = const LatLng(10.7791, 106.6828);
 
   @override
   void onInit() {
     super.onInit();
-    loadCurrentLocation();
+    // loadCurrentLocation();
+
+    _getCurrentLocation();
     loadCurrentAddress();
     initialCameraPosition =
         CameraPosition(target: currentLocation.value, zoom: 14);
-    loadPackages();
+    _startTracking();
+  }
 
-    for (int index = 0; index < packages.length; index++) {
-      // num distance = get(index) / 1000;
-      // num duration = getDurationFromSharedPrefs(index) / 60;
-      carouselData.add({'index': index});
-    }
-    carouselData.sort((a, b) => a['index'] < b['index'] ? 0 : 1);
+  PolylinePoints polylinePoints = PolylinePoints();
 
-    _kPackageList = List<CameraPosition>.generate(
-        packages.length,
-        (index) => CameraPosition(
-            target: LatLng(
-                double.parse(packages[index]['coordinates']['latitude']),
-                double.parse(packages[index]['coordinates']['longitude'])),
-            zoom: 15));
+  Future<void> _getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    currentLocation.value = LatLng(position.latitude, position.longitude);
+  }
 
-
+  void _startTracking() {
+    Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10,
+      ),
+    ).listen((Position position) {
+      currentLocation.value = LatLng(position.latitude, position.longitude);
+    });
   }
 
   Future<void> loadPackages() async {
@@ -62,15 +81,15 @@ class MapGoongController extends GetxController {
     currentLocation.value = getCurrentLatLngFromGetStorage();
   }
 
-  void loadCurrentAddress() {
-    currentAddress.value = getCurrentAddressFromGetStorage();
+  void loadCurrentAddress() async {
+    // currentAddress.value = getCurrentAddressFromGetStorage();
+    currentAddress.value =
+        (await getParsedReverseGeocoding(currentLocation.value))['place'];
   }
 
   void onMapCreated(MapboxMapController controller) async {
     this.controller = controller;
   }
-
-
 
   _addSourceAndLineLayer(int index, bool removeLayer) async {
     controller
@@ -89,13 +108,11 @@ class MapGoongController extends GetxController {
       ]
     };
 
-    // Remove lineLayer and source if it exists
     if (removeLayer == true) {
       await controller.removeLayer("lines");
       await controller.removeSource("fills");
     }
 
-    // Add new source and lineLayer
     await controller.addSource("fills", GeojsonSourceProperties(data: _fills));
     await controller.addLineLayer(
         "fills",
@@ -108,16 +125,90 @@ class MapGoongController extends GetxController {
   }
 
   onStyleLoadedCallback() async {
-    for (CameraPosition _kPackage in _kPackageList) {
-      await controller.addSymbol(
-        SymbolOptions(
-          geometry: _kPackage.target,
-          iconSize: 0.2,
-          iconImage: TImages.avatar,
-        ),
-      );
-    }
-    _addSourceAndLineLayer(0, false);
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    await controller.addSymbol(
+      SymbolOptions(
+        geometry: d1,
+        iconSize: 0.2,
+        iconImage: TImages.package,
+      ),
+    );
+    getDirection(true);
   }
+
+  void getDirection(bool removeLayer) async {
+    if (controller != null) {
+      controller.animateCamera(
+        CameraUpdate.newLatLngBounds(
+            LatLngBounds(
+              southwest: getSouthwest(d1, currentLocation.value),
+              northeast: getNortheast(d1, currentLocation.value),
+            ),
+            top: 20,
+            right: 20),
+      );
+      var response = await getDirectionsAPIResponse(currentLocation.value, d1);
+
+      List<PointLatLng> result =
+          polylinePoints.decodePolyline(response['route']);
+
+      List<List<double>> coordinates =
+          result.map((point) => [point.longitude, point.latitude]).toList();
+
+      final _fills = {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "id": 0,
+            "properties": <String, dynamic>{},
+            "geometry": {"type": "LineString", "coordinates": coordinates}
+          },
+        ]
+      };
+
+      if (removeLayer == true) {
+        await controller.removeLayer("lines");
+        await controller.removeSource("fills");
+      }
+
+      await controller.addSource(
+          "fills", GeojsonSourceProperties(data: _fills));
+      await controller.addLineLayer(
+          "fills",
+          "lines",
+          LineLayerProperties(
+              lineColor: TColors.primary.toHexStringRGB(),
+              lineCap: "round",
+              lineJoin: "round",
+              lineWidth: 4));
+    }
+  }
+
+// void addLineToMap(MapboxMapController mapController, String geojson) async {
+//   // Thêm GeoJsonSource và LineLayer vào bản đồ
+//   await addLineLayer(mapController, geojson);
+//   isHidden.value = false;
+//   // setState(() {
+//   //   isHidden = false;
+//   // });
+// }
+//
+// Future<void> addLineLayer(
+//     MapboxMapController mapController, String geojson) async {
+//   // Thêm GeoJsonSource
+//   await mapController.addSource(
+//       "line_source", GeojsonSourceProperties(data: geojson));
+//
+//   // Thêm LineLayer
+//   await mapController.addLineLayer(
+//     "line_source", // Nguồn dữ liệu GeoJSON
+//     "line_layer", // ID của layer
+//     const LineLayerProperties(
+//       lineJoin: "round",
+//       lineCap: "round",
+//       lineColor: "#3333FF", // Màu đường
+//       lineWidth: 9.0, // Độ rộng của đường
+//     ),
+//   );
+// }
 }

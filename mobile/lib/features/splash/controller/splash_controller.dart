@@ -31,6 +31,10 @@ class SplashController extends GetxController {
       if (permissionGranted != PermissionStatus.granted) return;
     }
 
+    if (permissionGranted == PermissionStatus.deniedForever) {
+      return Future.error('Location permissions are permanently denied');
+    }
+
     LocationData locationData = await location.getLocation();
     LatLng currentLocation =
         LatLng(locationData.latitude!, locationData.longitude!);

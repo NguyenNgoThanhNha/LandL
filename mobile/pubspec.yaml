@@ -24,10 +24,12 @@ dependencies:
   connectivity_plus: ^5.0.1
   shimmer: ^3.0.0
   polyline_do: ^0.1.0
-  flutter_polyline_points: ^2.1.0
+  flutter_polyline_points: ^2.0.0
   polyline_codec: ^0.1.6
   mapbox_polyline_points: ^0.0.5
   mapbox_gl: ^0.16.0
+  geolocator: ^9.0.0
+
   http: ^1.2.2
 
 
