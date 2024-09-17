@@ -31,7 +31,7 @@ class TUserProfileTile extends StatelessWidget {
             .apply(color: TColors.white),
       ),
       subtitle: Text(
-        '',
+        'hioeu@gmail.com',
         // controller.user.value.email,
         style:
             Theme.of(context).textTheme.bodyMedium!.apply(color: TColors.white),

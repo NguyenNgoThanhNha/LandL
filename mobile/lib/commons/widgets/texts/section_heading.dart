@@ -27,7 +27,7 @@ class TSectionHeading extends StatelessWidget {
               color: textColor ??
                   (THelperFunctions.isDarkMode(context)
                       ? TColors.white
-                      : TColors.black)),
+                      : TColors.black)).copyWith(fontWeight: FontWeight.w800),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

@@ -65,6 +65,55 @@ class TTexts {
 
   static const String dropOff = 'Drop off';
   static const String intendTime = 'Intend Time';
+
   //delivery
   static const String manageDelivery = 'Manage Delivery';
+  static const String deliveryDetail = 'Delivery Detail';
+  static const String codeDelivery = 'Code Delivery';
+  static const String pickupLocation = 'Pickup Location';
+  static const String deliveryLocation = 'Delivery Location';
+  static const String typePackage = 'Type Package';
+  static const String totalWeight = 'Total Weight';
+  static const String senderContact = 'Sender Contact';
+  static const String viewMap = 'View Map';
+  static const String reject = 'Reject';
+  static const String accept = 'Accept';
+
+  //setting
+  static const String payment = 'Bank Account';
+  static const String contract = 'Contract';
+  static const String vehicles = 'Vehicles';
+  static const String deliveryHistory = 'Delivery History';
+  static const String language = 'Language';
+
+  static const String paymentSub = 'Manage your bank details and transactions';
+  static const String contractSub = 'View and manage your contracts';
+  static const String vehiclesSub = 'Manage and track your registered vehicles';
+  static const String deliveryHistorySub =
+      'Review your past deliveries and track records';
+  static const String languageSub = 'Set your preferred language for the app';
+  static const String idCardTitle = 'Upload ID Card';
+  static const String licenceCardsTitle = 'Upload Licence Card';
+
+  //vehicle
+  static const String messageWarningNoTruck =
+      'There are no vehicles here yet. Please fill in your vehicle information';
+
+  static const String type = 'Type';
+  static const String brand = 'Brand';
+  static const String year = 'Year';
+  static const String model = 'Model';
+  static const String plate = 'Licence Plate';
+  static const String color = 'Color';
+  static const String addVehicle = 'Create Vehicle';
+
+//notification
+  static const String notificationTitle = 'Notifications';
+  static const String noneNotificationTitle = 'No Notification';
+
+  static const String notificationWarningNoContent =
+      'We’ll let you know when there will be something to update you.';
+
+  //earning
+  static const String earnings = 'Earnings';
 }
