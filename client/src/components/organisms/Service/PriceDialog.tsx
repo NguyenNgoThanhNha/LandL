@@ -9,12 +9,14 @@ import {
   AlertDialogAction
 } from '@/components/atoms/ui/alert-dialog.tsx'
 import { formatCurrency } from '@/utils/formatCurrency.ts'
+import { useDelivery } from '@/context/deliveryContext.tsx'
 
 interface Props {
   price: number
 }
 
 const PriceDialog = ({ price }: Props) => {
+  // const { setStatus } = useDelivery()
   return (
     <AlertDialog defaultOpen={true}>
       <AlertDialogContent>

@@ -19,15 +19,13 @@ export const SearchProductSchema = z.object({
   weight: z.number({
     required_error: 'Height is required'
   }),
-  number_of_products: z.number({
-    required_error: 'Number of products is required'
-  }),
   type: z.string({
     required_error: 'Product Type is required'
   }),
   date: z.string({
     required_error: 'Time is required'
-  })
+  }),
 })
 
 export type SearchProductType = z.infer<typeof SearchProductSchema>
+export type SearchProductWithDistanceType = z.infer<typeof SearchProductSchema> & { distance: number }

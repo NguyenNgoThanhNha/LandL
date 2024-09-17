@@ -1,11 +1,21 @@
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import {  SubmitHandler, useForm } from 'react-hook-form'
 import { UserSetPasswordSchema, UserSetPasswordType } from '@/schemas/userSchema.ts'
 import { Form } from '@/components/atoms/ui/form.tsx'
 import FormInput from '@/components/molecules/FormInput.tsx'
 import { Button } from '@/components/atoms/ui/button.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import auth from '@/services/authService.ts'
+import toast from 'react-hot-toast'
+import { ROUTES } from '@/contants/routerEndpoint.ts'
+import Loading from '@/components/templates/Loading.tsx'
 
 const SetPasswordForm = () => {
+  const location = useLocation()
+  const email: string = location.state?.email
+  const [loading, setLoading] = useState<boolean>(false)
+  const navigate = useNavigate()
   const form = useForm<UserSetPasswordType>({
     resolver: zodResolver(UserSetPasswordSchema),
     defaultValues: {
@@ -13,8 +23,16 @@ const SetPasswordForm = () => {
       confirmNewPassword: ''
     }
   })
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<UserSetPasswordType> = async (data: UserSetPasswordType) => {
+    setLoading(true)
+    const response = await auth.updatePassword({ ...data, email })
+    setLoading(false)
+    if (response.success) {
+      toast.success(response?.result?.message as string)
+      navigate(ROUTES.LOGIN)
+    } else {
+      toast.error(response?.result?.message as string)
+    }
   }
   return (
     <Form {...form}>
@@ -29,6 +47,7 @@ const SetPasswordForm = () => {
           </Button>
         </div>
       </form>
+      {loading && <Loading />}
     </Form>
   )
 }
