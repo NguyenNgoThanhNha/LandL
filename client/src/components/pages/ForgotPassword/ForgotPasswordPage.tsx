@@ -3,7 +3,6 @@ import { IMAGES_FORGOTPASSWORD } from '@/contants/imageBanner.ts'
 import ForgotPasswordForm from '@/components/organisms/ForgotPassword/ForgotPasswordForm.tsx'
 import { ChevronLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
-
 const ForgotPasswordPage = () => {
   return (
     <div className={'container grid md:grid-cols-2 sm:grid-cols-1 gap-14 items-center h-screen'}>

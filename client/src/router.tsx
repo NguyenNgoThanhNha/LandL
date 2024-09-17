@@ -15,10 +15,11 @@ import AboutUsPage from '@/components/pages/AboutUs/AboutUsPage.tsx'
 import ProfilePage from '@/components/pages/Profile/ProfilePage.tsx'
 import BlogDetailPage from '@/components/pages/Blog/BlogDetailPage.tsx'
 import PaymentPage from './components/pages/PayOsPay/PaymentPage'
+import AdminLayout from '@/components/templates/AdminLayout.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements([
-    <Route path='/payos' element={<PaymentPage />} />,
+    <Route path={ROUTES.PAY_OS} element={<PaymentPage />} />,
     <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />,
     <Route path={ROUTES.LOGIN} element={<LoginPage />} />,
     <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />,
@@ -35,7 +36,9 @@ const router = createBrowserRouter(
       <Route path={ROUTES.ABOUT_US} element={<AboutUsPage />} />,
       <Route path={ROUTES.PROFILE} element={<ProfilePage />} />,
       <Route path={ROUTES.BLOG_DETAIL} element={<BlogDetailPage />} />,
-    </Route>
+    </Route>,
+    <Route path={ROUTES.DASH_BOARD} element={<AdminLayout />}></Route>
+  
   ])
 )
 export default router

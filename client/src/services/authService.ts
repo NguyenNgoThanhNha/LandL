@@ -6,7 +6,7 @@ interface RegisterProps {
 }
 
 const register = async ({ data }: RegisterProps): Promise<ResponseProps> => {
-  return await post('Auth/FirstStep', data)
+  return await post('Auth/FirstStep', { ...data, typeAccount: 'Customer' })
 }
 
 interface VerifyProps {
@@ -45,12 +45,19 @@ const resendOTP = async ({ email }: ResendOTPProps): Promise<ResponseProps> => {
 
 interface UpdatePasswordProps {
   email: string
-  password: string
-  confirmPassword: string
+  newPassword: string
+  confirmNewPassword: string
 }
 
-const updatePassword = async ({ email, password, confirmPassword }: UpdatePasswordProps): Promise<ResponseProps> => {
-  return await post(`Auth/UpdatePassword?email=${email}`, { password, confirmPassword })
+const updatePassword = async ({
+                                email,
+                                newPassword,
+                                confirmNewPassword
+                              }: UpdatePasswordProps): Promise<ResponseProps> => {
+  return await post(`Auth/Update-Password?email=${email}`, {
+    password: newPassword,
+    confirmPassword: confirmNewPassword
+  })
 }
 
 interface LoginWithGGProps {

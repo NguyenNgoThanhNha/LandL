@@ -45,7 +45,7 @@ export const UserForgotPasswordSchema = z.object({
 export type UserForgotPasswordType = z.infer<typeof UserForgotPasswordSchema>
 //verify-code
 export const UserVerifyCodeSchema = z.object({
-  code: z.string({
+  otp: z.string({
     required_error: 'Code is required'
   })
 })
