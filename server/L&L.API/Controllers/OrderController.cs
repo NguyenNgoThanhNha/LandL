@@ -4,6 +4,7 @@ using L_L.Business.Commons.Response;
 using L_L.Business.Models;
 using L_L.Business.Services;
 using L_L.Business.Ultils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace L_L.API.Controllers
@@ -44,7 +45,7 @@ namespace L_L.API.Controllers
             }
 
             // create order
-            var orderCreate = await orderService.CreateOrder(request.TotalAmount);
+            var orderCreate = await orderService.CreateOrder(request.TotalAmount.ToString());
             if (orderCreate == null)
             {
                 return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
@@ -128,6 +129,60 @@ namespace L_L.API.Controllers
             {
                 message = "Accept order success"
             }));
+        }
+
+        [HttpPatch("UpdateProductInfo")]
+        public async Task<IActionResult> UpdateOrderDetail([FromBody] UpdateProductInfoRequest req)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
+            }
+            var updateProductResult = await orderService.UpdateProductInOrderDetail(req.orderDetailId, req.Products);
+            if (updateProductResult == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
+                {
+                    message = $"Error in update product of Order Detail with ${req.orderDetailId}"
+                }));
+            }
+            return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
+            {
+                message = "Update product in order detail success"
+            }));
+        }
+
+        [Authorize(Roles = "Driver")]
+        [HttpGet("GetOrderDriver")]
+        public async Task<IActionResult> GetOrderOfDriver()
+        {
+            Request.Headers.TryGetValue("Authorization", out var token);
+            token = token.ToString().Split()[1];
+            var currentUser = await userService.GetUserInToken(token);
+            if (currentUser == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
+                {
+                    message = "Driver not found"
+                }));
+            }
+
+            var listOrder = await orderService.GetOrderForDriver(currentUser.UserId.ToString());
+
+            if (listOrder == null)
+            {
+                return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
+                {
+                    message = "Currently, can not find order suitable"
+                }));
+            }
+
+            return Ok();
         }
     }
 }

@@ -152,7 +152,7 @@ namespace L_L.API.Controllers
             }
             return Ok(ApiResult<FirstStepResgisterInfoResponse>.Succeed(new FirstStepResgisterInfoResponse
             {
-                message = $"Create new Account Success for email: {req.Email}"
+                message = $"Verify Account Success for email: {req.Email}"
             }));
         }
 
@@ -174,7 +174,7 @@ namespace L_L.API.Controllers
             {
                 return NotFound(ApiResult<GetTimeOTP>.Error(new GetTimeOTP
                 {
-                    Message = "User Not Found"
+                    message = "User Not Found"
                 }));
             }
 
@@ -183,8 +183,8 @@ namespace L_L.API.Controllers
                 DateTimeOffset utcTime = DateTimeOffset.Parse(user.CreateDate.ToString());
                 return Ok(ApiResult<GetTimeOTP>.Succeed(new GetTimeOTP
                 {
-                    Message = "Success",
-                    EndTime = utcTime
+                    message = "Success",
+                    data = utcTime
                 }));
 
             }
@@ -192,7 +192,7 @@ namespace L_L.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login([FromBody] SignInRequest req)
+        public IActionResult Login([FromBody] LoginRequest req)
         {
             if (!ModelState.IsValid)
             {
@@ -204,7 +204,7 @@ namespace L_L.API.Controllers
                 return BadRequest(ApiResult<List<string>>.Error(errors));
             }
 
-            var loginResult = authService.SignIn(req.Email, req.Password);
+            var loginResult = authService.SignIn(req.email, req.password);
             if (loginResult.Token == null)
             {
                 var result = ApiResult<Dictionary<string, string[]>>.Fail(new Exception("Username or password is invalid"));

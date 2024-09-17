@@ -18,13 +18,14 @@ namespace L_L.API.Controllers
             this.userService = userService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("Get-All")]
         public IActionResult Get()
         {
             var users = userService.GetAllUser();
             return Ok(ApiResult<GetAllUserResponse>.Succeed(new GetAllUserResponse()
             {
-                ListUser = users
+                data = users
             }));
         }
 
@@ -83,7 +84,7 @@ namespace L_L.API.Controllers
             {
                 return Ok(ApiResult<UpdateUserRespone>.Succeed(new UpdateUserRespone
                 {
-                    User = updatedUser,
+                    data = updatedUser,
                     message = "Update Info Success"
                 }));
             }

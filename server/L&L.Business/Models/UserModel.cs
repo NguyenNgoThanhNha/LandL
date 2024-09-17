@@ -43,6 +43,7 @@ namespace L_L.Business.Models
         public string? PhoneNumber { get; set; }
         public string? STK { get; set; }
         public string? Bank { get; set; }
+        public string? AccountBalance { get; set; }
 
         public string? CreateBy { get; set; }
 

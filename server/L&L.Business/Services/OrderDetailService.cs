@@ -42,7 +42,7 @@ namespace L_L.Business.Services
             var product = await unitOfWorks.ProductRepository.AddAsync(new Data.Entities.Product()
             {
                 TotalDismension = $"{req.Width} x {req.Height} x {req.Length}",
-                Weight = req.Weight,
+                Weight = req.Weight.ToString(),
             });
             var resultProduct = await unitOfWorks.ProductRepository.Commit();
 
@@ -57,7 +57,7 @@ namespace L_L.Business.Services
                 LatDelivery = req.latTo,
                 OrderDate = DateTime.Now,
                 RecieveDate = req.PickupTime,
-                SenderName = userSender?.UserName
+                SenderName = userSender?.UserName,
             });
             var resultDeliveryInfo = await unitOfWorks.DeliveryInfoRepository.Commit();
 
@@ -69,7 +69,8 @@ namespace L_L.Business.Services
                 DeliveryInfoId = delivery.DeliveryInfoId,
                 SenderId = userSender?.UserId,
                 OrderId = order.OrderId,
-                TotalPrice = decimal.Parse(req.TotalAmount),
+                TotalPrice = req.TotalAmount,
+                VehicleTypeId = int.Parse(req.VehicleTypeId),
             });
 
             var result = await unitOfWorks.OrderDetailRepository.Commit();

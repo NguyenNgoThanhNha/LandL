@@ -242,6 +242,9 @@ namespace L_L.Data.Migrations
                     b.Property<decimal?>("UnitPrice")
                         .HasColumnType("numeric");
 
+                    b.Property<int?>("VehicleTypeId")
+                        .HasColumnType("integer");
+
                     b.HasKey("OrderDetailId");
 
                     b.HasIndex("DeliveryInfoId");

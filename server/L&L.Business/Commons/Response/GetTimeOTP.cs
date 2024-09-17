@@ -2,7 +2,7 @@
 {
     public class GetTimeOTP
     {
-        public string Message { get; set; }
-        public DateTimeOffset EndTime { get; set; }
+        public string message { get; set; }
+        public DateTimeOffset data { get; set; }
     }
 }

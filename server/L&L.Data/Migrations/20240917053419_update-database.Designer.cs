@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240916044740_update database")]
+    [Migration("20240917053419_update-database")]
     partial class updatedatabase
     {
         /// <inheritdoc />
@@ -244,6 +244,9 @@ namespace L_L.Data.Migrations
 
                     b.Property<decimal?>("UnitPrice")
                         .HasColumnType("numeric");
+
+                    b.Property<int?>("VehicleTypeId")
+                        .HasColumnType("integer");
 
                     b.HasKey("OrderDetailId");
 

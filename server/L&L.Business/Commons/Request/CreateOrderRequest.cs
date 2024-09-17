@@ -19,16 +19,17 @@ public class CreateOrderRequest
     [Required]
     public DateTime PickupTime { get; set; } // Pickup time
     [Required]
-    public string Weight { get; set; }
+    public decimal Weight { get; set; }
     [Required]
-    public string Length { get; set; }
+    public decimal Length { get; set; }
     [Required]
-    public string Width { get; set; }
+    public decimal Width { get; set; }
     [Required]
-    public string Height { get; set; }
+    public decimal Height { get; set; }
 
     public string Email { get; set; }
 
-    public string TotalAmount { get; set; }
+    public decimal TotalAmount { get; set; }
 
+    public string VehicleTypeId { get; set; }
 }

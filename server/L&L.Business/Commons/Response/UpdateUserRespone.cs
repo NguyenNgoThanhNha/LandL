@@ -4,7 +4,7 @@ namespace L_L.Business.Commons.Response
 {
     public class UpdateUserRespone
     {
-        public UserModel? User { get; set; }
+        public UserModel? data { get; set; }
 
         public string? message { get; set; }
     }
