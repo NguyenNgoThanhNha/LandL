@@ -39,7 +39,9 @@ namespace L_L.Data.Entities
         public string LoadCapacity { get; set; } = string.Empty;
 
         [Required]
-        public string Dimensions { get; set; } = string.Empty;
+        public decimal DimensionsLength { get; set; }
+        public decimal DimensionsWidth { get; set; }
+        public decimal DimensionsHeight { get; set; }
 
         [ForeignKey("VehicleType")]
         public int TypeId { get; set; }
