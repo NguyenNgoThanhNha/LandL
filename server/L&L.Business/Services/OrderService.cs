@@ -83,27 +83,54 @@ namespace L_L.Business.Services
 
         public async Task<bool> AddDriverToOrderDetail(AcceptDriverRequest req)
         {
-            // get order detail
+            // Lấy thông tin chi tiết đơn hàng
             var orderDetail = await unitOfWorks.OrderDetailRepository.GetByIdAsync(int.Parse(req.orderDetailId));
             if (orderDetail == null)
             {
                 throw new BadRequestException("Order detail not found!");
             }
 
-            var order = await unitOfWorks.OrderRepository.GetByIdAsync(int.Parse(req.orderDetailId));
-            if (order?.OrderId != orderDetail.OrderId)
+            // Lấy thông tin đơn hàng liên quan
+            var order = await unitOfWorks.OrderRepository.GetByIdAsync((int)orderDetail.OrderId);
+            if (order == null || order.OrderId != orderDetail.OrderId)
             {
                 throw new BadRequestException("Order detail of order are invalid!");
             }
 
+            // Cập nhật driver cho đơn hàng
             order.DriverId = int.Parse(req.driverId);
+            unitOfWorks.OrderRepository.Update(order);
 
-            var orderUpdate = unitOfWorks.OrderRepository.Update(order);
+            // Lấy thông tin xe tải của tài xế
+            var truckOfDriver = await unitOfWorks.TruckRepository.FindByCondition(x => x.UserId == order.DriverId).FirstOrDefaultAsync();
+            if (truckOfDriver == null)
+            {
+                throw new BadRequestException("Truck of driver not found!");
+            }
 
+            // Tính toán kích thước sản phẩm từ đơn hàng chi tiết
+            var product = orderDetail.ProductInfo;
+            var dimensions = product.TotalDismension.Split('*').Select(decimal.Parse).ToList();
+            decimal productLength = dimensions[0];
+            decimal productWidth = dimensions[1];
+            decimal productHeight = dimensions[2];
+
+            // Cập nhật kích thước còn lại của xe tải
+            truckOfDriver.DimensionsLength -= productLength;
+            truckOfDriver.DimensionsWidth -= productWidth;
+            truckOfDriver.DimensionsHeight -= productHeight;
+
+            // Cập nhật thông tin xe tải
+            unitOfWorks.TruckRepository.Update(truckOfDriver);
+
+            // Lưu tất cả các thay đổi vào cơ sở dữ liệu
             var result = await unitOfWorks.OrderRepository.Commit();
+            var truckUpdateResult = await unitOfWorks.TruckRepository.Commit();
 
-            return result > 0;
+            // Kiểm tra xem tất cả các cập nhật đã thành công
+            return result > 0 && truckUpdateResult > 0;
         }
+
 
         public async Task<ProductsModel> UpdateProductInOrderDetail(string orderDetailId, ProductsModel productsModel)
         {
