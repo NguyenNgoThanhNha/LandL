@@ -31,12 +31,7 @@ namespace L_L.API.Controllers
             }
 
             // Validate request parameters
-            if (!decimal.TryParse(req.Weight, out decimal weightDecimal) ||
-                !decimal.TryParse(req.Length, out decimal lengthDecimal) ||
-                !decimal.TryParse(req.Width, out decimal widthDecimal) ||
-                !decimal.TryParse(req.Height, out decimal heightDecimal) ||
-                !decimal.TryParse(req.Distance, out decimal distanceDecimal) ||
-                weightDecimal <= 0 || lengthDecimal <= 0 || widthDecimal <= 0 || heightDecimal <= 0 || distanceDecimal <= 0)
+            if (req.Width <= 0 || req.Length <= 0 || req.Width <= 0 || req.Height <= 0 || req.Distance <= 0)
             {
                 return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
                 {
@@ -45,30 +40,35 @@ namespace L_L.API.Controllers
             }
 
             // Convert weight from kg to tons (1 ton = 1000 kg)
-            decimal weightTons = weightDecimal / 1000m;
+            decimal weightTons = req.Width / 1000m;
 
             // Tìm package type phù hợp với yêu cầu
-            var packetTypeMatch = await packageTypeService.FilterPacketType(weightTons, lengthDecimal, widthDecimal, heightDecimal);
+            var packetTypeMatch = await packageTypeService.FilterPacketType(weightTons, req.Length, req.Width, req.Height);
 
             // Nếu không tìm thấy gói phù hợp
             if (packetTypeMatch == null)
             {
-                // Gọi hàm recommend để gợi ý các gói gần nhất
-                var recommendedPackages = await packageTypeService.RecommendPacketTypes(weightTons, lengthDecimal, widthDecimal, heightDecimal);
+                /*                // Gọi hàm recommend để gợi ý các gói gần nhất
+                                var recommendedPackages = await packageTypeService.RecommendPacketTypes(weightTons, lengthDecimal, widthDecimal, heightDecimal);
 
-                if (recommendedPackages == null || !recommendedPackages.Any())
-                {
-                    return NotFound(ApiResult<ResponseMessage>.Error(new ResponseMessage
-                    {
-                        message = "No matching or recommended package types found."
-                    }));
-                }
+                                if (recommendedPackages == null || !recommendedPackages.Any())
+                                {
+                                    return NotFound(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                                    {
+                                        message = "No matching or recommended package types found."
+                                    }));
+                                }
 
-                // Trả về danh sách các gói recommend
-                return Ok(ApiResult<SearchServiceResponse>.Succeed(new SearchServiceResponse()
+                                // Trả về danh sách các gói recommend
+                                return Ok(ApiResult<SearchServiceResponse>.Succeed(new SearchServiceResponse()
+                                {
+                                    message = "Sorry, we could not find the exact service you requested. Below are some packages that might suit your needs.",
+                                    ListPacketRecommended = recommendedPackages
+                                }));*/
+
+                return NotFound(ApiResult<ResponseMessage>.Error(new ResponseMessage
                 {
-                    message = "Sorry, we could not find the exact service you requested. Below are some packages that might suit your needs.",
-                    ListPacketRecommended = recommendedPackages
+                    message = "No matching package types found."
                 }));
             }
 
@@ -84,16 +84,20 @@ namespace L_L.API.Controllers
 
                 foreach (var vehicleType in listVehicleType)
                 {
-                    var cost = await packageTypeService.CaculatorService(distanceDecimal, weightTons, vehicleType, oderCount);
+                    var cost = await packageTypeService.CaculatorService(req.Distance, weightTons, vehicleType, oderCount);
                     listCost.Add(vehicleType.VehicleTypeId, Math.Round(cost, 2));
                 }
             }
 
             return Ok(ApiResult<SearchResponse>.Succeed(new SearchResponse
             {
-                VehicleTypes = listVehicleType,
-                VehicleCost = listCost
+                data = new data
+                {
+                    VehicleTypes = listVehicleType.Take(3).ToList(),
+                    VehicleCost = listCost.Take(3).ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
+                }
             }));
+
         }
 
     }

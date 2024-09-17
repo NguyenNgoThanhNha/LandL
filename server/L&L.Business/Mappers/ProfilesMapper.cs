@@ -14,6 +14,8 @@ namespace L_L.Business.Mappers
             CreateMap<ShippingRate, ShippingRateModel>().ReverseMap();
             CreateMap<Order, OrderModel>().ReverseMap();
             CreateMap<OrderDetails, OrderDetailsModel>().ReverseMap();
+            CreateMap<Product, ProductsModel>().ReverseMap();
+            CreateMap<DeliveryInfo, DeliveryInfoModel>().ReverseMap();
         }
     }
 }

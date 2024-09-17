@@ -4,5 +4,5 @@ namespace L_L.Business.Commons.Response;
 
 public class GetAllUserResponse
 {
-    public List<UserModel> ListUser { get; set; }
+    public List<UserModel> data { get; set; }
 }

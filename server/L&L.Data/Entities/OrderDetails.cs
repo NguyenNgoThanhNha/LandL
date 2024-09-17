@@ -13,7 +13,7 @@ namespace L_L.Data.Entities
         public decimal? UnitPrice { get; set; }
         public decimal? TotalPrice { get; set; }
         public string Status { get; set; }
-
+        public int? VehicleTypeId { get; set; }
 
         [ForeignKey("UserOrder")]
         public int? SenderId { get; set; }

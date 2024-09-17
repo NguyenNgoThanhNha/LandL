@@ -103,5 +103,33 @@ namespace L_L.Business.Services
 
             return result > 0;
         }
+
+        public async Task<ProductsModel> UpdateProductInOrderDetail(string orderDetailId, ProductsModel productsModel)
+        {
+            var orderDetail = await unitOfWorks.OrderDetailRepository.GetByIdAsync(int.Parse(orderDetailId));
+            if (orderDetail == null)
+            {
+                throw new BadRequestException("Order detail of product is not found");
+            }
+            if (orderDetail.ProductId != productsModel.ProductId)
+            {
+                throw new BadRequestException("Order detail have not product with info product provide!");
+            }
+            var productUpdate = await unitOfWorks.ProductRepository.GetByIdAsync(productsModel.ProductId);
+            productUpdate.ProductName = productsModel.ProductName;
+            productUpdate.ProductDescription = productsModel.ProductDescription;
+            var resultUpdate = unitOfWorks.ProductRepository.Update(productUpdate);
+            var result = await unitOfWorks.ProductRepository.Commit();
+            if (result > 0)
+            {
+                return _mapper.Map<ProductsModel>(resultUpdate);
+            }
+            return null;
+        }
+
+        public async Task<OrderDetailsModel> GetOrderForDriver(string driverId)
+        {
+            return null;
+        }
     }
 }

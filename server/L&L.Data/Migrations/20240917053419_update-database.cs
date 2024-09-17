@@ -398,6 +398,7 @@ namespace L_L.Data.Migrations
                     UnitPrice = table.Column<decimal>(type: "numeric", nullable: true),
                     TotalPrice = table.Column<decimal>(type: "numeric", nullable: true),
                     Status = table.Column<string>(type: "text", nullable: false),
+                    VehicleTypeId = table.Column<int>(type: "integer", nullable: true),
                     SenderId = table.Column<int>(type: "integer", nullable: true),
                     OrderId = table.Column<int>(type: "integer", nullable: true),
                     ProductId = table.Column<int>(type: "integer", nullable: true),
