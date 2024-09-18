@@ -24,6 +24,7 @@ namespace L_L.Data.Entities
         public DbSet<Truck> Trucks { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<DeliveryInfo> DeliveryInfos { get; set; }
+        public DbSet<ServiceCost> ServiceCosts { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<PackageType> PackageTypes { get; set; }
         public DbSet<ShippingRate> ShippingRates { get; set; }

@@ -373,6 +373,31 @@ namespace L_L.Data.Migrations
                     b.ToTable("Product");
                 });
 
+            modelBuilder.Entity("L_L.Data.Entities.ServiceCost", b =>
+                {
+                    b.Property<int>("ServiceCostId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ServiceCostId"));
+
+                    b.Property<string>("Amount")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("OrderDetailId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("VehicleTypeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ServiceCostId");
+
+                    b.HasIndex("OrderDetailId");
+
+                    b.ToTable("ServiceCost");
+                });
+
             modelBuilder.Entity("L_L.Data.Entities.ShippingRate", b =>
                 {
                     b.Property<int>("RateId")
@@ -444,9 +469,14 @@ namespace L_L.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Dimensions")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<decimal>("DimensionsHeight")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("DimensionsLength")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("DimensionsWidth")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("EngineNumber")
                         .IsRequired()
@@ -754,6 +784,17 @@ namespace L_L.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("OrderInfo");
+                });
+
+            modelBuilder.Entity("L_L.Data.Entities.ServiceCost", b =>
+                {
+                    b.HasOne("L_L.Data.Entities.OrderDetails", "OrderDetail")
+                        .WithMany()
+                        .HasForeignKey("OrderDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderDetail");
                 });
 
             modelBuilder.Entity("L_L.Data.Entities.ShippingRate", b =>

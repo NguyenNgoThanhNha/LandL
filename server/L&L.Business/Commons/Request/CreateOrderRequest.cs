@@ -31,5 +31,5 @@ public class CreateOrderRequest
 
     public decimal TotalAmount { get; set; }
 
-    public string VehicleTypeId { get; set; }
+    public int VehicleTypeId { get; set; }
 }

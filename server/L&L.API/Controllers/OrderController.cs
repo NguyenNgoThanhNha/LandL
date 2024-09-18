@@ -64,7 +64,7 @@ namespace L_L.API.Controllers
                 }));
             }
 
-            return Ok(ApiResult<ResponseMessage>.Error(new ResponseMessage()
+            return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
             {
                 message = "Create order success!"
             }));
@@ -220,6 +220,12 @@ namespace L_L.API.Controllers
             }
 
             return Ok(ApiResult<List<OrderDetailsModel>>.Succeed(listOrder));
+        }
+
+        [HttpPost("ConfirmOrder")]
+        public async Task<IActionResult> ConfirmOrderDetail()
+        {
+            return Ok();
         }
     }
 

@@ -70,7 +70,7 @@ namespace L_L.Business.Services
                 SenderId = userSender?.UserId,
                 OrderId = order.OrderId,
                 TotalPrice = req.TotalAmount,
-                VehicleTypeId = int.Parse(req.VehicleTypeId),
+                VehicleTypeId = req.VehicleTypeId,
             });
 
             var result = await unitOfWorks.OrderDetailRepository.Commit();
