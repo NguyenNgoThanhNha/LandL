@@ -3,14 +3,14 @@
     public class DeliveryInfoModel
     {
         public int DeliveryInfoId { get; set; }
-        public string? ReceiverName { get; set; }
-        public string? SenderName { get; set; }
-        public string? ReceiverPhone { get; set; }
-        public string? SenderPhone { get; set; }
-        public string? DeliveryLocaTion { get; set; }
+        public string ReceiverName { get; set; }
+        public string SenderName { get; set; }
+        public string ReceiverPhone { get; set; }
+        public string SenderPhone { get; set; }
+        public string DeliveryLocaTion { get; set; }
         public string? LongDelivery { get; set; }
         public string? LatDelivery { get; set; }
-        public string? PickUpLocation { get; set; }
+        public string PickUpLocation { get; set; }
         public string? LongPickUp { get; set; }
         public string? LatPickUp { get; set; }
         public DateTime? OrderDate { get; set; }

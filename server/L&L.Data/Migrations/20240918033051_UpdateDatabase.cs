@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedatabase : Migration
+    public partial class UpdateDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -312,7 +312,9 @@ namespace L_L.Data.Migrations
                     FrameNumber = table.Column<string>(type: "text", nullable: false),
                     EngineNumber = table.Column<string>(type: "text", nullable: false),
                     LoadCapacity = table.Column<string>(type: "text", nullable: false),
-                    Dimensions = table.Column<string>(type: "text", nullable: false),
+                    DimensionsLength = table.Column<decimal>(type: "numeric", nullable: false),
+                    DimensionsWidth = table.Column<decimal>(type: "numeric", nullable: false),
+                    DimensionsHeight = table.Column<decimal>(type: "numeric", nullable: false),
                     TypeId = table.Column<int>(type: "integer", nullable: false),
                     TruckTypeVehicleTypeId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false)
@@ -435,6 +437,27 @@ namespace L_L.Data.Migrations
                         principalColumn: "UserId");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ServiceCost",
+                columns: table => new
+                {
+                    ServiceCostId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    VehicleTypeId = table.Column<int>(type: "integer", nullable: false),
+                    Amount = table.Column<string>(type: "text", nullable: false),
+                    OrderDetailId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceCost", x => x.ServiceCostId);
+                    table.ForeignKey(
+                        name: "FK_ServiceCost_OrderDetails_OrderDetailId",
+                        column: x => x.OrderDetailId,
+                        principalTable: "OrderDetails",
+                        principalColumn: "OrderDetailId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Blog_UserId",
                 table: "Blog",
@@ -496,6 +519,11 @@ namespace L_L.Data.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ServiceCost_OrderDetailId",
+                table: "ServiceCost",
+                column: "OrderDetailId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ShippingRate_VehicleTypeId",
                 table: "ShippingRate",
                 column: "VehicleTypeId");
@@ -541,10 +569,10 @@ namespace L_L.Data.Migrations
                 name: "Hub");
 
             migrationBuilder.DropTable(
-                name: "OrderDetails");
+                name: "OrderTracking");
 
             migrationBuilder.DropTable(
-                name: "OrderTracking");
+                name: "ServiceCost");
 
             migrationBuilder.DropTable(
                 name: "ShippingRate");
@@ -559,7 +587,16 @@ namespace L_L.Data.Migrations
                 name: "Blog");
 
             migrationBuilder.DropTable(
+                name: "OrderDetails");
+
+            migrationBuilder.DropTable(
+                name: "PackageType");
+
+            migrationBuilder.DropTable(
                 name: "DeliveryInfo");
+
+            migrationBuilder.DropTable(
+                name: "Order");
 
             migrationBuilder.DropTable(
                 name: "Product");
@@ -568,16 +605,10 @@ namespace L_L.Data.Migrations
                 name: "Truck");
 
             migrationBuilder.DropTable(
-                name: "Order");
-
-            migrationBuilder.DropTable(
-                name: "PackageType");
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "VehicleType");
-
-            migrationBuilder.DropTable(
-                name: "User");
 
             migrationBuilder.DropTable(
                 name: "UserRole");

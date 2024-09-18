@@ -9,6 +9,8 @@ namespace L_L.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderId { get; set; }
+        
+        public int OrderCode { get; set; }
 
         [Required]
         public decimal? TotalAmount { get; set; }

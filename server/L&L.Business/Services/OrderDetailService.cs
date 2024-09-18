@@ -3,6 +3,7 @@ using L_L.Business.Commons.Request;
 using L_L.Business.Exceptions;
 using L_L.Business.Models;
 using L_L.Business.Ultils;
+using L_L.Data.Entities;
 using L_L.Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 
@@ -70,12 +71,28 @@ namespace L_L.Business.Services
                 SenderId = userSender?.UserId,
                 OrderId = order.OrderId,
                 TotalPrice = req.TotalAmount,
-                VehicleTypeId = int.Parse(req.VehicleTypeId),
+                VehicleTypeId = req.VehicleTypeId,
             });
 
             var result = await unitOfWorks.OrderDetailRepository.Commit();
 
-            if (orderDetail != null && result > 0 && resultProduct > 0 && resultDeliveryInfo > 0)
+            // create service cost
+            var listServiceCost = new List<ServiceCost>();
+            foreach (var cost in req.listCost)
+            {
+                var serviceCost = new ServiceCost()
+                {
+                    VehicleTypeId = cost.Key,
+                    Amount = cost.Value.ToString(),
+                    OrderDetailId = orderDetail.OrderDetailId
+                };
+                listServiceCost.Add(serviceCost);
+            }
+            
+            await unitOfWorks.ServiceCostRepository.AddRangeAsync(listServiceCost);
+            var resultServiceCost = await unitOfWorks.ServiceCostRepository.Commit();
+
+            if (orderDetail != null && result > 0 && resultProduct > 0 && resultDeliveryInfo > 0 && resultServiceCost > 0)
             {
                 return mapper.Map<OrderDetailsModel>(orderDetail);
             }

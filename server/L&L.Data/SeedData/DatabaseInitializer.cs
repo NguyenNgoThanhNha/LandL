@@ -190,11 +190,11 @@ namespace L_L.Data.SeedData
                 new PackageType
                 {
                     WeightLimit = 0.5m,
-                    LengthMin = 2.05m,
+                    LengthMin = 0.1m,
                     LengthMax = 2.60m,
-                    WidthMin = 1.31m,
+                    WidthMin = 0.1m,
                     WidthMax = 1.50m,
-                    HeightMin = 1.10m,
+                    HeightMin = 0.1m,
                     HeightMax = 1.41m,
                     VehicleRangeMin = 500,
                     VehicleRangeMax = 799

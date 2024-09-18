@@ -64,7 +64,7 @@ namespace L_L.API.Controllers
                 }));
             }
 
-            return Ok(ApiResult<ResponseMessage>.Error(new ResponseMessage()
+            return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
             {
                 message = "Create order success!"
             }));
@@ -157,32 +157,99 @@ namespace L_L.API.Controllers
             }));
         }
 
-        [Authorize(Roles = "Driver")]
-        [HttpGet("GetOrderDriver")]
-        public async Task<IActionResult> GetOrderOfDriver()
+        [HttpPatch("UpdateDeliveryInfo")]
+        public async Task<IActionResult> UpdateDeliveryInfo([FromBody] UpdateDeliveryInfoRequest req)
         {
-            Request.Headers.TryGetValue("Authorization", out var token);
-            token = token.ToString().Split()[1];
-            var currentUser = await userService.GetUserInToken(token);
-            if (currentUser == null)
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
+            }
+            var updateDeliveryResult = await orderService.UpdateDiveryInOrderDetail(req.orderDetailId, req.DeliveryInfo);
+            if (updateDeliveryResult == null)
             {
                 return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
                 {
-                    message = "Driver not found"
+                    message = $"Error in update delivery of Order Detail with ${req.orderDetailId}"
+                }));
+            }
+            return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
+            {
+                message = "Update delivery info in order detail success"
+            }));
+        }
+
+        [Authorize(Roles = "Driver")]
+        [HttpPost("GetOrderDriver")]
+        public async Task<IActionResult> GetOrderOfDriver([FromBody] GetOrderOfDriverRequest req)
+        {
+            // Lấy token từ header
+            if (!Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                return Unauthorized(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Authorization header is missing."
                 }));
             }
 
-            var listOrder = await orderService.GetOrderForDriver(currentUser.UserId.ToString());
+            // Chia tách token
+            var tokenValue = token.ToString().Split(' ')[1];
+            var currentUser = await userService.GetUserInToken(tokenValue);
 
-            if (listOrder == null)
+            if (currentUser == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Driver not found."
+                }));
+            }
+
+            // Lấy danh sách đơn hàng cho tài xế
+            var listOrder = await orderService.GetOrderForDriver(currentUser.UserId.ToString(), req);
+
+            if (listOrder == null || !listOrder.Any())
             {
                 return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
                 {
-                    message = "Currently, can not find order suitable"
+                    message = "Currently, cannot find order suitable."
                 }));
             }
 
-            return Ok();
+            return Ok(ApiResult<List<OrderDetailsModel>>.Succeed(listOrder));
+        }
+
+        [HttpPost("ConfirmOrder")]
+        public async Task<IActionResult> ConfirmOrderDetail([FromBody] ConfirmOrderRequest req)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
+            }
+
+            var urlPayemnt = await orderService.ConfirmOrderDetail(req);
+
+            if (urlPayemnt == null)
+            {
+                return Ok(ApiResult<ResponseMessage>.Error(new ResponseMessage()
+                {
+                    message = "Error in create payment"
+                }));
+            }
+            return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
+            {
+                message =urlPayemnt
+            }));
         }
     }
+
+
 }
