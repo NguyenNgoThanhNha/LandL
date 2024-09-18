@@ -14,7 +14,7 @@ class TAppTheme {
 
   static ThemeData lightTheme = ThemeData(
       useMaterial3: true,
-      fontFamily: 'KumbhSans',
+      fontFamily: 'IBMPlexSans',
       brightness: Brightness.light,
       primaryColor: TColors.primary,
       scaffoldBackgroundColor: Colors.white,
