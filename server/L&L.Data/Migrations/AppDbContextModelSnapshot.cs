@@ -185,6 +185,9 @@ namespace L_L.Data.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
+                    b.Property<int>("OrderCode")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("OrderCount")
                         .HasColumnType("integer");
 
@@ -233,7 +236,7 @@ namespace L_L.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal?>("TotalPrice")
+                    b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
                     b.Property<int?>("TruckId")

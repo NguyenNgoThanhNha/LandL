@@ -88,11 +88,10 @@ namespace L_L.Business.Services
                 };
                 listServiceCost.Add(serviceCost);
             }
-            
-            await unitOfWorks.ServiceCostRepository.AddRangeAsync(listServiceCost);
-            var resultServiceCost = await unitOfWorks.ServiceCostRepository.Commit();
 
-            if (orderDetail != null && result > 0 && resultProduct > 0 && resultDeliveryInfo > 0 && resultServiceCost > 0)
+            await unitOfWorks.ServiceCostRepository.AddRangeAsync(listServiceCost);
+
+            if (orderDetail != null && result > 0 && resultProduct > 0 && resultDeliveryInfo > 0)
             {
                 return mapper.Map<OrderDetailsModel>(orderDetail);
             }
