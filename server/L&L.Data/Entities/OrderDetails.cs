@@ -11,7 +11,7 @@ namespace L_L.Data.Entities
         public int? Quantity { get; set; }
         public string? PaymentMethod { get; set; } = string.Empty;
         public decimal? UnitPrice { get; set; }
-        public decimal? TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public string Status { get; set; }
         public int? VehicleTypeId { get; set; }
 

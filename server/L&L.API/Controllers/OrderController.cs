@@ -223,9 +223,31 @@ namespace L_L.API.Controllers
         }
 
         [HttpPost("ConfirmOrder")]
-        public async Task<IActionResult> ConfirmOrderDetail()
+        public async Task<IActionResult> ConfirmOrderDetail([FromBody] ConfirmOrderRequest req)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(ApiResult<List<string>>.Error(errors));
+            }
+
+            var urlPayemnt = await orderService.ConfirmOrderDetail(req);
+
+            if (urlPayemnt == null)
+            {
+                return Ok(ApiResult<ResponseMessage>.Error(new ResponseMessage()
+                {
+                    message = "Error in create payment"
+                }));
+            }
+            return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
+            {
+                message =urlPayemnt
+            }));
         }
     }
 

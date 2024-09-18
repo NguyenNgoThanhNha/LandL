@@ -32,4 +32,6 @@ public class CreateOrderRequest
     public decimal TotalAmount { get; set; }
 
     public int VehicleTypeId { get; set; }
+    
+    public Dictionary<int, decimal> listCost { get; set; }
 }

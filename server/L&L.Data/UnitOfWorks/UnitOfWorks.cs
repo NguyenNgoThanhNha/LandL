@@ -17,6 +17,7 @@ namespace L_L.Data.UnitOfWorks
         private ProductRepository _productRepo;
         private DeliveryInfoRepository _deliveryInfoRepo;
         private TruckRepository _truckRepo;
+        private ServiceCostRepository _serviceCostRepo;
 
         public UnitOfWorks(AppDbContext dbContext)
         {
@@ -73,6 +74,11 @@ namespace L_L.Data.UnitOfWorks
         public TruckRepository TruckRepository
         {
             get { return _truckRepo ??= new TruckRepository(_dbContext); }
+        }
+        
+        public ServiceCostRepository ServiceCostRepository
+        {
+            get { return _serviceCostRepo ??= new ServiceCostRepository(_dbContext); }
         }
     }
 }

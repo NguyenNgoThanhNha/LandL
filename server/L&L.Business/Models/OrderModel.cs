@@ -7,8 +7,7 @@ namespace L_L.Business.Models;
 public class OrderModel
 {
     public int OrderId { get; set; }
-
-    [Required]
+    public int OrderCode { get; set; }
     public decimal? TotalAmount { get; set; }
 
     public int? OrderCount { get; set; }

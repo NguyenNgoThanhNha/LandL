@@ -6,6 +6,8 @@ using L_L.Business.Ultils;
 using L_L.Data.Entities;
 using L_L.Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
+using Net.payOS;
+using Net.payOS.Types;
 using NetTopologySuite.Geometries;
 
 namespace L_L.Business.Services
@@ -14,11 +16,13 @@ namespace L_L.Business.Services
     {
         private readonly UnitOfWorks unitOfWorks;
         private readonly IMapper _mapper;
+        private readonly PayOSSetting _payOsSetting;
 
-        public OrderService(UnitOfWorks unitOfWorks, IMapper mapper)
+        public OrderService(UnitOfWorks unitOfWorks, IMapper mapper, PayOSSetting payOsSetting)
         {
             this.unitOfWorks = unitOfWorks;
             _mapper = mapper;
+            _payOsSetting = payOsSetting;
         }
 
         public async Task<List<OrderModel>> GetAll()
@@ -31,6 +35,7 @@ namespace L_L.Business.Services
             var order = new OrderModel();
             order.Status = StatusEnums.Processing.ToString();
             order.TotalAmount = decimal.Parse(amount);
+            order.OrderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
             var orderCreate = await unitOfWorks.OrderRepository.AddAsync(_mapper.Map<Order>(order));
             var result = await unitOfWorks.OrderRepository.Commit();
             if (result > 0)
@@ -263,6 +268,34 @@ namespace L_L.Business.Services
             }
 
             return validOrders;
+        }
+
+        public async Task<string> ConfirmOrderDetail(ConfirmOrderRequest req)
+        {
+            var orderDetail = await unitOfWorks.OrderDetailRepository.FindByCondition(x => x.OrderDetailId == req.orderDetailId)
+                .Include(x => x.ProductInfo)
+                .Include(x=> x.DeliveryInfoDetail)
+                .Include(x => x.OrderInfo)
+                .FirstOrDefaultAsync();
+            if (orderDetail == null)
+            {
+                throw new BadRequestException("Order Detail not found!");
+            }
+            // excute payos
+            var payOS = new PayOS(_payOsSetting.ClientId, _payOsSetting.ApiKey, _payOsSetting.ChecksumKey);
+
+            var domain = _payOsSetting.Domain;
+
+            var paymentLinkRequest = new PaymentData(
+                orderCode: orderDetail.OrderInfo.OrderCode,
+                amount: (int)orderDetail.TotalPrice,
+                description: $"Payment for service {orderDetail.ProductInfo.ProductDescription}",
+                items: [new(orderDetail.ProductInfo.ProductName, (int)orderDetail.Quantity, (int)orderDetail.TotalPrice)],
+                returnUrl: $"{domain}/${req.Request.returnUrl}",
+                cancelUrl: $"{domain}/${req.Request.cancelUrl}"
+            );
+            var response = await payOS.createPaymentLink(paymentLinkRequest);
+            return response.checkoutUrl;
         }
 
 
