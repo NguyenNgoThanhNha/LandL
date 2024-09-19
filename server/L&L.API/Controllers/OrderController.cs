@@ -110,8 +110,30 @@ namespace L_L.API.Controllers
                     message = "Authorization header is missing."
                 }));
             }
+            
+            // Chia tách token
+            var tokenValue = token.ToString().Split(' ')[1];
+            var currentUser = await userService.GetUserInToken(tokenValue);
 
-            var listOrderDetail = await orderService.GetOrderDetailByOrderId(orderId);
+            if (currentUser == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Driver not found."
+                }));
+            }
+
+            var listOrderDetail = new List<OrderDetailsModel>();
+
+            // customer
+            if (currentUser.RoleID == 2)
+            {
+                listOrderDetail = await orderService.GetOrderDetailByOrderId(orderId, currentUser);
+            }else if (currentUser.RoleID == 3)
+            {
+                listOrderDetail = await orderService.GetOrderDetailByOrderId(orderId, currentUser);
+            }
+            
             if (listOrderDetail == null)
             {
                 return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage

@@ -24,6 +24,8 @@ namespace L_L.Data.Entities
         [ForeignKey("OrderDriver")]
         public int? DriverId { get; set; }
         public virtual User OrderDriver { get; set; }
+        public DateTime OrderDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 
 

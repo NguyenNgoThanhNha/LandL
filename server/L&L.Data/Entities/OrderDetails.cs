@@ -34,6 +34,9 @@ namespace L_L.Data.Entities
         [ForeignKey("OrderDelivery")]
         public int? DeliveryInfoId { get; set; }
         public virtual DeliveryInfo DeliveryInfoDetail { get; set; }
+        
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 
 }

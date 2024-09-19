@@ -182,6 +182,9 @@ namespace L_L.Data.Migrations
                     b.Property<int?>("DriverId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
@@ -190,6 +193,9 @@ namespace L_L.Data.Migrations
 
                     b.Property<int?>("OrderCount")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -217,6 +223,9 @@ namespace L_L.Data.Migrations
                     b.Property<int?>("DeliveryInfoId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<int?>("OrderId")
                         .HasColumnType("integer");
 
@@ -231,6 +240,9 @@ namespace L_L.Data.Migrations
 
                     b.Property<int?>("SenderId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Status")
                         .IsRequired()

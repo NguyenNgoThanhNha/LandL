@@ -27,7 +27,7 @@ namespace L_L.Business.Services
 
         public async Task<List<OrderModel>> GetAll()
         {
-            return _mapper.Map<List<OrderModel>>(await unitOfWorks.OrderRepository.GetAll().ToListAsync());
+            return _mapper.Map<List<OrderModel>>(await unitOfWorks.OrderRepository.GetAll().OrderByDescending(x => x.OrderDate).ToListAsync());
         }
 
         public async Task<OrderModel> CreateOrder(string amount)
@@ -37,6 +37,7 @@ namespace L_L.Business.Services
             order.TotalAmount = decimal.Parse(amount);
             order.OrderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
             order.OrderCount = 1;
+            order.OrderDate = DateTime.Now;
             var orderCreate = await unitOfWorks.OrderRepository.AddAsync(_mapper.Map<Order>(order));
             var result = await unitOfWorks.OrderRepository.Commit();
             if (result > 0)
@@ -345,15 +346,32 @@ namespace L_L.Business.Services
             return _mapper.Map<OrderModel>(order);
         }
 
-        public async Task<List<OrderDetailsModel>> GetOrderDetailByOrderId(string orderId)
+        public async Task<List<OrderDetailsModel>> GetOrderDetailByOrderId(string orderId, UserModel user)
         {
-            var listOrderDetail = await unitOfWorks.OrderDetailRepository
-                .FindByCondition(x => x.OrderId == int.Parse(orderId)).ToListAsync();
-            if (!listOrderDetail.Any() || listOrderDetail == null)
+            var listOrderDetail = new List<OrderDetails>();
+            if (user.RoleID == 2)
             {
-                throw new BadRequestException("Order detail of Order not found!");
+                listOrderDetail = await unitOfWorks.OrderDetailRepository
+                    .FindByCondition(x => x.OrderId == int.Parse(orderId) && x.SenderId == user.UserId)
+                    .OrderByDescending(x => x.StartDate)
+                    .ToListAsync();
+            }else if (user.RoleID == 3)
+            {
+                listOrderDetail = await unitOfWorks.OrderDetailRepository
+                    .FindByCondition(x => x.OrderId == int.Parse(orderId))
+                    .OrderByDescending(x => x.StartDate)
+                    .ToListAsync();
+                if (!listOrderDetail.Any() || listOrderDetail == null)
+                {
+                    throw new BadRequestException("Order detail of Order not found!");
+                }
             }
-            return _mapper.Map<List<OrderDetailsModel>>(listOrderDetail);
+
+            if (listOrderDetail != null)
+            {
+                return _mapper.Map<List<OrderDetailsModel>>(listOrderDetail);
+            }
+            return null;
         }
 
     }

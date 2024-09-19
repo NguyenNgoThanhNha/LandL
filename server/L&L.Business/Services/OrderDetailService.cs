@@ -72,6 +72,7 @@ namespace L_L.Business.Services
                 OrderId = order.OrderId,
                 TotalPrice = req.TotalAmount,
                 VehicleTypeId = req.VehicleTypeId,
+                StartDate = DateTime.Now
             });
 
             var result = await unitOfWorks.OrderDetailRepository.Commit();
