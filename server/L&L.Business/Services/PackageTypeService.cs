@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using L_L.Business.Exceptions;
 using L_L.Business.Models;
 using L_L.Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,16 @@ namespace L_L.Business.Services
         {
             this.unitOfWorks = unitOfWorks;
             this.mapper = mapper;
+        }
+
+        public async Task<List<PacketTypeModel>> GetAllPackageType()
+        {
+            var listPackageType = await unitOfWorks.PacketTypeRepository.GetAll().ToListAsync();
+            if (listPackageType == null)
+            {
+                throw new BadRequestException("PackageType not found!");
+            }
+            return mapper.Map<List<PacketTypeModel>>(listPackageType);
         }
         public async Task<PacketTypeModel> FilterPacketType(decimal weightDecimal, decimal lengthDecimal, decimal widthDecimal, decimal heightDecimal)
         {

@@ -1,4 +1,5 @@
-﻿using L_L.Business.Commons;
+﻿using CloudinaryDotNet;
+using L_L.Business.Commons;
 using L_L.Business.Commons.Request;
 using L_L.Business.Commons.Response;
 using L_L.Business.Services;
@@ -95,6 +96,35 @@ namespace L_L.API.Controllers
                     message = "Invalid data provided"
                 }));
             }
+        }
+
+        [HttpGet("GetProfile")]
+        public async Task<IActionResult> GetMyProfile()
+        {
+            // Lấy token từ header
+            if (!Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                return Unauthorized(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Authorization header is missing."
+                }));
+            }
+            
+            // Chia tách token
+            var tokenValue = token.ToString().Split(' ')[1];
+            var currentUser = await userService.GetUserInToken(tokenValue);
+            if (currentUser == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
+                {
+                    message = "User not found!"
+                }));
+            }
+            return Ok(ApiResult<UpdateUserRespone>.Succeed(new UpdateUserRespone()
+            {
+                message = "Get User Info Success",
+                data = currentUser
+            }));
         }
 
     }
