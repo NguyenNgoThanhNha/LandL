@@ -28,7 +28,102 @@ namespace L_L.API.Controllers
         public async Task<IActionResult> GetAllOrder()
         {
             var listOrder = await orderService.GetAll();
-            return Ok(ApiResult<List<OrderModel>>.Succeed(listOrder));
+            return Ok(ApiResult<OrderListResponse>.Succeed(new OrderListResponse()
+            {
+                data = listOrder
+            }));
+        }
+
+        [HttpGet("GetOrderByUserId")]
+        public async Task<IActionResult> GetOrderByUserId()
+        {
+            // Lấy token từ header
+            if (!Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                return Unauthorized(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Authorization header is missing."
+                }));
+            }
+            
+            // Chia tách token
+            var tokenValue = token.ToString().Split(' ')[1];
+            var currentUser = await userService.GetUserInToken(tokenValue);
+
+            if (currentUser == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Driver not found."
+                }));
+            }
+
+            var listOrder = await orderService.GetOrderByUserId(currentUser.UserId.ToString());
+            if (listOrder == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Order of user not found!"
+                }));
+            }
+            return Ok(ApiResult<OrderListResponse>.Succeed(new OrderListResponse()
+            {
+                data = listOrder
+            }));
+        }
+
+        [HttpGet("GetOrderByOrderId")]
+        public async Task<IActionResult> GetOrderByOrderId([FromQuery] string orderId)
+        {
+            // Lấy token từ header
+            if (!Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                return Unauthorized(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Authorization header is missing."
+                }));
+            }
+
+            var order = await orderService.GetOrderByOrderId(orderId);
+            if (order == null) 
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Order not found!"
+                }));
+            }
+            
+            return Ok(ApiResult<OrderResponse>.Succeed(new OrderResponse()
+            {
+                data = order
+            }));
+        }
+        
+        [HttpGet("GetOrderDetailByOrderId")]
+        public async Task<IActionResult> GetOrderDetailByOrderId([FromQuery] string orderId)
+        {
+            // Lấy token từ header
+            if (!Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                return Unauthorized(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Authorization header is missing."
+                }));
+            }
+
+            var listOrderDetail = await orderService.GetOrderDetailByOrderId(orderId);
+            if (listOrderDetail == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = $"Order detail of order id: {orderId} not found!"
+                }));
+            }
+            
+            return Ok(ApiResult<OrderDetailResponse>.Succeed(new OrderDetailResponse()
+            {
+                data = listOrderDetail
+            }));
         }
 
         [HttpPost("Create_Order")]
@@ -66,7 +161,8 @@ namespace L_L.API.Controllers
 
             return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
             {
-                message = "Create order success!"
+                message = "Create order success!",
+                data = orderCreate.OrderId.ToString()
             }));
         }
 

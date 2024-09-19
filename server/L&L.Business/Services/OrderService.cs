@@ -36,6 +36,7 @@ namespace L_L.Business.Services
             order.Status = StatusEnums.Processing.ToString();
             order.TotalAmount = decimal.Parse(amount);
             order.OrderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
+            order.OrderCount = 1;
             var orderCreate = await unitOfWorks.OrderRepository.AddAsync(_mapper.Map<Order>(order));
             var result = await unitOfWorks.OrderRepository.Commit();
             if (result > 0)
@@ -298,7 +299,62 @@ namespace L_L.Business.Services
             return response.checkoutUrl;
         }
 
+        public async Task<List<OrderModel>> GetOrderByUserId(string userId)
+        {
+            var listOrderResult = new List<OrderModel>();
+            var currentUser = await unitOfWorks.UserRepository.GetByIdAsync(int.Parse(userId));
+            // customer
+            if (currentUser.RoleID == 2)
+            {
+                var orderDetails = await unitOfWorks.OrderDetailRepository.FindByCondition(x => x.SenderId == currentUser.UserId).ToListAsync();
+                if (orderDetails.Any() && orderDetails != null)
+                {
+                    foreach (var orderDetail in orderDetails)
+                    {
+                        var order = await unitOfWorks.OrderRepository.GetByIdAsync((int)orderDetail.OrderId);
+                        listOrderResult.Add(_mapper.Map<OrderModel>(order));
+                    }
 
+                    return listOrderResult;
+                }
+                else
+                {
+                    throw new BadRequestException("Order of user not found!");
+                }
+            } else if (currentUser.RoleID == 3)
+            {
+                var orders = await unitOfWorks.OrderRepository.FindByCondition(x => x.DriverId == currentUser.UserId)
+                    .ToListAsync();
+                if (orders == null || !orders.Any())
+                {
+                    throw new BadRequestException("Order of user not found!");
+                }
+                return _mapper.Map<List<OrderModel>>(orders);
+            }
+            return null;
+        }
+
+        public async Task<OrderModel> GetOrderByOrderId(string orderId)
+        {
+            var order = await unitOfWorks.OrderRepository.GetByIdAsync(int.Parse(orderId));
+            if (order == null)
+            {
+                throw new BadRequestException("Order not found!");
+            }
+
+            return _mapper.Map<OrderModel>(order);
+        }
+
+        public async Task<List<OrderDetailsModel>> GetOrderDetailByOrderId(string orderId)
+        {
+            var listOrderDetail = await unitOfWorks.OrderDetailRepository
+                .FindByCondition(x => x.OrderId == int.Parse(orderId)).ToListAsync();
+            if (!listOrderDetail.Any() || listOrderDetail == null)
+            {
+                throw new BadRequestException("Order detail of Order not found!");
+            }
+            return _mapper.Map<List<OrderDetailsModel>>(listOrderDetail);
+        }
 
     }
 }
