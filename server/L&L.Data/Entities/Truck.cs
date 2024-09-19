@@ -43,8 +43,8 @@ namespace L_L.Data.Entities
         public decimal DimensionsWidth { get; set; }
         public decimal DimensionsHeight { get; set; }
 
-        [ForeignKey("VehicleType")]
-        public int TypeId { get; set; }
+        [ForeignKey("VehicleTypeTruckType")]
+        public int VehicleTypeId { get; set; }
         public virtual VehicleType TruckType { get; set; }
 
         [ForeignKey("TruckUser")]

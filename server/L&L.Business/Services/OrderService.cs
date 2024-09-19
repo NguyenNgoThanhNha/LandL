@@ -17,17 +17,46 @@ namespace L_L.Business.Services
         private readonly UnitOfWorks unitOfWorks;
         private readonly IMapper _mapper;
         private readonly PayOSSetting _payOsSetting;
+        private readonly CloudService _cloudService;
 
-        public OrderService(UnitOfWorks unitOfWorks, IMapper mapper, PayOSSetting payOsSetting)
+        public OrderService(UnitOfWorks unitOfWorks, IMapper mapper, PayOSSetting payOsSetting, CloudService cloudService)
         {
             this.unitOfWorks = unitOfWorks;
             _mapper = mapper;
             _payOsSetting = payOsSetting;
+            _cloudService = cloudService;
         }
 
         public async Task<List<OrderModel>> GetAll()
         {
             return _mapper.Map<List<OrderModel>>(await unitOfWorks.OrderRepository.GetAll().OrderByDescending(x => x.OrderDate).ToListAsync());
+        }
+        
+        public async Task<List<OrderAdminModel>> GetAllOrderForAdmin()
+        {
+            var listOrderAdmin = new List<OrderAdminModel>();
+            var listOrder = await unitOfWorks.OrderRepository.GetAll().OrderByDescending(x => x.OrderDate)
+                .ToListAsync();
+            foreach (var order in listOrder)
+            {
+                var listOrderDetail = await unitOfWorks.OrderDetailRepository
+                    .FindByCondition(x => x.OrderId == order.OrderId)
+                    .Include(x => x.ProductInfo)
+                    .Include(x =>x.DeliveryInfoDetail)
+                    .Include(x=> x.TruckInfo)
+                    .ToListAsync();
+                listOrderAdmin.Add(new OrderAdminModel()
+                {
+                    Order =  _mapper.Map<OrderModel>(order),
+                    OrderDetails = _mapper.Map<List<OrderDetailsModel>>(listOrderDetail)
+                });
+            }
+
+            if (listOrderAdmin == null)
+            {
+                throw new BadRequestException("Now not have any order!");
+            }
+            return listOrderAdmin;
         }
 
         public async Task<OrderModel> CreateOrder(string amount)
@@ -88,72 +117,86 @@ namespace L_L.Business.Services
             return _mapper.Map<List<OrderDetailsModel>>(listOrderDetail);
         }
 
-        public async Task<bool> AddDriverToOrderDetail(AcceptDriverRequest req)
+        public async Task<bool> AddDriverToOrderDetail(AcceptDriverRequest req, int driverId)
         {
-            // Lấy thông tin chi tiết đơn hàng
-            var orderDetail = await unitOfWorks.OrderDetailRepository.GetByIdAsync(int.Parse(req.orderDetailId));
+            var orderDetail = await unitOfWorks.OrderDetailRepository
+                .FindByCondition(x=> x.OrderDetailId == int.Parse(req.orderDetailId))
+                .Include(x =>x.ProductInfo)
+                .FirstOrDefaultAsync();
             if (orderDetail == null)
             {
                 throw new BadRequestException("Order detail not found!");
             }
-
-            // Lấy thông tin đơn hàng liên quan
+            
             var order = await unitOfWorks.OrderRepository.GetByIdAsync((int)orderDetail.OrderId);
             if (order == null || order.OrderId != orderDetail.OrderId)
             {
                 throw new BadRequestException("Order detail of order are invalid!");
             }
-
-            // Cập nhật driver cho đơn hàng
-            order.DriverId = int.Parse(req.driverId);
+            
+            order.DriverId = driverId;
             unitOfWorks.OrderRepository.Update(order);
-
-            // Lấy thông tin xe tải của tài xế
+            
             var truckOfDriver = await unitOfWorks.TruckRepository.FindByCondition(x => x.UserId == order.DriverId).FirstOrDefaultAsync();
             if (truckOfDriver == null)
             {
                 throw new BadRequestException("Truck of driver not found!");
             }
-
-            // Tính toán kích thước sản phẩm từ đơn hàng chi tiết
+            
             var product = orderDetail.ProductInfo;
-            var dimensions = product.TotalDismension.Split('*').Select(decimal.Parse).ToList();
+            var dimensions = product.TotalDismension.Split('x').Select(decimal.Parse).ToList();
             decimal productLength = dimensions[0];
             decimal productWidth = dimensions[1];
             decimal productHeight = dimensions[2];
-
-            // Cập nhật kích thước còn lại của xe tải
+            
             truckOfDriver.DimensionsLength -= productLength;
             truckOfDriver.DimensionsWidth -= productWidth;
             truckOfDriver.DimensionsHeight -= productHeight;
-
-            // Cập nhật thông tin xe tải
+            
+            // add truck to order detail
+            orderDetail.TruckId = truckOfDriver.TruckId;
+            
             unitOfWorks.TruckRepository.Update(truckOfDriver);
-
-            // Lưu tất cả các thay đổi vào cơ sở dữ liệu
+            unitOfWorks.OrderDetailRepository.Update(orderDetail);
+            
             var result = await unitOfWorks.OrderRepository.Commit();
-            var truckUpdateResult = await unitOfWorks.TruckRepository.Commit();
-
-            // Kiểm tra xem tất cả các cập nhật đã thành công
-            return result > 0 && truckUpdateResult > 0;
+            
+            return result > 0 ;
         }
 
 
-        public async Task<ProductsModel> UpdateProductInOrderDetail(string orderDetailId, ProductsModel productsModel)
+        public async Task<ProductsModel> UpdateProductInOrderDetail(UpdateProductInfoRequest req)
         {
-            var orderDetail = await unitOfWorks.OrderDetailRepository.GetByIdAsync(int.Parse(orderDetailId));
+            var orderDetail = await unitOfWorks.OrderDetailRepository
+                .FindByCondition(x => x.OrderDetailId == int.Parse(req.orderDetailId))
+                .Include(x => x.ProductInfo)
+                .FirstOrDefaultAsync();
             if (orderDetail == null)
             {
                 throw new BadRequestException("Order detail of product is not found");
             }
-            if (orderDetail.ProductId != productsModel.ProductId)
+
+            var productInfo = orderDetail.ProductInfo;
+            if (orderDetail.ProductId != productInfo.ProductId)
             {
                 throw new BadRequestException("Order detail have not product with info product provide!");
             }
-            var productUpdate = await unitOfWorks.ProductRepository.GetByIdAsync(productsModel.ProductId);
-            productUpdate.ProductName = productsModel.ProductName;
-            productUpdate.ProductDescription = productsModel.ProductDescription;
-            var resultUpdate = unitOfWorks.ProductRepository.Update(productUpdate);
+            productInfo.ProductName = req.ProductName;
+            productInfo.ProductDescription = req.ProductDescription;
+            if (req.Image != null)
+            {
+                var uploadResult = await _cloudService.UploadImageAsync(req.Image);
+
+                if (uploadResult.Error == null)
+                {
+                    productInfo.Image = uploadResult.SecureUrl.ToString();
+                }
+                else
+                {
+                    throw new BadRequestException("Error in update image of product");
+                }
+            }
+            var resultUpdate = unitOfWorks.ProductRepository.Update(productInfo);
             var result = await unitOfWorks.ProductRepository.Commit();
             if (result > 0)
             {
@@ -162,24 +205,20 @@ namespace L_L.Business.Services
             return null;
         }
 
-        public async Task<DeliveryInfoModel> UpdateDiveryInOrderDetail(string orderDetailId, DeliveryInfoModel deliveryInfoModel)
+        public async Task<DeliveryInfoModel> UpdateDiveryInOrderDetail(UpdateDeliveryInfoRequest req)
         {
-            var orderDetail = await unitOfWorks.OrderDetailRepository.GetByIdAsync(int.Parse(orderDetailId));
+            var orderDetail = await unitOfWorks.OrderDetailRepository.GetByIdAsync(int.Parse(req.orderDetailId));
             if (orderDetail == null)
             {
                 throw new BadRequestException("Order detail of product is not found");
             }
-            if (orderDetail.DeliveryInfoId != deliveryInfoModel.DeliveryInfoId)
-            {
-                throw new BadRequestException("Order detail have not delivery info with info provide!");
-            }
-            var deiveryUpdate = await unitOfWorks.DeliveryInfoRepository.GetByIdAsync(deliveryInfoModel.DeliveryInfoId);
-            deiveryUpdate.SenderName = deliveryInfoModel.SenderName;
-            deiveryUpdate.SenderPhone = deliveryInfoModel.SenderPhone;
-            deiveryUpdate.ReceiverName = deliveryInfoModel.ReceiverName;
-            deiveryUpdate.ReceiverPhone = deliveryInfoModel.ReceiverPhone;
-            deiveryUpdate.PickUpLocation = deliveryInfoModel.PickUpLocation;
-            deiveryUpdate.DeliveryLocaTion = deliveryInfoModel.DeliveryLocaTion;
+            var deiveryUpdate = await unitOfWorks.DeliveryInfoRepository.GetByIdAsync(int.Parse(req.deliveryInfoId));
+            deiveryUpdate.SenderName = req.senderName;
+            deiveryUpdate.SenderPhone = req.senderPhone;
+            deiveryUpdate.ReceiverName = req.receiverName;
+            deiveryUpdate.ReceiverPhone = req.receiverPhone;
+            deiveryUpdate.PickUpLocation = req.pickUpLocation;
+            deiveryUpdate.DeliveryLocaTion = req.deliveryLocaTion;
             var resultUpdate = unitOfWorks.DeliveryInfoRepository.Update(deiveryUpdate);
             var result = await unitOfWorks.ProductRepository.Commit();
             if (result > 0)
@@ -220,7 +259,7 @@ namespace L_L.Business.Services
                 var product = orderDetail.ProductInfo;
 
                 // Parse the product's dimensions (assuming TotalDimension is in the format "length*width*height")
-                var dimensions = product.TotalDismension.Split('*').Select(decimal.Parse).ToList();
+                var dimensions = product.TotalDismension.Split('x').Select(decimal.Parse).ToList();
                 decimal productVolume = dimensions[0] * dimensions[1] * dimensions[2];
                 decimal productWeight = decimal.Parse(product.Weight);
 
@@ -233,8 +272,8 @@ namespace L_L.Business.Services
                     // Now check proximity to driver
                     double driverLatitude = double.Parse(req.latCurrent);
                     double driverLongitude = double.Parse(req.longCurrent);
-                    double deliveryLatitude = double.Parse(orderDetail.DeliveryInfoDetail.LatDelivery);
-                    double deliveryLongitude = double.Parse(orderDetail.DeliveryInfoDetail.LongDelivery);
+                    double deliveryLatitude = double.Parse(orderDetail?.DeliveryInfoDetail.LatDelivery);
+                    double deliveryLongitude = double.Parse(orderDetail?.DeliveryInfoDetail.LongDelivery);
 
                     // Use NetTopologySuite for distance calculation
                     var driverLocation = new Coordinate(driverLongitude, driverLatitude);
@@ -274,31 +313,60 @@ namespace L_L.Business.Services
 
         public async Task<string> ConfirmOrderDetail(ConfirmOrderRequest req)
         {
-            var orderDetail = await unitOfWorks.OrderDetailRepository.FindByCondition(x => x.OrderDetailId == req.orderDetailId)
+            var orderDetail = await unitOfWorks.OrderDetailRepository
+                .FindByCondition(x => x.OrderDetailId == req.orderDetailId)
                 .Include(x => x.ProductInfo)
-                .Include(x=> x.DeliveryInfoDetail)
+                .Include(x => x.DeliveryInfoDetail)
                 .Include(x => x.OrderInfo)
                 .FirstOrDefaultAsync();
+
             if (orderDetail == null)
             {
                 throw new BadRequestException("Order Detail not found!");
             }
-            // excute payos
-            var payOS = new PayOS(_payOsSetting.ClientId, _payOsSetting.ApiKey, _payOsSetting.ChecksumKey);
 
+            // Execute PayOS
+            var payOS = new PayOS(_payOsSetting.ClientId, _payOsSetting.ApiKey, _payOsSetting.ChecksumKey);
             var domain = _payOsSetting.Domain;
 
+            var product = await unitOfWorks.ProductRepository.GetByIdAsync((int)orderDetail.ProductId);
+            var amount = Convert.ToInt32(req.totalAmount);
+            var price = Convert.ToInt32(orderDetail.TotalPrice); // Rounding to the nearest integer
+
+            if (product == null)
+            {
+                throw new BadRequestException("Product cannot be found!");
+            }
+
+            // Create the items list with proper syntax
+            var itemsList = new List<ItemData>
+            {
+                new ItemData($"{product.ProductName}", 1, price)
+            };
+
             var paymentLinkRequest = new PaymentData(
-                orderCode: orderDetail.OrderInfo.OrderCode,
-                amount: (int)orderDetail.TotalPrice,
-                description: $"Payment for service {orderDetail.ProductInfo.ProductDescription}",
-                items: [new(orderDetail.ProductInfo.ProductName, (int)orderDetail.Quantity, (int)orderDetail.TotalPrice)],
-                returnUrl: $"{domain}/${req.Request.returnUrl}",
-                cancelUrl: $"{domain}/${req.Request.cancelUrl}"
+                orderCode: int.Parse(DateTimeOffset.Now.ToString("ffffff")), // Generate order code
+                amount: amount, // Use the calculated price
+                description: "Payment for service", // Include product description
+                items: itemsList, // Pass the items list
+                returnUrl: $"{domain}/{req.Request.returnUrl}", // Fix string interpolation
+                cancelUrl: $"{domain}/{req.Request.cancelUrl}" // Fix string interpolation
             );
-            var response = await payOS.createPaymentLink(paymentLinkRequest);
-            return response.checkoutUrl;
+
+            try
+            {
+                var response = await payOS.createPaymentLink(paymentLinkRequest);
+                return response.checkoutUrl;
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately (log it, rethrow it, etc.)
+                throw new Exception("Failed to create payment link.", ex);
+            }
         }
+
+
+
 
         public async Task<List<OrderModel>> GetOrderByUserId(string userId)
         {

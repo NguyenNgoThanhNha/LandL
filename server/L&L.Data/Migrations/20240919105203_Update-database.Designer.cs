@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240919070505_Update-Database")]
-    partial class UpdateDatabase
+    [Migration("20240919105203_Update-database")]
+    partial class Updatedatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,6 +228,9 @@ namespace L_L.Data.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("OrderDetailCode")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("integer");
@@ -527,12 +530,6 @@ namespace L_L.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("TruckTypeVehicleTypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TypeId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
@@ -540,11 +537,14 @@ namespace L_L.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("VehicleTypeId")
+                        .HasColumnType("integer");
+
                     b.HasKey("TruckId");
 
-                    b.HasIndex("TruckTypeVehicleTypeId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("VehicleTypeId");
 
                     b.ToTable("Truck");
                 });
@@ -847,15 +847,15 @@ namespace L_L.Data.Migrations
 
             modelBuilder.Entity("L_L.Data.Entities.Truck", b =>
                 {
-                    b.HasOne("L_L.Data.Entities.VehicleType", "TruckType")
-                        .WithMany()
-                        .HasForeignKey("TruckTypeVehicleTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("L_L.Data.Entities.User", "TruckUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("L_L.Data.Entities.VehicleType", "TruckType")
+                        .WithMany()
+                        .HasForeignKey("VehicleTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

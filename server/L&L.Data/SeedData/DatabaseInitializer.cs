@@ -64,55 +64,62 @@ namespace L_L.Data.SeedData
                 customerRole,
                 driverRole,
             };
-            var customer = new User
+            await _context.UserRoles.AddRangeAsync(userRoles);
+            await _context.SaveChangesAsync();
+            // Seed Users
+            var users = new List<User>();
+
+            for (int i = 1; i <= 10; i++)
             {
-                UserName = "Customer",
-                Password = SecurityUtil.Hash("123456"),
-                FullName = "Customer",
-                Email = "customer@gmail.com",
-                Gender = "Male",
-                City = "HCM",
-                Address = "HCM",
-                PhoneNumber = "12345",
-                Status = "Active",
-                TypeLogin = "Normal",
-                UserRole = customerRole,
-            };
-            var superAdmin = new User
+                var customer = new User
+                {
+                    UserName = $"Customer{i}",
+                    Password = SecurityUtil.Hash("123456"),
+                    FullName = $"Customer{i}",
+                    Email = $"customer{i}@gmail.com",
+                    Gender = "Male",
+                    City = "HCM",
+                    Address = "HCM",
+                    PhoneNumber = $"012345678{i}",
+                    Status = "Active",
+                    TypeLogin = "Normal",
+                    UserRole = customerRole, // Ensure `customerRole` is defined
+                };
+                users.Add(customer);
+
+                var driver = new User
+                {
+                    UserName = $"Driver{i}",
+                    Password = SecurityUtil.Hash("123456"),
+                    FullName = $"Driver{i}",
+                    Email = $"driver{i}@gmail.com",
+                    Gender = "Male",
+                    City = "HCM",
+                    Address = "HCM",
+                    PhoneNumber = $"018765432{i}",
+                    Status = "Active",
+                    TypeLogin = "Normal",
+                    UserRole = driverRole, // Ensure `driverRole` is defined
+                };
+                users.Add(driver);
+            }
+            var admin = new User()
             {
                 UserName = "Admin",
                 Password = SecurityUtil.Hash("123456"),
-                FullName = "Admin",
+                FullName = "Super Admin",
                 Email = "admin@gmail.com",
                 Gender = "Male",
                 City = "HCM",
                 Address = "HCM",
-                PhoneNumber = "12345",
+                PhoneNumber = $"0135724680",
                 Status = "Active",
                 TypeLogin = "Normal",
-                UserRole = adminRole,
+                UserRole = adminRole, // Ensure `admin` is defined
             };
-            var driver = new User
-            {
-                UserName = "Driver",
-                Password = SecurityUtil.Hash("123456"),
-                FullName = "Driver",
-                Email = "driver@gmail.com",
-                Gender = "Male",
-                City = "HCM",
-                Address = "HCM",
-                PhoneNumber = "12345",
-                Status = "Active",
-                TypeLogin = "Normal",
-                UserRole = driverRole,
-            };
-
-            List<User> users = new()
-            {
-                driver,
-                superAdmin,
-                customer,
-            };
+            users.Add(admin);
+            await _context.Users.AddRangeAsync(users);
+            await _context.SaveChangesAsync();
 
             // Add vehicletypes
             var vehicleTypes = new List<VehicleType>
@@ -129,6 +136,41 @@ namespace L_L.Data.SeedData
 
             await _context.VehicleTypes.AddRangeAsync(vehicleTypes);
             await _context.SaveChangesAsync();
+            
+            // Seed 10 Trucks
+            var vehicleTypesList = await _context.VehicleTypes.ToListAsync(); // Fetch all vehicle types from the database
+            var listDriver = await _context.Users.Where(x => x.RoleID == 3).ToListAsync();
+            var trucks = new List<Truck>();
+
+            for (int i = 1; i <= 10; i++)
+            {
+                var randomVehicleType = vehicleTypesList[new Random().Next(vehicleTypes.Count)];
+
+                var truck = new Truck
+                {
+                    TruckName = $"Truck{i}",
+                    Status = "Active",
+                    PlateCode = $"PLATE{i:D4}",
+                    Color = i % 2 == 0 ? "White" : "Blue",
+                    TotalBill = i * 1000,
+                    Manufacturer = i % 2 == 0 ? "Ford" : "Toyota",
+                    VehicleModel = i % 2 == 0 ? "Model X" : "Model Y",
+                    FrameNumber = $"FrameNo{i:D4}",
+                    EngineNumber = $"EngineNo{i:D4}",
+                    LoadCapacity = $"{1000 + i * 50}",
+                    DimensionsLength = 4.5m + i * 0.1m,
+                    DimensionsWidth = 2.0m + i * 0.05m,
+                    DimensionsHeight = 2.5m + i * 0.05m,
+                    VehicleTypeId = randomVehicleType.VehicleTypeId,  // Use a valid TypeId from the list
+                    UserId = listDriver[i % listDriver.Count].UserId 
+                };
+
+                trucks.Add(truck);
+            }
+
+            await _context.Trucks.AddRangeAsync(trucks);
+            await _context.SaveChangesAsync();
+
 
             var shippingRates = new List<ShippingRate>
             {
@@ -399,11 +441,7 @@ namespace L_L.Data.SeedData
             {
                 Console.WriteLine($"Warning: Only {vehiclePackageRelations.Count} vehicle-package relations were created. Ensure that all package types are covered.");
             }
-
-
-            // Add Range
-            await _context.UserRoles.AddRangeAsync(userRoles);
-            await _context.Users.AddRangeAsync(users);
+            
             await _context.VehiclePackageRelations.AddRangeAsync(vehiclePackageRelations);
 
             // Save to DB

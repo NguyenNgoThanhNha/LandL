@@ -8,7 +8,7 @@ public class ConfirmOrderRequest
     public int orderDetailId { get; set; }
     
     [Required(ErrorMessage = "Total Amount is requrired")]
-    public decimal totalAmount { get; set; }
+    public string totalAmount { get; set; }
     
     public PayOsRequest Request { get; set; }
 }

@@ -34,6 +34,24 @@ namespace L_L.API.Controllers
             }));
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetOrdesAdmin")]
+        public async Task<IActionResult> GetOrderForAdmin()
+        {
+            var listOrderAdmin = await orderService.GetAllOrderForAdmin();
+            if (listOrderAdmin == null)
+            {
+                return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Now have not any order!"
+                }));
+            }
+            return Ok(ApiResult<ListOrderAdminResponse>.Succeed(new ListOrderAdminResponse()
+            {
+                data = listOrderAdmin
+            }));
+        }
+
         [HttpGet("GetOrderByUserId")]
         public async Task<IActionResult> GetOrderByUserId()
         {
@@ -98,7 +116,7 @@ namespace L_L.API.Controllers
                 data = order
             }));
         }
-        
+        [Authorize(Roles = "Customer, Driver")]
         [HttpGet("GetOrderDetailByOrderId")]
         public async Task<IActionResult> GetOrderDetailByOrderId([FromQuery] string orderId)
         {
@@ -147,10 +165,23 @@ namespace L_L.API.Controllers
                 data = listOrderDetail
             }));
         }
-
+        
+        [Authorize(Roles = "Customer")] 
         [HttpPost("Create_Order")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)
         {
+            // Lấy token từ header
+            if (!Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                return Unauthorized(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Authorization header is missing."
+                }));
+            }
+            
+            // Chia tách token
+            var tokenValue = token.ToString().Split(' ')[1];
+            var currentUser = await userService.GetUserInToken(tokenValue);
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values
@@ -172,7 +203,7 @@ namespace L_L.API.Controllers
             }
 
             // create order detail
-            var orderDetailCreate = await orderDetailService.CreateOrderDetail(orderCreate.OrderId, request);
+            var orderDetailCreate = await orderDetailService.CreateOrderDetail(orderCreate.OrderId, request, currentUser.UserId);
             if (orderDetailCreate == null)
             {
                 return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
@@ -223,6 +254,7 @@ namespace L_L.API.Controllers
             return Ok(ApiResult<List<OrderDetailsModel>>.Succeed(listOrderDetail));
         }
 
+        [Authorize(Roles = "Driver")]
         [HttpPost("accept-driver")]
         public async Task<IActionResult> AddDriverToOrderDetail([FromBody] AcceptDriverRequest req)
         {
@@ -235,7 +267,21 @@ namespace L_L.API.Controllers
 
                 return BadRequest(ApiResult<List<string>>.Error(errors));
             }
-            var result = await orderService.AddDriverToOrderDetail(req);
+            
+            // Lấy token từ header
+            if (!Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                return Unauthorized(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Authorization header is missing."
+                }));
+            }
+            
+            // Chia tách token
+            var tokenValue = token.ToString().Split(' ')[1];
+            var currentUser = await userService.GetUserInToken(tokenValue);
+
+            var result = await orderService.AddDriverToOrderDetail(req, currentUser.UserId);
             if (!result)
             {
                 return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
@@ -250,7 +296,7 @@ namespace L_L.API.Controllers
         }
 
         [HttpPatch("UpdateProductInfo")]
-        public async Task<IActionResult> UpdateOrderDetail([FromBody] UpdateProductInfoRequest req)
+        public async Task<IActionResult> UpdateOrderDetail([FromForm] UpdateProductInfoRequest req)
         {
             if (!ModelState.IsValid)
             {
@@ -261,7 +307,7 @@ namespace L_L.API.Controllers
 
                 return BadRequest(ApiResult<List<string>>.Error(errors));
             }
-            var updateProductResult = await orderService.UpdateProductInOrderDetail(req.orderDetailId, req.Products);
+            var updateProductResult = await orderService.UpdateProductInOrderDetail(req);
             if (updateProductResult == null)
             {
                 return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
@@ -287,7 +333,7 @@ namespace L_L.API.Controllers
 
                 return BadRequest(ApiResult<List<string>>.Error(errors));
             }
-            var updateDeliveryResult = await orderService.UpdateDiveryInOrderDetail(req.orderDetailId, req.DeliveryInfo);
+            var updateDeliveryResult = await orderService.UpdateDiveryInOrderDetail(req);
             if (updateDeliveryResult == null)
             {
                 return BadRequest(ApiResult<ResponseMessage>.Error(new ResponseMessage()
