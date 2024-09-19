@@ -250,7 +250,7 @@ namespace L_L.Business.Services
                 throw new BadRequestException("OTP code is expired");
             }
 
-            if (user != null && user.Status == "Active")
+            if (user != null)
             {
                 user.CreateDate = DateTimeOffset.Now.AddMinutes(2);
                 user.OTPCode = new Random().Next(100000, 999999).ToString();
