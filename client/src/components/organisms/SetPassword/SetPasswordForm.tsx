@@ -1,4 +1,4 @@
-import {  SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { UserSetPasswordSchema, UserSetPasswordType } from '@/schemas/userSchema.ts'
 import { Form } from '@/components/atoms/ui/form.tsx'
 import FormInput from '@/components/molecules/FormInput.tsx'

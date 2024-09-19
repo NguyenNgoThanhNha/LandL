@@ -37,9 +37,15 @@ const Header = ({ classContent }: HeaderProps) => {
             </Link>
           ))}
         </div>
-        <Link to={ROUTES.CREATE_ORDER}
-              className={cn('flex gap-1 text-center backdrop-blur-lg font-normal cursor-pointer  hover:text-orangeTheme border rounded px-2 py-1',
-                path && path.pathname?.slice(1) === ROUTES.CREATE_ORDER && 'text-orangeTheme font-semibold border-orangeTheme')}>
+        <Link
+          to={ROUTES.CREATE_ORDER}
+          className={cn(
+            'flex gap-1 text-center backdrop-blur-lg font-normal cursor-pointer  hover:text-orangeTheme border rounded px-2 py-1',
+            path &&
+              path.pathname === ROUTES.CREATE_ORDER &&
+              'text-orangeTheme font-semibold border-orangeTheme/60'
+          )}
+        >
           Create order
         </Link>
         <div className={'flex gap-2 items-center'}>

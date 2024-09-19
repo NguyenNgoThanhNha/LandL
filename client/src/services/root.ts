@@ -19,13 +19,13 @@ export interface ResponseProps<T = any> {
   success?: boolean
   result?: {
     message?: string
-    data?: T,
-    token?: string
+    data?: T
   }
 }
 
 const handleApiError = (error: AxiosError) => {
   const { response } = error
+  console.log(response)
   return response?.data as ResponseProps
 }
 
@@ -44,6 +44,7 @@ export const get = async <T>(url: string): Promise<T | ResponseProps> => {
 export const post = async <T>(url: string, data?: unknown): Promise<T | ResponseProps> => {
   try {
     const response: AxiosResponse<T> = await api.post<T>(url, data)
+    console.log(response)
     return response.data
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -88,5 +89,3 @@ export const del = async <T>(url: string): Promise<T | ResponseProps> => {
     throw error
   }
 }
-
-

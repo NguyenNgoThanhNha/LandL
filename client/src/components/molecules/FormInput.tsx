@@ -38,12 +38,23 @@ const FormInput = <T extends FieldValues>({
             <Input
               autoFocus={autoFocus}
               placeholder={placeholder}
+              {...form.register(name)}
               {...field}
               type={type}
               className={cn(
                 'peer w-full rounded-md border border-gray-300 px-3 py-2 placeholder-transparent focus:outline-none outline-none',
                 type === 'password' ? 'tracking-[0.2rem] text-[lg]' : null
               )}
+              onChange={(e) => {
+                const value = e.target.value
+                if (type === 'number') {
+                  if (!isNaN(Number(value)) || value === '') {
+                    field.onChange(value)
+                  }
+                } else {
+                  field.onChange(value)
+                }
+              }}
             />
           </FormControl>
           <FormLabel className='absolute font-normal bg-white blur-10 w-fit px-2 -top-5 py-1 rounded left-3 peer-focus:font-semibold'>

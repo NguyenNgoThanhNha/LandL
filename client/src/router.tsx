@@ -16,6 +16,8 @@ import ProfilePage from '@/components/pages/Profile/ProfilePage.tsx'
 import BlogDetailPage from '@/components/pages/Blog/BlogDetailPage.tsx'
 import PaymentPage from './components/pages/PayOsPay/PaymentPage'
 import AdminLayout from '@/components/templates/AdminLayout.tsx'
+import MyOrderPage from '@/components/pages/MyOrder/MyOrderPage.tsx'
+import OrderDetailPage from '@/components/pages/OrderDetail/OrderDetailPage.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements([
@@ -36,9 +38,10 @@ const router = createBrowserRouter(
       <Route path={ROUTES.ABOUT_US} element={<AboutUsPage />} />,
       <Route path={ROUTES.PROFILE} element={<ProfilePage />} />,
       <Route path={ROUTES.BLOG_DETAIL} element={<BlogDetailPage />} />,
+      <Route path={ROUTES.MY_ORDER} element={<MyOrderPage />} />,
+      <Route path={ROUTES.ORDER_DETAIL_ID} element={<OrderDetailPage />} />,
     </Route>,
     <Route path={ROUTES.DASH_BOARD} element={<AdminLayout />}></Route>
-  
   ])
 )
 export default router

@@ -1,10 +1,5 @@
-
 const ProductInformation = () => {
-  return (
-    <div>
-    
-    </div>
-  )
+  return <div></div>
 }
 
 export default ProductInformation

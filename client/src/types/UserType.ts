@@ -3,11 +3,11 @@ export type TUser = {
   email: string
   userName: string
   phone: number
-  fullName:string
-  city:string
-  address:string
+  fullName: string
+  city: string
+  address: string
   avatar?: string
   password?: string
-  link:string
-  otp:string
+  link: string
+  otp: string
 }

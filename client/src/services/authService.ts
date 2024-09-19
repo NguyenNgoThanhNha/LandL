@@ -40,7 +40,7 @@ interface ResendOTPProps {
 }
 
 const resendOTP = async ({ email }: ResendOTPProps): Promise<ResponseProps> => {
-  return await post(`Auth/ResendOTPProps?email=${email}`, {})
+  return await post(`Auth/Resend-Otp?email=${email}`, {})
 }
 
 interface UpdatePasswordProps {
@@ -50,10 +50,10 @@ interface UpdatePasswordProps {
 }
 
 const updatePassword = async ({
-                                email,
-                                newPassword,
-                                confirmNewPassword
-                              }: UpdatePasswordProps): Promise<ResponseProps> => {
+  email,
+  newPassword,
+  confirmNewPassword
+}: UpdatePasswordProps): Promise<ResponseProps> => {
   return await post(`Auth/Update-Password?email=${email}`, {
     password: newPassword,
     confirmPassword: confirmNewPassword
@@ -67,6 +67,7 @@ interface LoginWithGGProps {
 const loginWithGG = async ({ data }: LoginWithGGProps): Promise<ResponseProps> => {
   return await post('Auth/login-google', data)
 }
+
 export default {
   register,
   verify,

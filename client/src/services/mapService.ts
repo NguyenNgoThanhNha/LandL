@@ -35,12 +35,13 @@ export const getLocationByPlaceId = async ({ placeId }: { placeId: string }) => 
   }
 }
 
-export const getDirection = async ({ source, destination }: { source: LngLat, destination: LngLat }) => {
+export const getDirection = async ({ source, destination }: { source: LngLat; destination: LngLat }) => {
   try {
-    const response = await axios.get(`${BASE_DIRECTION}?api_key=${GOONG_API}&origin=${source?.lat},${source.lng}&destination=${destination?.lat},${destination?.lng}`)
+    const response = await axios.get(
+      `${BASE_DIRECTION}?api_key=${GOONG_API}&origin=${source?.lat},${source.lng}&destination=${destination?.lat},${destination?.lng}`
+    )
     return response.data
-  } catch
-    (e) {
+  } catch (e) {
     throw e
   }
 }

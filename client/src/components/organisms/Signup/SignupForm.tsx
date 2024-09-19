@@ -82,9 +82,8 @@ const SignupForm = () => {
           <OptionFormFooter />
         </form>
       </Form>
-      {
-        loading && <Loading />
-      }</>
+      {loading && <Loading />}
+    </>
   )
 }
 

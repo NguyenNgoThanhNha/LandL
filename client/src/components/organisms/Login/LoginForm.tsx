@@ -28,7 +28,7 @@ const LoginForm = () => {
     const response = await auth.login(data)
     setLoading(false)
     if (response.success) {
-      localStorage.setItem('accessToken', response?.result?.token as string)
+      localStorage.setItem('accessToken', response?.result?.data as string)
       toast.success(response?.result?.message as string)
       navigate(ROUTES.HOME)
     } else {
@@ -36,8 +36,8 @@ const LoginForm = () => {
     }
   }
   return (
-    <Form {...form} >
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={'w-full'}>
         <div className={'grid grid-cols-2  gap-x-2 gap-y-4'}>
           <FormInput
             name={'email'}
@@ -52,8 +52,11 @@ const LoginForm = () => {
           </div>
         </div>
         <div className={'flex flex-col gap-2'}>
-          <Button className={'bg-orangeTheme w-full hover:bg-orangeTheme/90'} type={'submit'}
-                  disabled={form.formState.isSubmitting}>
+          <Button
+            className={'bg-orangeTheme w-full hover:bg-orangeTheme/90'}
+            type={'submit'}
+            disabled={form.formState.isSubmitting}
+          >
             Login
           </Button>
           <div className={'text-sm justify-center flex gap-1'}>

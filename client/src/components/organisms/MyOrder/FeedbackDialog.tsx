@@ -12,8 +12,7 @@ import DriverFeedback from '@/components/molecules/DriverFeedback.tsx'
 import { useState } from 'react'
 import { Textarea } from '@/components/atoms/ui/textarea.tsx'
 
-interface Props {
-}
+interface Props {}
 
 const FeedbackDialog = ({}: Props) => {
   const [feedback, setFeedback] = useState('')
@@ -29,15 +28,21 @@ const FeedbackDialog = ({}: Props) => {
             <DriverFeedback name={'Nguyen Van A'} rating={4.2} numberOfReviews={324} />
           </AlertDialogTitle>
           <AlertDialogDescription className={'text-white'}>
-            <Textarea className={'w-full text-darkTheme my-2'} placeholder={'Your feedback'} value={feedback}
-                      onChange={(e) => setFeedback(e.target.value)}></Textarea>
+            <Textarea
+              className={'w-full text-darkTheme my-2'}
+              placeholder={'Your feedback'}
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+            ></Textarea>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel
-            className={'hover:bg-darkTheme/10 text-darkTheme hover:text-darkTheme rounded-none'}>Skip</AlertDialogCancel>
-          <AlertDialogAction
-            className={'bg-darkTheme w-fit hover:bg-darkTheme/90 rounded-none'}>Submit</AlertDialogAction>
+          <AlertDialogCancel className={'hover:bg-darkTheme/10 text-darkTheme hover:text-darkTheme rounded-none'}>
+            Skip
+          </AlertDialogCancel>
+          <AlertDialogAction className={'bg-darkTheme w-fit hover:bg-darkTheme/90 rounded-none'}>
+            Submit
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -28,7 +28,19 @@ const VerifyCodeForm = () => {
     setLoading(false)
     if (response.success) {
       toast.success(response?.result?.message as string)
-      location.state?.nextState === 'SET_PASSWORD' ? navigate(ROUTES.SET_PASSWORD, { state: { email } }) : navigate(ROUTES.HOME)
+      location.state?.nextState === 'SET_PASSWORD'
+        ? navigate(ROUTES.SET_PASSWORD, { state: { email } })
+        : navigate(ROUTES.LOGIN)
+    } else {
+      toast.error(response?.result?.message as string)
+    }
+  }
+  const onResendOTP = async () => {
+    setLoading(true)
+    const response = await auth.resendOTP({ email })
+    setLoading(false)
+    if (response.success) {
+      toast.success(response?.result?.message as string)
     } else {
       toast.error(response?.result?.message as string)
     }
@@ -45,7 +57,11 @@ const VerifyCodeForm = () => {
             Verify
           </Button>
           <div className={'text-sm justify-center flex gap-1'}>
-            Didn't received any code? <span className={'text-orangeTheme font-semibold cursor-pointer'}> Resend</span>
+            Didn't received any code?{' '}
+            <span className={'text-orangeTheme font-semibold cursor-pointer'} onClick={onResendOTP}>
+              {' '}
+              Resend
+            </span>
           </div>
         </div>
       </form>

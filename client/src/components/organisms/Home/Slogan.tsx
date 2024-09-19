@@ -21,7 +21,7 @@ const Slogan = () => {
         className={
           'w-fit rounded-none text-lg font-semibold tracking-tight bg-orangeTheme hover:bg-orangeTheme/90 px-4 flex items-center space-x-2'
         }
-        onClick={() => navigate(ROUTES.SERVICE)}
+        onClick={() => navigate(ROUTES.CREATE_ORDER)}
       >
         Try now
         <ArrowUpRight size={26} />

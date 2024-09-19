@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:http/http.dart' as http;
 
 class THttpClient {
-  static const String _baseUrl = 'http://localhost:5000';
+  static const String _baseUrl = 'http://localhost:5000/api';
 
   static Future<Map<String, dynamic>> get(String endpoint) async {
     final response = await http.get(Uri.parse('$_baseUrl/$endpoint'));
@@ -17,8 +18,12 @@ class THttpClient {
 
   static Future<Map<String, dynamic>> post(
       String endpoint, dynamic data) async {
+    print(data);
+    print( json.encode(data));
+    print('$_baseUrl/$endpoint');
     final response = await http.post(Uri.parse('$_baseUrl/$endpoint'),
-        headers: {'Content-Type': 'Application/json'}, body: json.encode(data));
+        headers: {'Content-Type': 'application/json'}, body: json.encode(data));
+
     return _handleResponse(response);
   }
 
