@@ -10,7 +10,6 @@ const DeliveryContext = createContext<DeliveryContextType | undefined>(undefined
 export const DeliveryProvider = ({ children }: { children: ReactNode }) => {
   const [status, setStatus] = useState<DeliveryContextType['status']>(1)
   return <DeliveryContext.Provider value={{ status, setStatus }}>{children}</DeliveryContext.Provider>
-  
 }
 export const useDelivery = () => {
   const context = useContext(DeliveryContext)

@@ -14,8 +14,10 @@ export enum ROUTES {
   BLOG_DETAIL = '/blog/:id',
   CREATE_ORDER = '/create-order',
   MY_ORDER = '/my-order',
+  ORDER_DETAIL = '/order-detail',
+  ORDER_DETAIL_ID = '/order-detail/:id',
   LOGOUT = '/logout',
   PAY_OS = 'pay-os',
   //admim
-  DASH_BOARD='/dash-board'
+  DASH_BOARD = '/dash-board'
 }

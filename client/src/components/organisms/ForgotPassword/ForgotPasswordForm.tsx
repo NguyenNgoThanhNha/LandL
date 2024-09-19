@@ -22,7 +22,7 @@ const ForgotPasswordForm = () => {
       email: ''
     }
   })
-  
+
   const onSubmit: SubmitHandler<UserForgotPasswordType> = async (data: UserForgotPasswordType) => {
     setLoading(true)
     const response = await auth.forgotPassword(data)
@@ -58,9 +58,7 @@ const ForgotPasswordForm = () => {
         </div>
         <OptionFormFooter />
       </form>
-      {
-        loading && <Loading />
-      }
+      {loading && <Loading />}
     </Form>
   )
 }

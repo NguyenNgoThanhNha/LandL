@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mobile/data/repositories/authentication/authentication_repository.dart';
 import 'package:mobile/navigation_menu.dart';
 import 'package:mobile/utils/constants/image_strings.dart';
 import 'package:mobile/utils/helpers/network_manager.dart';
@@ -30,8 +31,23 @@ class LoginController extends GetxController {
         return;
       }
 
-      TFullScreenLoader.stopLoading();
-      Get.to(() => const NavigationMenu());
+      if (!loginFormKey.currentState!.validate()) {
+        TFullScreenLoader.stopLoading();
+        return;
+      }
+      print('${email.text.trim()} ${password.text.trim()}');
+      final res = await AuthenticationRepository.instance
+          .login(email.text.trim(), password.text.trim());
+      print(res);
+
+      if (res['success'] == true) {
+        localStorage.write('token', res['result']['token']);
+        TFullScreenLoader.stopLoading();
+        Get.to(() => const NavigationMenu());
+      } else {
+        TFullScreenLoader.stopLoading();
+        TLoaders.errorSnackBar(title: 'Login Failed', message: res['result']['message']);
+      }
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh Snaps', message: e.toString());
