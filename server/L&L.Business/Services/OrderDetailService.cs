@@ -25,7 +25,7 @@ namespace L_L.Business.Services
             return mapper.Map<List<OrderDetailsModel>>(unitOfWorks.OrderDetailRepository.GetAll().ToListAsync());
         }
 
-        public async Task<OrderDetailsModel> CreateOrderDetail(int orderId, CreateOrderRequest req)
+        public async Task<OrderDetailsModel> CreateOrderDetail(int orderId, CreateOrderRequest req, int userId)
         {
             var order = await unitOfWorks.OrderRepository.GetByIdAsync(orderId);
             if (order == null)
@@ -44,6 +44,8 @@ namespace L_L.Business.Services
             {
                 TotalDismension = $"{req.Width} x {req.Height} x {req.Length}",
                 Weight = req.Weight.ToString(),
+                SenderId = userId,
+                Quantity = 1
             });
             var resultProduct = await unitOfWorks.ProductRepository.Commit();
 
@@ -72,7 +74,8 @@ namespace L_L.Business.Services
                 OrderId = order.OrderId,
                 TotalPrice = req.TotalAmount,
                 VehicleTypeId = req.VehicleTypeId,
-                StartDate = DateTime.Now
+                StartDate = DateTime.Now,
+                OrderDetailCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"))
             });
 
             var result = await unitOfWorks.OrderDetailRepository.Commit();

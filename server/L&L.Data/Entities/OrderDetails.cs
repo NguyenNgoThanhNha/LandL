@@ -8,6 +8,7 @@ namespace L_L.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderDetailId { get; set; }
+        public int OrderDetailCode { get; set; }
         public int? Quantity { get; set; }
         public string? PaymentMethod { get; set; } = string.Empty;
         public decimal? UnitPrice { get; set; }

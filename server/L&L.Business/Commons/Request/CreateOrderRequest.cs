@@ -26,7 +26,6 @@ public class CreateOrderRequest
     public decimal Width { get; set; }
     [Required]
     public decimal Height { get; set; }
-
     public string Email { get; set; }
 
     public decimal TotalAmount { get; set; }

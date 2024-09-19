@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateDatabase : Migration
+    public partial class Updatedatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -318,8 +318,7 @@ namespace L_L.Data.Migrations
                     DimensionsLength = table.Column<decimal>(type: "numeric", nullable: false),
                     DimensionsWidth = table.Column<decimal>(type: "numeric", nullable: false),
                     DimensionsHeight = table.Column<decimal>(type: "numeric", nullable: false),
-                    TypeId = table.Column<int>(type: "integer", nullable: false),
-                    TruckTypeVehicleTypeId = table.Column<int>(type: "integer", nullable: false),
+                    VehicleTypeId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -332,8 +331,8 @@ namespace L_L.Data.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Truck_VehicleType_TruckTypeVehicleTypeId",
-                        column: x => x.TruckTypeVehicleTypeId,
+                        name: "FK_Truck_VehicleType_VehicleTypeId",
+                        column: x => x.VehicleTypeId,
                         principalTable: "VehicleType",
                         principalColumn: "VehicleTypeId",
                         onDelete: ReferentialAction.Cascade);
@@ -398,6 +397,7 @@ namespace L_L.Data.Migrations
                 {
                     OrderDetailId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OrderDetailCode = table.Column<int>(type: "integer", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: true),
                     PaymentMethod = table.Column<string>(type: "text", nullable: true),
                     UnitPrice = table.Column<decimal>(type: "numeric", nullable: true),
@@ -544,14 +544,14 @@ namespace L_L.Data.Migrations
                 column: "DriverId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Truck_TruckTypeVehicleTypeId",
-                table: "Truck",
-                column: "TruckTypeVehicleTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Truck_UserId",
                 table: "Truck",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Truck_VehicleTypeId",
+                table: "Truck",
+                column: "VehicleTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RoleID",
