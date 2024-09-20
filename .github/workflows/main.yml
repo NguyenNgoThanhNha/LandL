@@ -10,8 +10,10 @@ jobs:
     runs-on: self-hosted
     environment: docker
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2 
-
-    - name: Run Docker compose command
-      run: docker compose up --build -d
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Change directory to server and run Docker Compose
+        run: |
+          cd server
+          docker compose up --build -d
