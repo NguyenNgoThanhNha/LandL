@@ -1,6 +1,6 @@
-import { createContext, ReactNode, useContext, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { TUser } from '@/types/UserType.ts'
-
+import authService from "@/services/authService"
 interface AuthContextType {
   auth: {
     user?: TUser
@@ -12,7 +12,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState<AuthContextType['auth']>({})
+  const handleGetUserInfo = async () => {
+    const response = await authService.getUserInfo();
+    if (response.success) {
+      setAuth({ user: response.result?.data });
+    }
+  };
 
+  useEffect(() => {
+    handleGetUserInfo();
+  }, []);
   return <AuthContext.Provider value={{ auth, setAuth }}>{children}</AuthContext.Provider>
 }
 
