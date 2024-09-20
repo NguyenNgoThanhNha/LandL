@@ -97,7 +97,7 @@ namespace L_L.Business.Services
             var user = _unitOfWorks.AuthRepository.FindByCondition(u => u.Email == email).FirstOrDefault();
 
 
-            if (user is null)
+            if (user is null || user.Status == "InActive")
             {
                 return new LoginResult
                 {
@@ -126,10 +126,8 @@ namespace L_L.Business.Services
             };
         }
 
-        public async Task<LoginResult> SignInWithGG(SignInRequest req)
+        public async Task<LoginResult> SignInWithGG(LoginWithGGRequest req)
         {
-            if (req == null) throw new ArgumentNullException(nameof(req));
-
             var user = _unitOfWorks.AuthRepository.FindByCondition(u => u.Email == req.Email).FirstOrDefault();
 
             if (user != null)
@@ -138,7 +136,7 @@ namespace L_L.Business.Services
                 return new LoginResult
                 {
                     Authenticated = true,
-                    Token = null
+                    Token = CreateJwtToken(user)
                 };
             }
 
@@ -147,12 +145,8 @@ namespace L_L.Business.Services
                 Email = req.Email,
                 FullName = req.FullName,
                 UserName = req.UserName,
-                Password = SecurityUtil.Hash(req.Password!),
+                Password = SecurityUtil.Hash("123456"),
                 Avatar = req.Avatar,
-                PhoneNumber = req.PhoneNumber,
-                City = req.City,
-                Gender = req.Gender,
-                BirthDate = req.BirthDate,
                 OTPCode = "0",
                 TypeLogin = "Google",
                 RoleID = req.TypeAccount == "Customer" ? 2 : req.TypeAccount == "Driver" ? 3 : 0 // Adjust 0 if you have a default RoleID
@@ -169,7 +163,7 @@ namespace L_L.Business.Services
                 return new LoginResult
                 {
                     Authenticated = true,
-                    Token = null
+                    Token = CreateJwtToken(userRegister)
                 };
             }
 
