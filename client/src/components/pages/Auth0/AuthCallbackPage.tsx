@@ -2,21 +2,40 @@ import Loading from "@/components/templates/Loading";
 import { useAuth0 } from "@auth0/auth0-react"
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import auth from "@/services/authService";
+import { UserSignInGGType } from '@/schemas/userSchema.ts';
+import toast from "react-hot-toast";
 
 const AuthCallbackPage = () => {
     const navigate = useNavigate();
     const { user } = useAuth0();
-    // const { createUser } = useCreateMyUser();
     console.log(user)
     const hasCreatedUser = useRef(false);
 
+    const handleSignInWithGG = async (user: any) => {
+        console.log(111111111111)
+        const data: UserSignInGGType = {
+            email: user.email,
+            userName: user.nickname!,
+            fullName: user.given_name!,
+            avatar: user.picture!,
+            typeAccount: "Customer"
+        }
+        const response = await auth.loginWithGG({ data });
+        if (response.success) {
+            localStorage.setItem('accessToken', response?.result?.data as string)
+            toast.success(response?.result?.message as string)
+        } else {
+            toast.error(response?.result?.message as string)
+        }
+    }
+
     useEffect(() => {
         if (user?.sub && user?.email && !hasCreatedUser.current) {
-            // createUser({ auth0Id: user.sub, email: user.email }); login with google api
+            handleSignInWithGG(user);
             hasCreatedUser.current = true;
-            console.log(11111111111111111111111)
         }
-        // navigate("/");
+        navigate("/");
     }, [user, navigate])
     return (
         <Loading />

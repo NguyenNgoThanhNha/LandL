@@ -18,13 +18,12 @@ import PaymentPage from './components/pages/PayOsPay/PaymentPage'
 import AdminLayout from '@/components/templates/AdminLayout.tsx'
 import MyOrderPage from '@/components/pages/MyOrder/MyOrderPage.tsx'
 import OrderDetailPage from '@/components/pages/OrderDetail/OrderDetailPage.tsx'
-import { useAuth0 } from '@auth0/auth0-react'
+import AuthCallbackPage from './components/pages/Auth0/AuthCallbackPage'
 
 const AppRoutes = () => {
-  const { user } = useAuth0();
-  console.log(user)
   return (
     <Routes>
+      <Route path="/auth-callback" element={<AuthCallbackPage />} />
       <Route path={ROUTES.PAY_OS} element={<PaymentPage />} />,
       <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />,
       <Route path={ROUTES.LOGIN} element={<LoginPage />} />,
@@ -32,7 +31,7 @@ const AppRoutes = () => {
       <Route path={ROUTES.VERIFY_CODE} element={<VerifyCodePage />} />,
       <Route path={ROUTES.SET_PASSWORD} element={<SetPasswordPage />} />,
       <Route path={ROUTES.ROOT} element={<HomeLayout />}>
-        <Route index element={<Navigate to={ROUTES.HOME} />} />,
+        {/* <Route index element={<Navigate to={ROUTES.HOME} />} />, */}
         <Route path={ROUTES.HOME} element={<HomePage />} />
       </Route>,
       <Route path={ROUTES.ROOT} element={<MainLayout />}>
@@ -46,7 +45,7 @@ const AppRoutes = () => {
         <Route path={ROUTES.ORDER_DETAIL_ID} element={<OrderDetailPage />} />,
       </Route>,
       <Route path={ROUTES.DASH_BOARD} element={<AdminLayout />}></Route>
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<Navigate to="/home" />} />
     </Routes>
   )
 }

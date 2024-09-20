@@ -8,11 +8,11 @@ import AppRoutes from './router.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Router>
-    <AuthProvider>
-      <Auth0ProviderWithNavigate>
+    <Auth0ProviderWithNavigate>
+      <AuthProvider>
         <AppRoutes />
         <App />
-      </Auth0ProviderWithNavigate>
-    </AuthProvider>
+      </AuthProvider>
+    </Auth0ProviderWithNavigate>
   </Router>
 )

@@ -19,7 +19,7 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
     const onRedirectCallback = async (appState?: AppState, user?: User) => {
         console.log("User", user)
         console.log("appState", appState)
-        // navigate(appState?.returnTo || "/auth-callback")
+        navigate(appState?.returnTo || "/auth-callback")
     }
 
     return (
