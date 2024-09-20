@@ -11,9 +11,12 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@/components/atoms": ["src/components/atoms"],
-      "@/lib/utils": ["src/utils"]
+      "@/components/atoms": [
+        "src/components/atoms"
+      ],
+      "@/lib/utils": [
+        "src/utils"
+      ]
     }
   }
-
 }

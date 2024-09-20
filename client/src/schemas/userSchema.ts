@@ -100,3 +100,37 @@ export const UserGetPromoteCodeSchema = z.object({
 })
 
 export type UserGetPromoteCodeType = z.infer<typeof UserGetPromoteCodeSchema>
+
+
+
+//SignInGG
+export const UserSignInGGSchema = z.object({
+  email: z
+    .string({
+      required_error: 'Email is required'
+    })
+    .min(1, 'Email is required')
+    .email({ message: 'Email is not a valid email' }),
+  userName: z
+    .string({
+      required_error: 'Username is required'
+    })
+    .min(1, 'Username is required'),
+  fullName: z
+    .string({
+      required_error: 'FullName is required'
+    })
+    .min(1, 'FullName is required'),
+  avatar: z
+    .string({
+      required_error: 'Avatar is required'
+    })
+    .min(1, 'Avatar is required'),
+  typeAccount: z
+    .string({
+      required_error: 'TypeAccount is required'
+    })
+    .min(1, 'TypeAccount is required'),
+})
+
+export type UserSignInGGType = z.infer<typeof UserSignInGGSchema>

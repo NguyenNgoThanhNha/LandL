@@ -90,6 +90,10 @@ namespace L_L.API.Extensions
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true
                     };
+                    {
+                        options.Authority = "https://dev-urvottxjuerzz313.us.auth0.com/";
+                        options.Audience = "L&L";
+                    }
                 });
 
             services.AddDbContext<AppDbContext>(opt =>

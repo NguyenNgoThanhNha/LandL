@@ -222,7 +222,7 @@ namespace L_L.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("login-google")]
-        public async Task<IActionResult> LoginWithGoogle([FromBody] SignInRequest req)
+        public async Task<IActionResult> LoginWithGoogle([FromBody] LoginWithGGRequest req)
         {
             if (!ModelState.IsValid)
             {
@@ -238,9 +238,11 @@ namespace L_L.API.Controllers
 
             if (loginResult.Authenticated)
             {
+                var handler = new JwtSecurityTokenHandler();
                 var res = new SignInResponse
                 {
                     message = "Sign In Successfully",
+                    data = handler.WriteToken(loginResult.Token)
                 };
                 return Ok(ApiResult<SignInResponse>.Succeed(res));
             }

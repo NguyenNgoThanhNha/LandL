@@ -1,5 +1,5 @@
-import { post, ResponseProps } from '@/services/root.ts'
-import { UserSignupType } from '@/schemas/userSchema.ts'
+import { get, post, ResponseProps } from '@/services/root.ts'
+import { UserSignInGGType, UserSignupType } from '@/schemas/userSchema.ts'
 
 interface RegisterProps {
   data: UserSignupType
@@ -61,12 +61,17 @@ const updatePassword = async ({
 }
 
 interface LoginWithGGProps {
-  data: UserSignupType
+  data: UserSignInGGType
 }
 
 const loginWithGG = async ({ data }: LoginWithGGProps): Promise<ResponseProps> => {
   return await post('Auth/login-google', data)
 }
+
+const getUserInfo = async (): Promise<ResponseProps> => {
+  return await get('User/GetProfile')
+}
+
 
 export default {
   register,
@@ -75,5 +80,6 @@ export default {
   forgotPassword,
   resendOTP,
   updatePassword,
-  loginWithGG
+  loginWithGG,
+  getUserInfo
 }
