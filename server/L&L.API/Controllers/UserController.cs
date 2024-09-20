@@ -1,7 +1,7 @@
-﻿using CloudinaryDotNet;
-using L_L.Business.Commons;
+﻿using L_L.Business.Commons;
 using L_L.Business.Commons.Request;
 using L_L.Business.Commons.Response;
+using L_L.Business.Models;
 using L_L.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +18,73 @@ namespace L_L.API.Controllers
         {
             this.userService = userService;
         }
+
+        [HttpGet("Get1")]
+        [HttpGet("Get2")]
+        [HttpGet("Get3")]
+        public async Task<IActionResult> GetAuthor()
+        {
+            var currentRoute = HttpContext.Request.Path.Value.ToLower();
+
+            // require admin for get 1
+            if (currentRoute.Contains("get1"))
+            {
+                if (!User.IsInRole("Admin"))
+                {
+                    return Forbid();  // return 403 if not admin
+                }
+            }
+
+            var users = userService.GetAllUser();
+            return Ok(ApiResult<GetAllUserResponse>.Succeed(new GetAllUserResponse()
+            {
+                data = users
+            }));
+        }
+
+        // Roles
+        [Authorize(Policy = "AdminOnly")]
+        [HttpGet("Roles")]
+        public IActionResult GetBaseRole()
+        {
+            var users = userService.GetAllUser();
+            return Ok(ApiResult<GetAllUserResponse>.Succeed(new GetAllUserResponse()
+            {
+                data = users
+            }));
+        }
+
+        // Policy
+        [Authorize(Policy = "CustomerOnly")]
+        [HttpGet("Policy")]
+        public async Task<IActionResult> GetBasePolicyAsync()
+        {
+            if (!Request.Headers.TryGetValue("Authorization", out var token))
+            {
+                return Unauthorized(ApiResult<ResponseMessage>.Error(new ResponseMessage
+                {
+                    message = "Authorization header is missing."
+                }));
+            }
+
+            // Chia tách token
+            var tokenValue = token.ToString().Split(' ')[1];
+            var currentUser = await userService.GetUserInToken(tokenValue);
+            return Ok(ApiResult<UserModel>.Succeed(currentUser));
+        }
+
+        // Authorization handlers
+        [Authorize(Policy = "AdminHandler")]
+        [HttpGet("AdminHandler")]
+        public IActionResult AdminAction()
+        {
+            return Ok(ApiResult<ResponseMessage>.Succeed(new ResponseMessage()
+            {
+                message = "This action can only be accessed by Admins."
+            }));
+        }
+
+
 
         [Authorize(Roles = "Admin")]
         [HttpGet("Get-All")]
@@ -109,7 +176,7 @@ namespace L_L.API.Controllers
                     message = "Authorization header is missing."
                 }));
             }
-            
+
             // Chia tách token
             var tokenValue = token.ToString().Split(' ')[1];
             var currentUser = await userService.GetUserInToken(tokenValue);

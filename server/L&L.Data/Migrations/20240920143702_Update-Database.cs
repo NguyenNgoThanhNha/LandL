@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Updatedatabase : Migration
+    public partial class UpdateDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -240,6 +240,71 @@ namespace L_L.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Hub_User_SenderId",
                         column: x => x.SenderId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IdentityCard",
+                columns: table => new
+                {
+                    IdentityCardId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    id = table.Column<string>(type: "text", nullable: true),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    dob = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    home = table.Column<string>(type: "text", nullable: true),
+                    address = table.Column<string>(type: "text", nullable: true),
+                    sex = table.Column<string>(type: "text", nullable: true),
+                    nationality = table.Column<string>(type: "text", nullable: true),
+                    doe = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    type = table.Column<string>(type: "text", nullable: true),
+                    type_new = table.Column<string>(type: "text", nullable: true),
+                    address_entities = table.Column<string>(type: "text", nullable: true),
+                    features = table.Column<string>(type: "text", nullable: true),
+                    issue_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    imageFront = table.Column<string>(type: "text", nullable: true),
+                    imageBack = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdentityCard", x => x.IdentityCardId);
+                    table.ForeignKey(
+                        name: "FK_IdentityCard_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LicenseDriver",
+                columns: table => new
+                {
+                    LicenseDriverId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    id = table.Column<string>(type: "text", nullable: true),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    dob = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    nation = table.Column<string>(type: "text", nullable: true),
+                    address = table.Column<string>(type: "text", nullable: true),
+                    place_issue = table.Column<string>(type: "text", nullable: true),
+                    date = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    doe = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    classLicense = table.Column<string>(type: "text", nullable: true),
+                    type = table.Column<string>(type: "text", nullable: true),
+                    imageFront = table.Column<string>(type: "text", nullable: true),
+                    imageBack = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LicenseDriver", x => x.LicenseDriverId);
+                    table.ForeignKey(
+                        name: "FK_LicenseDriver_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
@@ -489,6 +554,16 @@ namespace L_L.Data.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_IdentityCard_UserId",
+                table: "IdentityCard",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LicenseDriver_UserId",
+                table: "LicenseDriver",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Order_DriverId",
                 table: "Order",
                 column: "DriverId");
@@ -572,6 +647,12 @@ namespace L_L.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Hub");
+
+            migrationBuilder.DropTable(
+                name: "IdentityCard");
+
+            migrationBuilder.DropTable(
+                name: "LicenseDriver");
 
             migrationBuilder.DropTable(
                 name: "OrderTracking");

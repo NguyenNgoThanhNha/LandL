@@ -378,6 +378,7 @@ namespace L_L.Business.Services
             new(JwtRegisteredClaimNames.Email, user.Email),
             new(ClaimTypes.Role, userRole.RoleName),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim("IsCustomer", userRole.RoleName == "Customer" ? "Customer" : "Admin")
         };
 
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);

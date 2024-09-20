@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace L_L.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240919105203_Update-database")]
-    partial class Updatedatabase
+    [Migration("20240920143702_Update-Database")]
+    partial class UpdateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,6 +172,123 @@ namespace L_L.Data.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Hub");
+                });
+
+            modelBuilder.Entity("L_L.Data.Entities.IdentityCard", b =>
+                {
+                    b.Property<int>("IdentityCardId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdentityCardId"));
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("address")
+                        .HasColumnType("text");
+
+                    b.Property<string>("address_entities")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("dob")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("doe")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("features")
+                        .HasColumnType("text");
+
+                    b.Property<string>("home")
+                        .HasColumnType("text");
+
+                    b.Property<string>("id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("imageBack")
+                        .HasColumnType("text");
+
+                    b.Property<string>("imageFront")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("issue_date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("nationality")
+                        .HasColumnType("text");
+
+                    b.Property<string>("sex")
+                        .HasColumnType("text");
+
+                    b.Property<string>("type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("type_new")
+                        .HasColumnType("text");
+
+                    b.HasKey("IdentityCardId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("IdentityCard");
+                });
+
+            modelBuilder.Entity("L_L.Data.Entities.LicenseDriver", b =>
+                {
+                    b.Property<int>("LicenseDriverId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LicenseDriverId"));
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("address")
+                        .HasColumnType("text");
+
+                    b.Property<string>("classLicense")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("dob")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("doe")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("imageBack")
+                        .HasColumnType("text");
+
+                    b.Property<string>("imageFront")
+                        .HasColumnType("text");
+
+                    b.Property<string>("name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("nation")
+                        .HasColumnType("text");
+
+                    b.Property<string>("place_issue")
+                        .HasColumnType("text");
+
+                    b.Property<string>("type")
+                        .HasColumnType("text");
+
+                    b.HasKey("LicenseDriverId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LicenseDriver");
                 });
 
             modelBuilder.Entity("L_L.Data.Entities.Order", b =>
@@ -749,6 +866,28 @@ namespace L_L.Data.Migrations
                     b.Navigation("Recipient");
 
                     b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("L_L.Data.Entities.IdentityCard", b =>
+                {
+                    b.HasOne("L_L.Data.Entities.User", "UserIdentityCard")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserIdentityCard");
+                });
+
+            modelBuilder.Entity("L_L.Data.Entities.LicenseDriver", b =>
+                {
+                    b.HasOne("L_L.Data.Entities.User", "UserLicense")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserLicense");
                 });
 
             modelBuilder.Entity("L_L.Data.Entities.Order", b =>

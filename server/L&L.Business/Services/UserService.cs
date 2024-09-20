@@ -206,7 +206,14 @@ namespace L_L.Business.Services
             {
                 throw new BadRequestException("Can not found User");
             }
-            return _mapper.Map<UserModel>(user);
+            var userModel = _mapper.Map<UserModel>(user);
+            if (userModel.AccountBalance != null)
+            {
+                var balance = SecurityUtil.Decrypt(userModel.AccountBalance);
+                userModel.AccountBalance = balance;
+            }
+
+            return userModel;
         }
 
 

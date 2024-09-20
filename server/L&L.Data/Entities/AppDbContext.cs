@@ -29,6 +29,8 @@ namespace L_L.Data.Entities
         public DbSet<PackageType> PackageTypes { get; set; }
         public DbSet<ShippingRate> ShippingRates { get; set; }
         public DbSet<VehiclePackageRelation> VehiclePackageRelations { get; set; }
+        public DbSet<IdentityCard> IdentityCards { get; set; }
+        public DbSet<LicenseDriver> LicenseDrivers { get; set; }
 
         #endregion
 

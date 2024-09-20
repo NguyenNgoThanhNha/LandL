@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using L_L.API.Handler;
 using L_L.Business.Mappers;
 using L_L.Business.Middlewares;
 using L_L.Business.Services;
@@ -8,6 +9,7 @@ using L_L.Data.Entities;
 using L_L.Data.SeedData;
 using L_L.Data.UnitOfWorks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -58,7 +60,19 @@ namespace L_L.API.Extensions
             // cloud
             services.Configure<CloundSettings>(configuration.GetSection(nameof(CloundSettings)));
 
-            services.AddAuthorization();
+            /*            services.AddAuthorization();*/
+
+            // set policy prn
+            services.AddAuthorization(options =>
+            {
+                // Define policy role for Admin
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+                // Define policy claim for Admin
+                options.AddPolicy("CustomerOnly", policy => policy.RequireClaim("IsCustomer", "Customer"));
+                // handler policy
+                options.AddPolicy("AdminHandler", policy =>
+                    policy.Requirements.Add(new AdminRequirement("Admin")));
+            });
 
             services.AddAuthentication(options =>
             {
@@ -106,6 +120,7 @@ namespace L_L.API.Extensions
             services.AddScoped<ProductService>();
             services.AddScoped<DeliveryInfoService>();
 
+            services.AddSingleton<IAuthorizationHandler, AdminHandler>();
             return services;
         }
     };
