@@ -37,7 +37,7 @@ const SearchInput = <T extends FieldValues>({
     if (call && debouncedValue) {
       search()
     }
-  }, [debouncedValue, call])
+  }, [debouncedValue, call, search])
 
   useEffect(() => {
     setCall(true)

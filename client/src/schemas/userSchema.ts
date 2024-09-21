@@ -101,8 +101,6 @@ export const UserGetPromoteCodeSchema = z.object({
 
 export type UserGetPromoteCodeType = z.infer<typeof UserGetPromoteCodeSchema>
 
-
-
 //SignInGG
 export const UserSignInGGSchema = z.object({
   email: z
@@ -130,7 +128,7 @@ export const UserSignInGGSchema = z.object({
     .string({
       required_error: 'TypeAccount is required'
     })
-    .min(1, 'TypeAccount is required'),
+    .min(1, 'TypeAccount is required')
 })
 
 export type UserSignInGGType = z.infer<typeof UserSignInGGSchema>

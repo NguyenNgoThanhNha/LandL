@@ -38,5 +38,3 @@ interface GetOrderDetailByOrderIdProps {
 export const getOrderDetailByOrderId = async ({ id }: GetOrderDetailByOrderIdProps): Promise<ResponseProps> => {
   return await get(`Order/GetOrderDetailByOrderId?orderId=${id}`)
 }
-
-

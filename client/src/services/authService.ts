@@ -72,7 +72,6 @@ const getUserInfo = async (): Promise<ResponseProps> => {
   return await get('User/GetProfile')
 }
 
-
 export default {
   register,
   verify,

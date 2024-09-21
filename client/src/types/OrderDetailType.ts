@@ -3,16 +3,16 @@ import { TOrder } from '@/types/OrderType.ts'
 import { TDeliveryInfoDetail } from '@/types/DeliveryInfoDetailType.ts'
 import { TTruck } from '@/types/TruckType.ts'
 
-export type   TOrderDetail = {
-  deliveryInfoDetail?:TDeliveryInfoDetail,
-  deliveryInfoId: number,
-  endDate: string,
+export type TOrderDetail = {
+  deliveryInfoDetail?: TDeliveryInfoDetail
+  deliveryInfoId: number
+  endDate: string
   orderDetailId: number
   orderId: number
   orderInfo?: TOrder
-  paymentMethod: string,
+  paymentMethod: string
   productId: number
-  productInfo?:TPackage
+  productInfo?: TPackage
   quantity: number
   senderId: number
   startDate: string
@@ -21,5 +21,4 @@ export type   TOrderDetail = {
   truckId: number
   truckInfo?: TTruck
   unitPrice?: number
-  
 }
