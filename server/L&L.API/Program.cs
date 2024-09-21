@@ -58,19 +58,30 @@ namespace L_L.API
             });
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                var connectionString = builder.Configuration.GetConnectionString("PgDbConnection");
-                Console.WriteLine($"PgDbConnection Program: {connectionString}");
-                await using (var scope = app.Services.CreateAsyncScope())
-                {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                    await dbContext.Database.MigrateAsync();
-                }
+            /*            if (app.Environment.IsDevelopment())
+                        {
+                            var connectionString = builder.Configuration.GetConnectionString("PgDbConnection");
+                            Console.WriteLine($"PgDbConnection Program: {connectionString}");
+                            await using (var scope = app.Services.CreateAsyncScope())
+                            {
+                                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                                await dbContext.Database.MigrateAsync();
+                            }
 
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                            app.UseSwagger();
+                            app.UseSwaggerUI();
+                        }*/
+
+            var connectionString = builder.Configuration.GetConnectionString("PgDbConnection");
+            Console.WriteLine($"PgDbConnection Program: {connectionString}");
+            await using (var scope = app.Services.CreateAsyncScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                await dbContext.Database.MigrateAsync();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseCors("CORS");
 

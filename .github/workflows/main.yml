@@ -13,6 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
-      - name: Run Docker Compose in server directory
-        working-directory: ./server
-        run: docker-compose up --build -d
+      - name: Run Docker Compose
+        run: docker compose -f server/docker-compose.yml up --build -d
+
