@@ -6,7 +6,6 @@ namespace L_L.API.Handler
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AdminRequirement requirement)
         {
-            // Kiểm tra nếu người dùng có vai trò cần thiết
             if (context.User.IsInRole(requirement.RequiredRole))
             {
                 context.Succeed(requirement);
