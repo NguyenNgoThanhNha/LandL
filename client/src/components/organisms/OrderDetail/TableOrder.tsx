@@ -26,11 +26,11 @@ const TableOrder = ({ data }: TableOrderProps) => {
       <TableCaption className={'font-medium text-lg'}>A list of your orders.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[200px]">Order</TableHead>
+          <TableHead className='w-[200px]'>Order</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Driver</TableHead>
           <TableHead>Publish Date</TableHead>
-          <TableHead className="text-right">Cost</TableHead>
+          <TableHead className='text-right'>Cost</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
@@ -41,7 +41,7 @@ const TableOrder = ({ data }: TableOrderProps) => {
               <TableCell className={'font-medium '}>{order.orderCode}</TableCell>
               <TableCell>{order.status}</TableCell>
               <TableCell className={cn(order.orderDriver?.fullName !== null && 'text-orangeTheme font-medium')}>
-              <p>  {order.orderDriver?.fullName ?? 'Waiting...'}</p>
+                <p> {order.orderDriver?.fullName ?? 'Waiting...'}</p>
               </TableCell>
               <TableCell>{formatDate(order.orderDate)}</TableCell>
               <TableCell className={'text-right'}>{formatCurrency(order.totalAmount)}</TableCell>

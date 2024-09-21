@@ -14,7 +14,7 @@ export const DeliveryProvider = ({ children }: { children: ReactNode }) => {
 export const useDelivery = () => {
   const context = useContext(DeliveryContext)
   if (!context) {
-    throw new Error('useDelivery must be used within an AuthProvider')
+    throw new Error('useDelivery must be used within an DeliveryProvider')
   }
   return context
 }

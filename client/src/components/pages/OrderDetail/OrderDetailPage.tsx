@@ -24,7 +24,7 @@ const OrderDetailPage = () => {
     }
     setLoading(true)
     const response = await getOrderDetailByOrderId({ id })
-    
+
     setLoading(false)
     if (response.success) {
       const data: TOrderDetail = response?.result?.data[0]
@@ -33,7 +33,6 @@ const OrderDetailPage = () => {
     } else {
       toast.error(response?.result?.message as string)
     }
-    
   }
   useEffect(() => {
     getInfo()
@@ -46,7 +45,6 @@ const OrderDetailPage = () => {
         {status === 1 && <WaitingConfirm />}
         {status === 3 && <TruckInformation />}
         {/*<MapCustom />*/}
-      
       </div>
     </DeliveryProvider>
   )

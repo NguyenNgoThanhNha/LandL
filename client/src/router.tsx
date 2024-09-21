@@ -23,7 +23,7 @@ import AuthCallbackPage from './components/pages/Auth0/AuthCallbackPage'
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/auth-callback" element={<AuthCallbackPage />} />
+      <Route path='/auth-callback' element={<AuthCallbackPage />} />
       <Route path={ROUTES.PAY_OS} element={<PaymentPage />} />,
       <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />,
       <Route path={ROUTES.LOGIN} element={<LoginPage />} />,
@@ -33,7 +33,8 @@ const AppRoutes = () => {
       <Route path={ROUTES.ROOT} element={<HomeLayout />}>
         {/* <Route index element={<Navigate to={ROUTES.HOME} />} />, */}
         <Route path={ROUTES.HOME} element={<HomePage />} />
-      </Route>,
+      </Route>
+      ,
       <Route path={ROUTES.ROOT} element={<MainLayout />}>
         <Route path={ROUTES.CREATE_ORDER} element={<ServicePage />} />,
         <Route path={ROUTES.COST} element={<CostPage />} />,
@@ -43,9 +44,9 @@ const AppRoutes = () => {
         <Route path={ROUTES.BLOG_DETAIL} element={<BlogDetailPage />} />,
         <Route path={ROUTES.MY_ORDER} element={<MyOrderPage />} />,
         <Route path={ROUTES.ORDER_DETAIL_ID} element={<OrderDetailPage />} />,
-      </Route>,
-      <Route path={ROUTES.DASH_BOARD} element={<AdminLayout />}></Route>
-      <Route path="*" element={<Navigate to="/home" />} />
+      </Route>
+      ,<Route path={ROUTES.DASH_BOARD} element={<AdminLayout />}></Route>
+      <Route path='*' element={<Navigate to='/home' />} />
     </Routes>
   )
 }

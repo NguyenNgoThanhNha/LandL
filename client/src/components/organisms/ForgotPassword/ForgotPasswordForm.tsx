@@ -36,7 +36,7 @@ const ForgotPasswordForm = () => {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={'flex flex-col gap-y-3'}>
         <div className={'grid grid-cols-2  gap-x-2 gap-y-4'}>
           <FormInput
             name={'email'}

@@ -7,8 +7,8 @@ import TrustLine from '@/components/organisms/Home/TrustLine.tsx'
 import { useAuth } from '@/context/authContext'
 
 const HomePage = () => {
-  const { auth } = useAuth();
-  console.log("Auth: ", auth)
+  const { auth } = useAuth()
+  console.log('Auth: ', auth)
   return (
     <div className={'flex flex-col items-center justify-center'}>
       <AboutUsLine />

@@ -4,11 +4,11 @@ import { useDelivery } from '@/context/deliveryContext.tsx'
 
 interface Props {
   title: string
-  id: number,
+  id: number
   length: number
 }
 
-const ProcessState = ({ title, id, length}: Props) => {
+const ProcessState = ({ title, id, length }: Props) => {
   const { status } = useDelivery()
   return (
     <div className={'col-span-1 relative flex flex-col h-20 justify-center items-center'}>
