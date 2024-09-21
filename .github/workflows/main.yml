@@ -13,8 +13,5 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
-      - name: Change to server directory
-        run: cd ./server
-      
       - name: Run Docker Compose
         run: docker compose up --build -d
