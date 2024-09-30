@@ -24,8 +24,8 @@ class MapGoongController extends GetxController {
   List<Map> carouselData = [];
   StreamSubscription<Position>? positionStream;
 
-  // CircleAnnotationManager? _circleAnnotationManagerStart;
-  // CircleAnnotationManager? _circleAnnotationManagerEnd;
+  final order = null;
+
 
   final isShowStart = false.obs;
   final isShowEnd = false;
@@ -37,9 +37,9 @@ class MapGoongController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // loadCurrentLocation();
+    loadCurrentLocation();
 
-    _getCurrentLocation();
+    // _getCurrentLocation();
     loadCurrentAddress();
     initialCameraPosition =
         CameraPosition(target: currentLocation.value, zoom: 14);
@@ -79,12 +79,14 @@ class MapGoongController extends GetxController {
 
   void loadCurrentLocation() {
     currentLocation.value = getCurrentLatLngFromGetStorage();
+    print(currentLocation.value);
   }
 
   void loadCurrentAddress() async {
     // currentAddress.value = getCurrentAddressFromGetStorage();
     currentAddress.value =
         (await getParsedReverseGeocoding(currentLocation.value))['place'];
+    print(">>>>>>>>>>>>> ${currentAddress.value}");
   }
 
   void onMapCreated(MapboxMapController controller) async {

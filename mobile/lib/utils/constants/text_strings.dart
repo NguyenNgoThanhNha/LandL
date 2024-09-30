@@ -1,15 +1,15 @@
 class TTexts {
-  static const String onBoardingTitle1 = "Estimated Your Cost";
-  static const String onBoardingTitle2 = "Matching The Driver";
-  static const String onBoardingTitle3 = "Delivery Your Package";
+  static const String onBoardingTitle1 = "Estimate Your Earnings";
+  static const String onBoardingTitle2 = "Get Matched with a Delivery";
+  static const String onBoardingTitle3 = "Deliver Packages Efficiently";
 
   //Onboarding Texts
   static const String onBoardingSubTitle1 =
-      "We help you estimate the cost instantly – ensuring transparency and maximum savings for you!";
+      "Quickly estimate how much you’ll earn, with full transparency for each delivery!";
   static const String onBoardingSubTitle2 =
-      "Finding the best driver for you – fast and reliable, anytime and anywhere!";
+      "Get matched with delivery requests instantly – reliable jobs, anytime and anywhere!";
   static const String onBoardingSubTitle3 =
-      "Our driver picks up your package swiftly and securely – ensuring safe delivery from the very start!";
+      "Pick up and deliver packages efficiently and safely, ensuring customer satisfaction from start to finish!";
 
   // Home
   static const String homeAppbarTitle = "Good day for shopping";
@@ -21,6 +21,7 @@ class TTexts {
   static const String fullName = "Full Name";
   static const String email = "E-Mail";
   static const String password = "Password";
+  static const String confirmPassword = "Confirm Password";
   static const String newPassword = "New Password";
   static const String city = "City";
   static const String phoneNumber = "Phone Number";

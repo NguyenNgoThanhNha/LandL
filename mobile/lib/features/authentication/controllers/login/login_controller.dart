@@ -17,9 +17,24 @@ class LoginController extends GetxController {
   final localStorage = GetStorage();
   final email = TextEditingController();
   final password = TextEditingController();
-  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  final loginFormKey = GlobalKey<FormState>();
 
-// final userController = Get.put(UserController());
+  @override
+  void onClose() {
+    email.dispose();
+    password.dispose();
+    super.onClose();
+  }
+
+  @override
+  void onInit() {
+    print(localStorage.read('email'));
+    if (localStorage.read('email') != null) {
+
+      email.text = localStorage.read('email');
+    }
+    super.onInit();
+  } // final userController = Get.put(UserController());
 
   Future<void> login() async {
     try {
@@ -35,18 +50,21 @@ class LoginController extends GetxController {
         TFullScreenLoader.stopLoading();
         return;
       }
-      print('${email.text.trim()} ${password.text.trim()}');
+
       final res = await AuthenticationRepository.instance
           .login(email.text.trim(), password.text.trim());
-      print(res);
-
-      if (res['success'] == true) {
-        localStorage.write('token', res['result']['token']);
+      if (res.success == true) {
+        localStorage.write('token', res.result?.data['accessToken']);
+        localStorage.write('refreshToken', res.result!.data?["refreshToken"]);
+        localStorage.write('email', email.text.trim());
+        localStorage.write('isFirstTime', false);
+        await AuthenticationRepository.instance.checkUserFromBackend();
         TFullScreenLoader.stopLoading();
-        Get.to(() => const NavigationMenu());
+        Get.offAll(() => const NavigationMenu());
       } else {
         TFullScreenLoader.stopLoading();
-        TLoaders.errorSnackBar(title: 'Login Failed', message: res['result']['message']);
+        TLoaders.errorSnackBar(
+            title: 'Login Failed', message: res.result?.message);
       }
     } catch (e) {
       TFullScreenLoader.stopLoading();

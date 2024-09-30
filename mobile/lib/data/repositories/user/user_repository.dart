@@ -1,11 +1,16 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mobile/features/personalization/models/user_model.dart';
 import 'package:mobile/utils/http/http_client.dart';
 
 class UserRepository extends GetxController {
   UserRepository get instance => Get.find();
 
   final deviceStorage = GetStorage();
+  final profileLoading = false.obs;
+  Rx<UserModel> user = UserModel(
+          userName: '', password: '', email: '', city: '', phoneNumber: '')
+      .obs;
 
   @override
   void onInit() {
@@ -13,11 +18,28 @@ class UserRepository extends GetxController {
     super.onInit();
   }
 
-  Future<void> login(String email, String password) async {
+  Future<UserModel?> fetchUserDetails() async {
     try {
-      THttpClient.post('login', {email, password});
+      profileLoading.value = true;
+      final response =
+          await THttpClient.get<Map<String, dynamic>>('User/GetProfile');
+      profileLoading.value = false;
+      if (response.success) {
+        return UserModel.fromJson(
+            response.result?.data as Map<String, dynamic>);
+      } else {
+        return null;
+      }
     } catch (e) {
-      throw 'Something went wrong';
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  Future<void> uploadImageIdCard() async {
+    try{
+
+    }catch(e){
+      throw 'Something went wrong. Please try again.';
     }
   }
 }

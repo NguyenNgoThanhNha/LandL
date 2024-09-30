@@ -1,3 +1,4 @@
+import 'package:get_storage/get_storage.dart';
 import 'package:mobile/commons/widgets/images/circular_image.dart';
 import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/constants/image_strings.dart';
@@ -14,6 +15,7 @@ class TUserProfileTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceStorage = GetStorage();
     // final controller = UserController.instance;
     return ListTile(
       leading: const TCircularImage(
@@ -23,7 +25,7 @@ class TUserProfileTile extends StatelessWidget {
         padding: 0,
       ),
       title: Text(
-        'Hieu',
+        deviceStorage.read('username') ?? "",
         // controller.user.value.fullName,
         style: Theme.of(context)
             .textTheme
@@ -31,7 +33,7 @@ class TUserProfileTile extends StatelessWidget {
             .apply(color: TColors.white),
       ),
       subtitle: Text(
-        'hioeu@gmail.com',
+        deviceStorage.read('email') ?? "",
         // controller.user.value.email,
         style:
             Theme.of(context).textTheme.bodyMedium!.apply(color: TColors.white),

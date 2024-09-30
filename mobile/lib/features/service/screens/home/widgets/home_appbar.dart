@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mobile/commons/widgets/appbar/appbar.dart';
 import 'package:mobile/commons/widgets/images/circular_image.dart';
@@ -17,6 +18,7 @@ class THomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
+    final username = GetStorage().read('username');
     // final controller = Get.put(UserController());
     return TAppbar(
       title: Column(
@@ -36,7 +38,7 @@ class THomeAppBar extends StatelessWidget {
           //     return
           Text(
             // controller.user.value.fullName,
-            "Hieu",
+            username,
             style: Theme.of(context)
                 .textTheme
                 .headlineSmall!
@@ -50,7 +52,8 @@ class THomeAppBar extends StatelessWidget {
       ),
       actions: [
         TNotificationIcon(
-            onPressed: () => Get.to(()=> const NotificationScreen()), iconColor: dark ? TColors.white : Colors.black),
+            onPressed: () => Get.to(() => const NotificationScreen()),
+            iconColor: dark ? TColors.white : Colors.black),
         GestureDetector(
           onTap: () {},
           child: const TCircularImage(image: TImages.avatar),

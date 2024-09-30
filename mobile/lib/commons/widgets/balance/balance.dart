@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mobile/features/service/controllers/home/home_controller.dart';
 import 'package:mobile/utils/constants/colors.dart';
@@ -13,6 +14,7 @@ class TBalance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final accountBalance = GetStorage().read("balance");
     final controller = HomeController.instance;
     return Container(
       padding: const EdgeInsets.all(TSizes.md),
@@ -51,7 +53,7 @@ class TBalance extends StatelessWidget {
                             .apply(color: TColors.white),
                       );
                     } else {
-                      return Text('100.000.000',
+                      return Text(accountBalance ?? "0.000",
                           style: Theme.of(context)
                               .textTheme
                               .displaySmall!

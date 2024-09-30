@@ -55,7 +55,7 @@ class SignUpForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(SignupController());
+    final controller = Get.put(SignupController(), permanent: false);
     final dark = THelperFunctions.isDarkMode(context);
     return Form(
       key: controller.signupFormKey,
@@ -103,6 +103,27 @@ class SignUpForm extends StatelessWidget {
                           !controller.hidePassword.value,
                       icon: Icon(
                         controller.hidePassword.value
+                            ? Iconsax.eye_slash
+                            : Iconsax.eye,
+                      ))),
+            ),
+          ),
+          const SizedBox(
+            height: TSizes.spaceBtwInputFields,
+          ),
+          Obx(
+                () => TextFormField(
+              controller: controller.confirmPassword,
+              validator: (value) => TValidator.validatePassword(value),
+              obscureText: controller.hideConfirmPassword.value,
+              decoration: InputDecoration(
+                  labelText: TTexts.confirmPassword,
+                  prefixIcon: const Icon(Iconsax.password_check),
+                  suffixIcon: IconButton(
+                      onPressed: () => controller.hideConfirmPassword.value =
+                      !controller.hideConfirmPassword.value,
+                      icon: Icon(
+                        controller.hideConfirmPassword.value
                             ? Iconsax.eye_slash
                             : Iconsax.eye,
                       ))),

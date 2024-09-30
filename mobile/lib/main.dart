@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -13,6 +15,14 @@ void main() async {
 
   Get.put(SplashController());
   Get.put(AuthenticationRepository());
-
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const App());
+}
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true; // Chấp nhận mọi chứng chỉ
+  }
 }

@@ -23,28 +23,7 @@ class TDeliveryPackage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              'Electronics/Gadgets',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .apply(overflow: TextOverflow.ellipsis),
-            ),
-            Text.rich(TextSpan(children: [
-              TextSpan(
-                  text: 'Receipient: ',
-                  style: Theme.of(context).textTheme.bodySmall),
-              TextSpan(
-                  text: 'Paul Pogba',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall!
-                      .apply(overflow: TextOverflow.ellipsis))
-            ])),
-            const SizedBox(
-              height: TSizes.spacebtwItems / 2,
-            ),
-            Row(
+            const Row(
               children: [
                 const TRoundedIcon(
                   icon: Iconsax.truck_fast,
@@ -52,33 +31,27 @@ class TDeliveryPackage extends StatelessWidget {
                   size: 30,
                 ),
                 const SizedBox(
-                  width: TSizes.spacebtwItems,
+                  width: TSizes.spacebtwItems / 2,
                 ),
                 Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Iconsax.location,
-                          color: Colors.green,
-                        ),
-                        Text(
-                          TTexts.dropOff,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        )
-                      ],
-                    ),
-                    Text(
-                      'Maryland bustop, Anthony Ikeja',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .apply(overflow: TextOverflow.ellipsis),
-                    )
-                  ],
-                ))
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const TLocationLine(
+                        icon: Iconsax.location,
+                        title: TTexts.pickupLocation,
+                        iconColor: TColors.primary,
+                        content: '32 Samwell Sq, Chevron32 ',
+                      ),
+                      const TLocationLine(
+                        icon: Iconsax.level,
+                        title: TTexts.deliveryLocation,
+                        iconColor: Colors.green,
+                        content: '21b, Karimu Kotun Street, Victoria Island',
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
             const SizedBox(
@@ -90,15 +63,17 @@ class TDeliveryPackage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      TTexts.intendTime,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .apply(overflow: TextOverflow.ellipsis),
+                        TTexts.intendTime,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .titleSmall!
+                            .apply(color: Colors.grey, fontWeightDelta: 500),
                     ),
                     Text(
                       '15:00 PM Jun 24',
-                      style: Theme.of(context)
+                      style: Theme
+                          .of(context)
                           .textTheme
                           .bodyMedium!
                           .apply(overflow: TextOverflow.ellipsis),
@@ -110,7 +85,8 @@ class TDeliveryPackage extends StatelessWidget {
                 ),
                 Expanded(
                     child: ElevatedButton(
-                        onPressed: () => Get.to(() => const DeliveryDetailScreen()),
+                        onPressed: () =>
+                            Get.to(() => const DeliveryDetailScreen()),
                         child: const Text('View')))
               ],
             )

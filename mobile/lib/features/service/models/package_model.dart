@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-class UserModel {
+class PackageModel {
   final int productId;
   final String productName;
   final int quantity;
@@ -10,7 +10,7 @@ class UserModel {
   final int weight;
   final String image;
 
-  UserModel({
+  PackageModel({
     required this.productId,
     required this.productName,
     required this.quantity,
@@ -20,7 +20,7 @@ class UserModel {
     required this.image,
   });
 
-  UserModel copyWith({
+  PackageModel copyWith({
     int? productId,
     String? productName,
     int? quantity,
@@ -29,7 +29,7 @@ class UserModel {
     int? weight,
     String? image,
   }) =>
-      UserModel(
+      PackageModel(
         productId: productId ?? this.productId,
         productName: productName ?? this.productName,
         quantity: quantity ?? this.quantity,
@@ -39,11 +39,11 @@ class UserModel {
         image: image ?? this.image,
       );
 
-  factory UserModel.fromRawJson(String str) => UserModel.fromJson(json.decode(str));
+  factory PackageModel.fromRawJson(String str) => PackageModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+  factory PackageModel.fromJson(Map<String, dynamic> json) => PackageModel(
     productId: json["productId"],
     productName: json["productName"],
     quantity: json["quantity"],

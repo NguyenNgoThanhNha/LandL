@@ -12,7 +12,8 @@ class VerifyOtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(VerifyController());
+    Get.lazyPut(() => VerifyController(email: email));
+    final controller = VerifyController.instance;
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -51,7 +52,11 @@ class VerifyOtpScreen extends StatelessWidget {
                 child: ElevatedButton(
                     onPressed: () => controller.verify(),
                     child: const Text(TTexts.verificationCode)),
-              )
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                TextButton(
+                    onPressed: () => controller.resend(), child: const Text('Resend'))
+              ])
             ],
           ),
         ),

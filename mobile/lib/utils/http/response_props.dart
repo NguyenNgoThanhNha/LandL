@@ -1,8 +1,8 @@
 class ResponseProps<T> {
-  bool? success;
+  bool success;
   Result<T>? result;
 
-  ResponseProps({this.success, this.result});
+  ResponseProps({required this.success, this.result});
 }
 
 class Result<T> {
@@ -10,4 +10,12 @@ class Result<T> {
   T? data;
 
   Result({this.message, this.data});
+}
+
+class ResponseScan {
+  num errorCode;
+  String errorMessage;
+  dynamic data;
+
+  ResponseScan(this.errorCode, this.errorMessage, this.data);
 }

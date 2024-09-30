@@ -61,18 +61,19 @@ flutter {
 
 dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
-//    implementation "com.mapbox.navigation:android-auto-components:3.4.0-beta.1"
-//    implementation 'com.mapbox.navigation:android:2.8.0'
-//    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.7.2'
-//    implementation 'com.mapbox.mapboxsdk:mapbox-android-core:5.5.0'
-//    implementation 'com.mapbox.extension:maps-compose:11.6.1'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-telemetry:6.2.0'
+    implementation "com.mapbox.maps:android:${mapboxSdkVersion}"
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.2'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-core:4.8.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-telemetry:6.2.1'
     configurations {
         all {
-            exclude group: 'com.mapbox.mapboxsdk', module: 'mapbox-android-core'
             exclude group: 'com.mapbox.mapboxsdk', module: 'mapbox-android-telemetry-okhttp3'
         }
     }
+    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:9.7.0') {
+        exclude group: 'com.google.android.gms', module: 'play-services-location'
+    }
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 }

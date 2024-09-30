@@ -302,7 +302,7 @@ class TLocationLine extends StatelessWidget {
               Text(
                 content,
                 softWrap: true,
-                overflow: TextOverflow.visible,
+                overflow: TextOverflow.ellipsis,
               )
             ],
           ),

@@ -4,6 +4,9 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mobile/commons/widgets/appbar/appbar.dart';
 import 'package:mobile/commons/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:mobile/commons/widgets/icons/rounded_icon.dart';
+import 'package:mobile/features/personalization/controllers/contract/contract_controller.dart';
+import 'package:mobile/features/personalization/controllers/upload_contract/upload_contract_controller.dart';
+import 'package:mobile/features/personalization/screens/id_card_detail/id_card_detail.dart';
 import 'package:mobile/features/personalization/screens/upload_contract/upload_contract.dart';
 import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/constants/image_strings.dart';
@@ -15,6 +18,8 @@ class ContractScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final uploadController = Get.put(UploadContractController());
+    final controller = Get.put(ContractController());
     return Scaffold(
         appBar: TAppbar(
           showBackArrow: true,
@@ -22,13 +27,26 @@ class ContractScreen extends StatelessWidget {
             TTexts.contract,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
-          actions: [TRoundedIcon(icon: Iconsax.info_circle,color: Colors.black,onPressed: (){},)],
+          actions: [
+            TRoundedIcon(
+              icon: Iconsax.info_circle,
+              color: Colors.black,
+              onPressed: () {},
+            )
+          ],
         ),
         body: Padding(
             padding: const EdgeInsets.all(TSizes.defaultSpace),
             child: Column(children: [
               GestureDetector(
-                  onTap: () => Get.to(() => const UploadContractScreen(title: TTexts.idCardTitle,)),
+                  onTap: () => Get.to(() => Obx(() {
+                        if (!controller.isHasIdCard.value) {
+                          return const UploadContractScreen(
+                            title: TTexts.idCardTitle,
+                          );
+                        }
+                        return const IdCardDetailScreen();
+                      })),
                   child: TRoundedContainer(
                     backgroundColor: TColors.accent.withOpacity(0.3),
                     padding: const EdgeInsets.all(TSizes.sm),
@@ -41,12 +59,22 @@ class ContractScreen extends StatelessWidget {
                         Expanded(
                             child: Text('Id Card',
                                 style: Theme.of(context).textTheme.bodyMedium)),
-                        const TRoundedIcon(
-                          icon: Icons.warning_amber_outlined,
-                          color: Colors.red,
-                          size: 26,
-                          backgroundColor: Colors.transparent,
-                        )
+                        Obx(() {
+                          if (controller.isHasIdCard.value) {
+                            return const TRoundedIcon(
+                              icon: Iconsax.verify,
+                              color: Colors.blue,
+                              size: 26,
+                              backgroundColor: Colors.transparent,
+                            );
+                          }
+                          return const TRoundedIcon(
+                            icon: Icons.warning_amber_outlined,
+                            color: Colors.red,
+                            size: 26,
+                            backgroundColor: Colors.transparent,
+                          );
+                        })
                       ],
                     ),
                   )),
@@ -54,7 +82,10 @@ class ContractScreen extends StatelessWidget {
                 height: TSizes.spacebtwItems,
               ),
               GestureDetector(
-                  onTap: () => Get.to(()=> const UploadContractScreen(title: TTexts.licenceCardsTitle)),
+                  onTap: () => uploadController.instance.updateLicenceCard()
+                  // Get.to(() => const UploadContractScreen(
+                  //     title: TTexts.licenceCardsTitle)
+                  ,
                   child: TRoundedContainer(
                     backgroundColor: TColors.accent.withOpacity(0.3),
                     padding: const EdgeInsets.all(TSizes.sm),
@@ -67,11 +98,22 @@ class ContractScreen extends StatelessWidget {
                         Expanded(
                             child: Text('Licence Card',
                                 style: Theme.of(context).textTheme.bodyMedium)),
-                        const TRoundedIcon(
+                        Obx(() {
+                          if (controller.isHasDriverCard.value) {
+                            return const TRoundedIcon(
+                              icon: Iconsax.verify,
+                              color: Colors.blue,
+                              size: 26,
+                              backgroundColor: Colors.transparent,
+                            );
+                          }
+                          return const TRoundedIcon(
                             icon: Icons.warning_amber_outlined,
                             color: Colors.red,
                             size: 26,
-                            backgroundColor: Colors.transparent)
+                            backgroundColor: Colors.transparent,
+                          );
+                        })
                       ],
                     ),
                   )),

@@ -1,60 +1,114 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mobile/commons/widgets/appbar/appbar.dart';
+import 'package:mobile/features/personalization/controllers/vehicle/vehicle_detail_controller.dart';
+import 'package:mobile/features/service/models/truck_model.dart';
 import 'package:mobile/utils/constants/sizes.dart';
 import 'package:mobile/utils/constants/text_strings.dart';
 
 class VehicleDetailScreen extends StatelessWidget {
-  const VehicleDetailScreen({super.key});
+  const VehicleDetailScreen({super.key, required this.truck});
+
+  final TruckModel truck;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(VehicleDetailController(), permanent: false);
     return Scaffold(
-      appBar: const TAppbar(
-        title: Text('69E1-626334'),
+      appBar: TAppbar(
+        title: Text(truck.truckName),
         showBackArrow: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: Column(
           children: [
-            const Row(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: TVehicleLine(title: "Name", content: truck.truckName),
+                ),
+                Expanded(
+                  child: TVehicleLine(
+                      title: TTexts.brand, content: truck.manufacturer),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: TSizes.spacebtwItems,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child:
+                      TVehicleLine(title: TTexts.color, content: truck.color),
+                ),
+                Obx(() {
+                  if (controller.listType.value != null) {
+                    return Expanded(
+                      child: TVehicleLine(
+                          title: "Type",
+                          content: controller.getTypeName(truck.vehicleTypeId)),
+                    );
+                  }
+                  return const SizedBox();
+                }),
+              ],
+            ),
+            const SizedBox(
+              height: TSizes.spacebtwItems,
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: TVehicleLine(
-                      title: TTexts.type, content: "Trailer Truck"),
+                      title: "Load Capacity", content: truck.loadCapacity),
                 ),
                 Expanded(
-                  child: TVehicleLine(title: TTexts.brand, content: "Toyota"),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: TSizes.spacebtwItems,
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: TVehicleLine(title: TTexts.model, content: "Corolla"),
-                ),
-                Expanded(
-                  child: TVehicleLine(title: TTexts.year, content: "2020"),
+                  child: TVehicleLine(
+                      title: TTexts.plate, content: truck.plateCode),
                 ),
               ],
             ),
             const SizedBox(
               height: TSizes.spacebtwItems,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: TVehicleLine(title: TTexts.color, content: "White"),
+                  child: TVehicleLine(
+                      title: "Width",
+                      content: "${truck.dimensionsWidth.toString()} m"),
                 ),
                 Expanded(
-                  child:
-                      TVehicleLine(title: TTexts.plate, content: "69E1-626334"),
+                  child: TVehicleLine(
+                      title: "Length",
+                      content: "${truck.dimensionsLength.toString()} m"),
+                ),
+                Expanded(
+                  child: TVehicleLine(
+                      title: "Height",
+                      content: "${truck.dimensionsHeight.toString()} m"),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: TSizes.spacebtwItems,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: TVehicleLine(
+                      title: 'Engine Number', content: truck.engineNumber),
+                ),
+                Expanded(
+                  child: TVehicleLine(
+                      title: "Frame Number", content: truck.frameNumber),
                 ),
               ],
             ),
@@ -67,9 +121,9 @@ class VehicleDetailScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
-                    style:
-                        OutlinedButton.styleFrom(side: const BorderSide(color: Colors.red)),
+                    onPressed: () => controller.deleteTruck(),
+                    style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.red)),
                     child: const Text(
                       'Remove',
                       style: TextStyle(color: Colors.red),
@@ -80,8 +134,9 @@ class VehicleDetailScreen extends StatelessWidget {
                   width: TSizes.spacebtwItems,
                 ),
                 Expanded(
-                    child:
-                        ElevatedButton(onPressed: () {}, child: const Text('Edit'))),
+                    child: ElevatedButton(
+                        onPressed: () => controller.updateTruck(),
+                        child: const Text('Edit'))),
               ],
             ),
           ],

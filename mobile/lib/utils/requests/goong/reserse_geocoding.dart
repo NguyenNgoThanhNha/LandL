@@ -9,5 +9,6 @@ Future<Map<String, dynamic>> getReverseGeocodingGivenLatLngUsingGoong(
     LatLng latLng) async {
   String query = 'latlng=${latLng.latitude},${latLng.longitude}';
   String url = '$baseUrl?$query&api_key=$apiKey';
+  print('$baseUrl?$query&api_key=$apiKey');
   return await THttpClient.getDynamic(url);
 }

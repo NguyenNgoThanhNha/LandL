@@ -4,6 +4,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mobile/commons/widgets/balance/balance.dart';
 import 'package:mobile/commons/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:mobile/commons/widgets/texts/section_heading.dart';
+import 'package:mobile/features/personalization/screens/contract/contract.dart';
+import 'package:mobile/features/personalization/screens/vehicle/vehicle.dart';
 import 'package:mobile/features/service/controllers/home/home_controller.dart';
 import 'package:mobile/features/service/screens/home/widgets/delivery_package.dart';
 import 'package:mobile/features/service/screens/home/widgets/home_appbar.dart';
@@ -30,26 +32,42 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    TTexts.todo,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+                  Obx(() {
+                    if (!controller.isUpdateVehicle.value &&
+                        !controller.isUpdateIdCard.value) {
+                      return Text(
+                        TTexts.todo,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      );
+                    }
+                    return const SizedBox();
+                  }),
                   const SizedBox(
                     height: TSizes.spacebtwItems,
                   ),
-                  TWarningAction(
-                    onPressed: () {},
-                    title: TTexts.identifyTitle,
-                    subTitle: TTexts.identifySubTitle,
-                  ),
+                  Obx(() {
+                    if (!controller.isUpdateIdCard.value) {
+                      return TWarningAction(
+                        onPressed: () => Get.to(() => const ContractScreen()),
+                        title: TTexts.identifyTitle,
+                        subTitle: TTexts.identifySubTitle,
+                      );
+                    }
+                    return const SizedBox();
+                  }),
                   const SizedBox(
                     height: TSizes.spacebtwItems,
                   ),
-                  TWarningAction(
-                    onPressed: () {},
-                    title: TTexts.addVehicleTitle,
-                    subTitle: TTexts.addVehicleSubTitle,
-                  ),
+                  Obx(() {
+                    if (!controller.isUpdateVehicle.value) {
+                      return TWarningAction(
+                        onPressed: () => Get.to(() => const VehicleScreen()),
+                        title: TTexts.addVehicleTitle,
+                        subTitle: TTexts.addVehicleSubTitle,
+                      );
+                    }
+                    return const SizedBox();
+                  }),
                   const SizedBox(
                     height: TSizes.spacebtwItems,
                   ),
@@ -71,26 +89,32 @@ class HomeScreen extends StatelessWidget {
                             ? () => controller.isSearch.value = false
                             : () => {},
                       )),
-                  TRoundedContainer(
-                    backgroundColor: Colors.red.withOpacity(0.2),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: TSizes.spacebtwItems,
-                        vertical: TSizes.defaultSpace),
-                    child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Iconsax.security_user,
-                          size: 40,
-                          color: Colors.redAccent,
+                  Obx(() {
+                    if (!controller.isUpdateVehicle.value &&
+                        !controller.isUpdateIdCard.value) {
+                      return TRoundedContainer(
+                        backgroundColor: Colors.red.withOpacity(0.2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: TSizes.spacebtwItems,
+                            vertical: TSizes.defaultSpace),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Iconsax.security_user,
+                              size: 40,
+                              color: Colors.redAccent,
+                            ),
+                            SizedBox(
+                              height: TSizes.spacebtwItems,
+                            ),
+                            Text(TTexts.warningMessageNotUpdateInfo)
+                          ],
                         ),
-                        SizedBox(
-                          height: TSizes.spacebtwItems,
-                        ),
-                        Text(TTexts.warningMessageNotUpdateInfo)
-                      ],
-                    ),
-                  ),
+                      );
+                    }
+                    return const SizedBox();
+                  }),
                   const SizedBox(
                     height: TSizes.spacebtwItems,
                   ),
