@@ -61,10 +61,12 @@ class ContractScreen extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyMedium)),
                         Obx(() {
                           if (controller.isHasIdCard.value) {
-                            return const TRoundedIcon(
+                            return TRoundedIcon(
                               icon: Iconsax.verify,
                               color: Colors.blue,
                               size: 26,
+                              onPressed: () =>
+                                  Get.to(() => const IdCardDetailScreen()),
                               backgroundColor: Colors.transparent,
                             );
                           }

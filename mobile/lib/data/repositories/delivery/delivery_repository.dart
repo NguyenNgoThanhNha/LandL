@@ -31,4 +31,24 @@ class DeliveryRepository extends GetxController{
       throw 'Something went wrong. Please try again.';
     }
   }
+  Future<Map<String, dynamic>?> getAllDeliveryNear(String address, String long, String lat) async{
+    try {
+
+      final response =
+      await THttpClient.post('User/GetProfile', {
+        "currentLocation": address,
+        "longCurrent": long,
+        "latCurrent": lat
+      });
+
+      if (response.success) {
+        print(response.result?.data);
+        return response.result?.data;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
 }

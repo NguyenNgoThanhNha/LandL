@@ -77,8 +77,9 @@ class TTexts {
   static const String totalWeight = 'Total Weight';
   static const String senderContact = 'Sender Contact';
   static const String viewMap = 'View Map';
-  static const String reject = 'Reject';
+  static const String reject = 'Back';
   static const String accept = 'Accept';
+  static const String arrive = 'Arrive';
 
   //setting
   static const String payment = 'Bank Account';

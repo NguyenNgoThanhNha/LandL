@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
-import 'package:mobile/features/service/models/order_model.dart';
 import 'package:mobile/utils/http/http_client.dart';
+import 'package:mobile/utils/http/response_props.dart';
+import 'package:mobile/utils/popups/loaders.dart';
 
-class OrderDelivery extends GetxController {
-  OrderDelivery get instance => Get.find();
+class OrderRepository extends GetxController {
+  OrderRepository get instance => Get.find();
 
   final delivery = {}.obs;
   final deliveryLoading = false.obs;
@@ -14,17 +15,21 @@ class OrderDelivery extends GetxController {
     super.onInit();
   }
 
-  Future<List<OrderModel>?> getAllOrder() async {
+  Future<List<dynamic>?> getAllOrder(
+      String address, String long, String lat) async {
     try {
-      final response =
-          await THttpClient.get<Map<String, dynamic>>('Order/GetAll');
+      final response = await THttpClient.post('Order/GetOrderDriver',
+          {"currentLocation": address, "longCurrent": long, "latCurrent": lat});
 
       if (response.success) {
-        List<dynamic> jsonList = response.result?.data as List<dynamic>;
-        List<OrderModel> orderList = jsonList
-            .map((json) => OrderModel.fromJson(json as Map<String, dynamic>))
-            .toList();
-        return orderList;
+        if (response.result?.data == null) {
+          TLoaders.warningSnackBar(
+              title: 'Not matching any delivery',
+              message: response.result?.message);
+          return null;
+        }
+
+        return response.result?.data;
       } else {
         return null;
       }
@@ -33,14 +38,43 @@ class OrderDelivery extends GetxController {
     }
   }
 
-  Future<OrderModel?> getOrderDetailByOrderId(String orderId) async {
+
+  Future<ResponseProps> acceptOrder(
+      String orderId, String orderDetailId) async {
     try {
-      final response = await THttpClient.get(
-          "Order/GetOrderDetailByOrderId?orderId=$orderId");
-      if (response.success){
-        return OrderModel.fromJson(response.result?.data);
-      }
-      return null;
+      final response = await THttpClient.post("Order/accept-driver",
+          {"orderId": orderId, "orderDetailId": orderDetailId});
+
+      return response;
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  Future<ResponseProps> getAllMyOrder() async {
+    try {
+      final response = await THttpClient.get('Order/GetOrderByUserId');
+      return response;
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  Future<ResponseProps> getOrderDetailByOrderId(String id) async {
+    try {
+      final response =
+          await THttpClient.get('Order/GetOrderDetailByOrderId?orderId=$id');
+      return response;
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  Future<ResponseProps> updateStatusOrder(String id, int status) async {
+    try {
+      final response =
+          await THttpClient.put('Order/Update-Status-OrderDetail/$id', status);
+      return response;
     } catch (e) {
       throw 'Something went wrong. Please try again.';
     }

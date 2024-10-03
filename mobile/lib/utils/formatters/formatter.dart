@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 class TFormatter {
   static String formatDate(DateTime? date) {
     date ??= DateTime.now();
+    date = date.add(const Duration(days: 1));
     return DateFormat('dd-MM-yyyy').format(date);
   }
 

@@ -39,7 +39,7 @@ android {
         applicationId = "com.example.mobile"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = 21
+        minSdk = 24
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
@@ -61,20 +61,9 @@ flutter {
 
 dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation "com.mapbox.maps:android:${mapboxSdkVersion}"
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.2'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-core:4.8.0'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-telemetry:6.2.1'
-    configurations {
-        all {
-            exclude group: 'com.mapbox.mapboxsdk', module: 'mapbox-android-telemetry-okhttp3'
-        }
-    }
-    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:9.7.0') {
-        exclude group: 'com.google.android.gms', module: 'play-services-location'
-    }
-
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.7.0'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
 }
 

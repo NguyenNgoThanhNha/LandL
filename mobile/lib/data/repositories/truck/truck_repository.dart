@@ -54,7 +54,7 @@ class TruckRepository extends GetxController {
         "status": "active",
         "plateCode": plateCode,
         "color": color,
-        "totalBill": 0,
+        "totalBill": 1000,
         "manufacturer": manufacturer,
         "vehicleModel": model,
         "frameNumber": frameNumber,

@@ -62,6 +62,7 @@ class UploadContractController extends GetxController {
         }
       }
     } catch (e) {
+      TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     }
   }
@@ -112,6 +113,7 @@ class UploadContractController extends GetxController {
         }
       }
     } catch (e) {
+      TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     }
   }

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mobile/features/personalization/models/user_model.dart';
 import 'package:mobile/utils/http/http_client.dart';
+import 'package:mobile/utils/http/response_props.dart';
 
 class UserRepository extends GetxController {
   UserRepository get instance => Get.find();
@@ -36,9 +37,16 @@ class UserRepository extends GetxController {
   }
 
   Future<void> uploadImageIdCard() async {
-    try{
+    try {} catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
 
-    }catch(e){
+  Future<ResponseProps> getIdCard() async {
+    try {
+      final res = await THttpClient.get('IdentityCard/GetIdentityCard');
+      return res;
+    } catch (e) {
       throw 'Something went wrong. Please try again.';
     }
   }

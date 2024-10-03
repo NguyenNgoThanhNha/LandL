@@ -5,6 +5,7 @@ import 'package:mobile/commons/widgets/appbar/tabbar.dart';
 import 'package:mobile/features/service/controllers/manage_delivery/manage_delivery_controller.dart';
 import 'package:mobile/features/service/screens/manage_delivery/widgets/status_tab.dart';
 import 'package:mobile/utils/constants/colors.dart';
+import 'package:mobile/utils/constants/sizes.dart';
 import 'package:mobile/utils/constants/text_strings.dart';
 import 'package:mobile/utils/helpers/helper_functions.dart';
 
@@ -24,10 +25,15 @@ class ManageDeliveryScreen extends StatelessWidget {
             ),
           ),
           body: NestedScrollView(
-            body: TabBarView(
-              children: ['Processing', 'Completed', 'Cancel']
-                  .map((status) => const TStatusTab())
-                  .toList(),
+            body: Padding(
+              padding: const EdgeInsets.all(TSizes.defaultSpace),
+              child: Obx(() => TabBarView(
+                children: [
+                  TStatusTab(items: controller.listProcessingOrder.value),
+                  TStatusTab(items: controller.listCompletedOrder.value),
+                  TStatusTab(items: controller.listCancelOrder.value),
+                ],
+              )),
             ),
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
@@ -37,6 +43,9 @@ class ManageDeliveryScreen extends StatelessWidget {
                     pinned: true,
                     floating: true,
                     expandedHeight: 0,
+                    flexibleSpace: const Padding(
+                      padding: EdgeInsets.all(TSizes.defaultSpace),
+                    ),
                     backgroundColor: THelperFunctions.isDarkMode(context)
                         ? TColors.black
                         : TColors.white,

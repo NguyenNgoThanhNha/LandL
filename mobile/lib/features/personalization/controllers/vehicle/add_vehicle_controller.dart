@@ -103,7 +103,7 @@ class AddVehicleController extends GetxController {
       box.write('isUpdateVehicle', true);
       TLoaders.successSnackBar(
           title: 'Created Success', message: response.result?.message);
-      Get.offAll(()=> const VehicleScreen());
+      Get.to(()=> const VehicleScreen());
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());

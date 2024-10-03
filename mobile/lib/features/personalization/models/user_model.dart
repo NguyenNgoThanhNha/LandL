@@ -24,7 +24,7 @@ class UserModel {
   final String? status;
   final String? refreshToken;
   final String? typeLogin;
-  final int? roleId;
+  final int? roleID;
   final String? userRole;
 
   UserModel({
@@ -51,7 +51,7 @@ class UserModel {
     this.status,
     this.refreshToken,
     this.typeLogin,
-    this.roleId,
+    this.roleID,
     this.userRole,
   });
 
@@ -83,7 +83,7 @@ class UserModel {
     status: json["status"],
     refreshToken: json["refreshToken"],
     typeLogin: json["typeLogin"],
-    roleId: json["roleID"],
+    roleID: json["roleID"],
     userRole: json["userRole"],
   );
 
@@ -111,7 +111,7 @@ class UserModel {
     "status": status,
     "refreshToken": refreshToken,
     "typeLogin": typeLogin,
-    "roleID": roleId,
+    "roleID": roleID,
     "userRole": userRole,
   };
 }

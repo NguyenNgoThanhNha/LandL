@@ -11,7 +11,6 @@ import 'package:mobile/utils/constants/image_strings.dart';
 import 'package:mobile/utils/constants/package_list.dart';
 import 'package:mobile/utils/helpers/get_storage.dart';
 import 'package:mobile/utils/helpers/goong_handler.dart';
-import 'package:mobile/utils/requests/goong/direction.dart';
 
 class MapGoongController extends GetxController {
   static MapGoongController get instance => Get.find();
@@ -35,15 +34,15 @@ class MapGoongController extends GetxController {
   LatLng d1 = const LatLng(10.7791, 106.6828);
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    loadCurrentLocation();
+    await loadCurrentLocation();
 
     // _getCurrentLocation();
-    loadCurrentAddress();
+    await loadCurrentAddress();
     initialCameraPosition =
         CameraPosition(target: currentLocation.value, zoom: 14);
-    _startTracking();
+    // _startTracking();
   }
 
   PolylinePoints polylinePoints = PolylinePoints();
@@ -55,7 +54,7 @@ class MapGoongController extends GetxController {
     currentLocation.value = LatLng(position.latitude, position.longitude);
   }
 
-  void _startTracking() {
+  Future<void> _startTracking() async {
     Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
@@ -77,12 +76,12 @@ class MapGoongController extends GetxController {
     }
   }
 
-  void loadCurrentLocation() {
+  Future<void> loadCurrentLocation() async {
     currentLocation.value = getCurrentLatLngFromGetStorage();
     print(currentLocation.value);
   }
 
-  void loadCurrentAddress() async {
+  Future<void> loadCurrentAddress() async {
     // currentAddress.value = getCurrentAddressFromGetStorage();
     currentAddress.value =
         (await getParsedReverseGeocoding(currentLocation.value))['place'];
@@ -93,38 +92,38 @@ class MapGoongController extends GetxController {
     this.controller = controller;
   }
 
-  _addSourceAndLineLayer(int index, bool removeLayer) async {
-    controller
-        .animateCamera(CameraUpdate.newCameraPosition(_kPackageList[index]));
-
-    Map geometry = getGeometryFromStorage(carouselData[index]['index']);
-    final _fills = {
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "id": 0,
-          "properties": <String, dynamic>{},
-          "geometry": geometry,
-        },
-      ]
-    };
-
-    if (removeLayer == true) {
-      await controller.removeLayer("lines");
-      await controller.removeSource("fills");
-    }
-
-    await controller.addSource("fills", GeojsonSourceProperties(data: _fills));
-    await controller.addLineLayer(
-        "fills",
-        "lines",
-        LineLayerProperties(
-            lineColor: Colors.pink.toHexStringRGB(),
-            lineCap: "round",
-            lineJoin: "round",
-            lineWidth: 4));
-  }
+  // _addSourceAndLineLayer(int index, bool removeLayer) async {
+  //   controller
+  //       .animateCamera(CameraUpdate.newCameraPosition(_kPackageList[index]));
+  //
+  //   Map geometry = getGeometryFromStorage(carouselData[index]['index']);
+  //   final _fills = {
+  //     "type": "FeatureCollection",
+  //     "features": [
+  //       {
+  //         "type": "Feature",
+  //         "id": 0,
+  //         "properties": <String, dynamic>{},
+  //         "geometry": geometry,
+  //       },
+  //     ]
+  //   };
+  //
+  //   if (removeLayer == true) {
+  //     await controller.removeLayer("lines");
+  //     await controller.removeSource("fills");
+  //   }
+  //
+  //   await controller.addSource("fills", GeojsonSourceProperties(data: _fills));
+  //   await controller.addLineLayer(
+  //       "fills",
+  //       "lines",
+  //       LineLayerProperties(
+  //           lineColor: Colors.pink.toHexStringRGB(),
+  //           lineCap: "round",
+  //           lineJoin: "round",
+  //           lineWidth: 4));
+  // }
 
   onStyleLoadedCallback() async {
     await controller.addSymbol(
@@ -137,7 +136,7 @@ class MapGoongController extends GetxController {
     getDirection(true);
   }
 
-  void getDirection(bool removeLayer) async {
+  Future<void> getDirection(bool removeLayer) async {
     if (controller != null) {
       controller.animateCamera(
         CameraUpdate.newLatLngBounds(

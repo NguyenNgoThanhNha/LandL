@@ -8,7 +8,7 @@ class TruckModel {
   String status;
   String plateCode;
   String color;
-  int totalBill;
+  int? totalBill;
   String manufacturer;
   String vehicleModel;
   String frameNumber;
@@ -18,9 +18,9 @@ class TruckModel {
   double dimensionsWidth;
   double dimensionsHeight;
   int vehicleTypeId;
-  dynamic truckType;
+  String? truckType;
   int userId;
-   UserModel truckUser;
+  UserModel? truckUser;
 
   TruckModel({
     required this.truckId,
@@ -28,7 +28,7 @@ class TruckModel {
     required this.status,
     required this.plateCode,
     required this.color,
-    required this.totalBill,
+    this.totalBill,
     required this.manufacturer,
     required this.vehicleModel,
     required this.frameNumber,
@@ -38,9 +38,9 @@ class TruckModel {
     required this.dimensionsWidth,
     required this.dimensionsHeight,
     required this.vehicleTypeId,
-    required this.truckType,
+    this.truckType,
     required this.userId,
-    required this.truckUser,
+    this.truckUser,
   });
 
   factory TruckModel.fromRawJson(String str) =>
@@ -54,7 +54,7 @@ class TruckModel {
         status: json["status"],
         plateCode: json["plateCode"],
         color: json["color"],
-        totalBill: json["totalBill"],
+        totalBill: json["totalBill"] ?? 0,
         manufacturer: json["manufacturer"],
         vehicleModel: json["vehicleModel"],
         frameNumber: json["frameNumber"],
@@ -64,9 +64,11 @@ class TruckModel {
         dimensionsWidth: json["dimensionsWidth"]?.toDouble(),
         dimensionsHeight: json["dimensionsHeight"]?.toDouble(),
         vehicleTypeId: json["vehicleTypeId"],
-        truckType: json["truckType"],
+        truckType: json["truckType"] ?? "",
         userId: json["userId"],
-        truckUser: UserModel.fromJson(json["truckUser"]),
+        truckUser: json["truckUser"] != null
+            ? UserModel.fromJson(json["truckUser"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -87,6 +89,6 @@ class TruckModel {
         "vehicleTypeId": vehicleTypeId,
         "truckType": truckType,
         "userId": userId,
-        "truckUser": truckUser,
+        "truckUser": truckUser?.toJson(),
       };
 }

@@ -3,15 +3,17 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mobile/commons/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:mobile/commons/widgets/icons/rounded_icon.dart';
+import 'package:mobile/features/service/models/order_model.dart';
 import 'package:mobile/features/service/screens/delivery_detail/delivery_detail.dart';
 import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/constants/sizes.dart';
 import 'package:mobile/utils/constants/text_strings.dart';
+import 'package:mobile/utils/formatters/formatter.dart';
 
 class TDeliveryPackage extends StatelessWidget {
-  const TDeliveryPackage({
-    super.key,
-  });
+  const TDeliveryPackage({super.key, required this.orderModel});
+
+  final OrderModel orderModel;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class TDeliveryPackage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Row(
+            Row(
               children: [
                 const TRoundedIcon(
                   icon: Iconsax.truck_fast,
@@ -37,17 +39,17 @@ class TDeliveryPackage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const TLocationLine(
+                      TLocationLine(
                         icon: Iconsax.location,
                         title: TTexts.pickupLocation,
                         iconColor: TColors.primary,
-                        content: '32 Samwell Sq, Chevron32 ',
+                        content: orderModel.deliveryInfoDetail.pickUpLocation,
                       ),
-                      const TLocationLine(
+                      TLocationLine(
                         icon: Iconsax.level,
                         title: TTexts.deliveryLocation,
                         iconColor: Colors.green,
-                        content: '21b, Karimu Kotun Street, Victoria Island',
+                        content: orderModel.deliveryInfoDetail.deliveryLocaTion,
                       )
                     ],
                   ),
@@ -63,17 +65,16 @@ class TDeliveryPackage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                        TTexts.intendTime,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .titleSmall!
-                            .apply(color: Colors.grey, fontWeightDelta: 500),
+                      TTexts.intendTime,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall!
+                          .apply(color: Colors.grey, fontWeightDelta: 500),
                     ),
                     Text(
-                      '15:00 PM Jun 24',
-                      style: Theme
-                          .of(context)
+                      TFormatter.formatDate(
+                          orderModel.deliveryInfoDetail.orderDate),
+                      style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
                           .apply(overflow: TextOverflow.ellipsis),
@@ -85,8 +86,9 @@ class TDeliveryPackage extends StatelessWidget {
                 ),
                 Expanded(
                     child: ElevatedButton(
-                        onPressed: () =>
-                            Get.to(() => const DeliveryDetailScreen()),
+                        onPressed: () => Get.to(() => DeliveryDetailScreen(
+                              orderModel: orderModel,
+                            )),
                         child: const Text('View')))
               ],
             )

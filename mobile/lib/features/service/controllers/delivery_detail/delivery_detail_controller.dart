@@ -25,7 +25,9 @@ class DeliveryDetailController extends GetxController{
         TFullScreenLoader.stopLoading();
         return;
       }
-
+ // final response= await orderController.acceptOrder(
+ //     orderModel.orderId.toString(),
+ //     orderModel.orderDetailId.toString())
 
 
       TFullScreenLoader.stopLoading();

@@ -9,25 +9,24 @@ class TFullScreenLoader {
     showDialog(
       context: Get.overlayContext!,
       barrierDismissible: false,
-      builder: (_) => PopScope(
-        canPop: false,
-        child: Container(
-          color: THelperFunctions.isDarkMode(Get.context!)
-              ? TColors.dark
-              : TColors.white,
-          height: double.infinity,
-          width: double.infinity,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(
-                height: 250,
+      builder: (_) =>
+          PopScope(
+            canPop: false,
+            child: Container(
+              color: Colors.transparent,
+              height: double.infinity,
+              width: double.infinity,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    height: 250,
+                  ),
+                  TAnimationLoader(text: text, animation: animation)
+                ],
               ),
-              TAnimationLoader(text: text, animation: animation)
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 
