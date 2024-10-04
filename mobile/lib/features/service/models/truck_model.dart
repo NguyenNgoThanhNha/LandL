@@ -43,6 +43,28 @@ class TruckModel {
     this.truckUser,
   });
 
+  static TruckModel empty() => TruckModel(
+        truckId: 0,
+        truckName: '',
+        status: '',
+        plateCode: '',
+        color: '',
+        totalBill: 0,
+        manufacturer: '',
+        vehicleModel: '',
+        frameNumber: '',
+        engineNumber: '',
+        loadCapacity: '',
+        dimensionsLength: 0.0,
+        dimensionsWidth: 0.0,
+        dimensionsHeight: 0.0,
+        vehicleTypeId: 0,
+        truckType: '',
+        userId: 0,
+        truckUser:
+            UserModel.empty(), // Assuming UserModel has an empty() method
+      );
+
   factory TruckModel.fromRawJson(String str) =>
       TruckModel.fromJson(json.decode(str));
 

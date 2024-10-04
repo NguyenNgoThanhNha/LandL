@@ -29,17 +29,19 @@ class HomeController extends GetxController {
     isSearch.value = true;
     isUpdateIdCard.value = box.read('isUpdateIdCard') ?? false;
     isUpdateVehicle.value = box.read('isUpdateVehicle') ?? false;
-    currentLocation.value = getCurrentLatLngFromGetStorage() ?? LatLng(0, 0);
-    currentAddress.value = getCurrentAddressFromGetStorage() ?? '';
 
-    if (currentAddress.value.isNotEmpty) {
-      directionTo.text = currentAddress.value;
-    }
-    print(isUpdateVehicle.value);
-    print(directionTo.text);
+
     isSearch.value = false;
 
     super.onInit();
+  }
+
+  void getLocation() {
+    currentLocation.value = getCurrentLatLngFromGetStorage() ?? LatLng(0, 0);
+    currentAddress.value = getCurrentAddressFromGetStorage() ?? '';
+    if (currentAddress.value.isNotEmpty) {
+      directionTo.text = currentAddress.value;
+    }
   }
 
   Future<void> onSearch() async {

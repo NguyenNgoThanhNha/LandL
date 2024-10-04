@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mobile/features/service/models/order_model.dart';
 import 'package:mobile/utils/http/http_client.dart';
 import 'package:mobile/utils/http/response_props.dart';
 import 'package:mobile/utils/popups/loaders.dart';
@@ -13,6 +14,20 @@ class OrderRepository extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+  }
+
+  Future<OrderModel?> getData(int id) async {
+    try {
+      final response =
+          await THttpClient.get('Order/GetOrderDetailByOrderDetailId/$id');
+      if (response.success) {
+
+        return OrderModel.fromJson(response.result?.data);
+      }
+      return null;
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
   }
 
   Future<List<dynamic>?> getAllOrder(
@@ -37,7 +52,6 @@ class OrderRepository extends GetxController {
       throw 'Something went wrong. Please try again.';
     }
   }
-
 
   Future<ResponseProps> acceptOrder(
       String orderId, String orderDetailId) async {

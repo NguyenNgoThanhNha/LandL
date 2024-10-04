@@ -28,7 +28,7 @@ dependencies:
   polyline_codec: ^0.1.6
   mapbox_polyline_points: ^0.0.5
   mapbox_gl: ^0.16.0
-  geolocator: ^9.0.0
+#  geolocator: ^9.0.0
   permission_handler: ^10.2.0
   http: ^1.2.2
 
@@ -53,6 +53,8 @@ dependencies:
 #  location: ^7.0.0
 #  flutter_mapbox_navigation: ^0.1.7
 
+dependency_overrides:
+  geolocator: ^9.0.1
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +74,7 @@ flutter:
     - assets/fonts/
     - assets/icons/
     - assets/config/
+    - assets/style/
 
 
   fonts:

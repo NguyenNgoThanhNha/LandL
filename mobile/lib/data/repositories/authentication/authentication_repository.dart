@@ -38,15 +38,16 @@ class AuthenticationRepository extends GetxController {
   }
 
   Future<ResponseProps<void>> signUp(String email, String password,
-      String fullName, String phone, String city) async {
+      String fullName, String phone, String city, String username) async {
     try {
       return THttpClient.post<void>('Auth/FirstStep', {
         "email": email,
         "password": password,
-        "userName": fullName,
+        "fullName": fullName,
         "phone": phone,
         "typeAccount": "Driver",
-        "city": city
+        "city": city,
+        "userName": username
       });
     } catch (e) {
       throw 'Something went wrong';

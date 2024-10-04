@@ -1,48 +1,127 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/data/repositories/order/order_repository.dart';
+import 'package:mobile/features/service/models/order_model.dart';
 import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/constants/image_strings.dart';
 import 'package:mobile/utils/constants/package_list.dart';
 import 'package:mobile/utils/helpers/get_storage.dart';
 import 'package:mobile/utils/helpers/goong_handler.dart';
+import 'package:mobile/utils/helpers/network_manager.dart';
+import 'package:mobile/utils/popups/full_screen_loader.dart';
+import 'package:mobile/utils/popups/loaders.dart';
 
 class MapGoongController extends GetxController {
   static MapGoongController get instance => Get.find();
+  final int id;
+  Rx<OrderModel> order = OrderModel.empty().obs;
+  OrderRepository orderRepository = Get.put(OrderRepository());
 
+  MapGoongController({required this.id});
+
+  final loading = false.obs;
   final currentLocation = const LatLng(0, 0).obs;
   final currentAddress = ''.obs;
-  late CameraPosition initialCameraPosition;
   late MapboxMapController controller;
   late List<CameraPosition> _kPackageList;
   List<Map> carouselData = [];
   StreamSubscription<Position>? positionStream;
-
-  final order = null;
-
-
+  LatLng pickup = const LatLng(0, 0);
+  LatLng delivery = const LatLng(0, 0);
   final isShowStart = false.obs;
   final isShowEnd = false;
   final isHidden = true.obs;
 
-  // 10.844821, 106.761512
-  LatLng d1 = const LatLng(10.7791, 106.6828);
-
   @override
   void onInit() async {
     super.onInit();
-    await loadCurrentLocation();
-
-    // _getCurrentLocation();
+    await getData();
+    pickup = LatLng(double.parse(order.value.deliveryInfoDetail.latPickUp),
+        double.parse(order.value.deliveryInfoDetail.longPickUp));
+    delivery = LatLng(double.parse(order.value.deliveryInfoDetail.latDelivery),
+        double.parse(order.value.deliveryInfoDetail.longDelivery));
+    _getCurrentLocation();
     await loadCurrentAddress();
-    initialCameraPosition =
-        CameraPosition(target: currentLocation.value, zoom: 14);
-    // _startTracking();
+    _startTracking();
+  }
+
+  Future<void> getData() async {
+    try {
+      loading.value = true;
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        TLoaders.errorSnackBar(
+            title: 'Network Error',
+            message: 'Please check your internet connection.');
+        loading.value = false;
+        return;
+      }
+      final response = await orderRepository.getData(id);
+      if (response != null) {
+        order.value = response;
+        update();
+        loading.value = false;
+      }
+    } catch (e) {
+      loading.value = false;
+      TLoaders.errorSnackBar(title: 'Oh Snaps', message: e.toString());
+    }
+  }
+
+  Future<void> acceptOrder(String orderId, String orderDetailId) async {
+    try {
+      loading.value = true;
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        TFullScreenLoader.stopLoading();
+      }
+      final response =
+          await orderRepository.acceptOrder(orderId, orderDetailId);
+      loading.value = false;
+      if (response.success) {
+        order.value = OrderModel.fromJson(response.result?.data);
+
+        TLoaders.successSnackBar(
+            title: "Accept Success!", message: "Order status update success!");
+      } else {
+        TLoaders.errorSnackBar(
+            title: 'Accept Failed!', message: response.result?.message);
+      }
+    } catch (e) {
+      loading.value = false;
+      TLoaders.errorSnackBar(title: 'Oh Snaps', message: e.toString());
+    }
+  }
+
+  Future<void> updateOrderStatus(String orderDetailId, int status) async {
+    try {
+      loading.value = false;
+
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        return;
+      }
+      final response =
+          await orderRepository.updateStatusOrder(orderDetailId, status);
+      loading.value = false;
+      if (response.success) {
+        order.value = OrderModel.fromJson(response.result?.data);
+
+        TLoaders.successSnackBar(
+            title: "Update Success!", message: "Order status update success!");
+      } else {
+        TLoaders.errorSnackBar(
+            title: 'Accept Failed!', message: response.result?.message);
+      }
+    } catch (e) {
+      loading.value = false;
+      TLoaders.errorSnackBar(title: 'Oh Snaps', message: e.toString());
+    }
   }
 
   PolylinePoints polylinePoints = PolylinePoints();
@@ -92,45 +171,26 @@ class MapGoongController extends GetxController {
     this.controller = controller;
   }
 
-  // _addSourceAndLineLayer(int index, bool removeLayer) async {
-  //   controller
-  //       .animateCamera(CameraUpdate.newCameraPosition(_kPackageList[index]));
-  //
-  //   Map geometry = getGeometryFromStorage(carouselData[index]['index']);
-  //   final _fills = {
-  //     "type": "FeatureCollection",
-  //     "features": [
-  //       {
-  //         "type": "Feature",
-  //         "id": 0,
-  //         "properties": <String, dynamic>{},
-  //         "geometry": geometry,
-  //       },
-  //     ]
-  //   };
-  //
-  //   if (removeLayer == true) {
-  //     await controller.removeLayer("lines");
-  //     await controller.removeSource("fills");
-  //   }
-  //
-  //   await controller.addSource("fills", GeojsonSourceProperties(data: _fills));
-  //   await controller.addLineLayer(
-  //       "fills",
-  //       "lines",
-  //       LineLayerProperties(
-  //           lineColor: Colors.pink.toHexStringRGB(),
-  //           lineCap: "round",
-  //           lineJoin: "round",
-  //           lineWidth: 4));
-  // }
-
   onStyleLoadedCallback() async {
     await controller.addSymbol(
       SymbolOptions(
-        geometry: d1,
-        iconSize: 0.2,
-        iconImage: TImages.package,
+        geometry: pickup,
+        iconSize: 1.4,
+        iconImage: TImages.receivePackage,
+      ),
+    );
+    await controller.addSymbol(
+      SymbolOptions(
+        geometry: delivery,
+        iconSize: 1.4,
+        iconImage: TImages.dropPackage,
+      ),
+    );
+    await controller.addSymbol(
+      SymbolOptions(
+        geometry: currentLocation.value,
+        iconSize: 1.6,
+        iconImage: TImages.startHome,
       ),
     );
     getDirection(true);
@@ -141,13 +201,13 @@ class MapGoongController extends GetxController {
       controller.animateCamera(
         CameraUpdate.newLatLngBounds(
             LatLngBounds(
-              southwest: getSouthwest(d1, currentLocation.value),
-              northeast: getNortheast(d1, currentLocation.value),
+              southwest: getSouthwest(pickup, delivery),
+              northeast: getNortheast(pickup, delivery),
             ),
             top: 20,
             right: 20),
       );
-      var response = await getDirectionsAPIResponse(currentLocation.value, d1);
+      var response = await getDirectionsAPIResponse(pickup, delivery);
 
       List<PointLatLng> result =
           polylinePoints.decodePolyline(response['route']);
@@ -181,35 +241,57 @@ class MapGoongController extends GetxController {
               lineColor: TColors.primary.toHexStringRGB(),
               lineCap: "round",
               lineJoin: "round",
-              lineWidth: 4));
+              lineWidth: 6));
     }
   }
 
-// void addLineToMap(MapboxMapController mapController, String geojson) async {
-//   // Thêm GeoJsonSource và LineLayer vào bản đồ
-//   await addLineLayer(mapController, geojson);
-//   isHidden.value = false;
-//   // setState(() {
-//   //   isHidden = false;
-//   // });
-// }
-//
-// Future<void> addLineLayer(
-//     MapboxMapController mapController, String geojson) async {
-//   // Thêm GeoJsonSource
-//   await mapController.addSource(
-//       "line_source", GeojsonSourceProperties(data: geojson));
-//
-//   // Thêm LineLayer
-//   await mapController.addLineLayer(
-//     "line_source", // Nguồn dữ liệu GeoJSON
-//     "line_layer", // ID của layer
-//     const LineLayerProperties(
-//       lineJoin: "round",
-//       lineCap: "round",
-//       lineColor: "#3333FF", // Màu đường
-//       lineWidth: 9.0, // Độ rộng của đường
-//     ),
-//   );
-// }
+  Future<void> getDirectionToCustomer(bool removeLayer) async {
+
+    if (controller != null) {
+      controller.animateCamera(
+        CameraUpdate.newLatLngBounds(
+            LatLngBounds(
+              southwest: getSouthwest(currentLocation.value, delivery),
+              northeast: getNortheast(currentLocation.value, delivery),
+            ),
+            top: 20,
+            right: 20),
+      );
+      var response = await getDirectionsAPIResponse(currentLocation.value, delivery);
+
+      List<PointLatLng> result =
+          polylinePoints.decodePolyline(response['route']);
+
+      List<List<double>> coordinates =
+          result.map((point) => [point.longitude, point.latitude]).toList();
+
+      final _fills = {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "id": 0,
+            "properties": <String, dynamic>{},
+            "geometry": {"type": "LineString", "coordinates": coordinates}
+          },
+        ]
+      };
+
+      if (removeLayer == true) {
+        await controller.removeLayer("lines");
+        await controller.removeSource("fills");
+      }
+
+      await controller.addSource(
+          "fills", GeojsonSourceProperties(data: _fills));
+      await controller.addLineLayer(
+          "fills",
+          "lines",
+          LineLayerProperties(
+              lineColor: TColors.secondary.toHexStringRGB(),
+              lineCap: "round",
+              lineJoin: "round",
+              lineWidth: 6));
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/commons/widgets/appbar/appbar.dart';
@@ -14,14 +14,17 @@ import 'package:mobile/utils/helpers/helper_functions.dart';
 import '../../../../utils/constants/text_strings.dart';
 
 class MapGoongScreen extends StatelessWidget {
-  const MapGoongScreen({super.key, required this.orderModel});
+  const MapGoongScreen({super.key, required this.id});
 
-  final OrderModel orderModel;
+  final int id;
+
+  Future<String> loadMapStyle() async {
+    return await rootBundle.loadString('assets/style/style.json');
+  }
 
   @override
   Widget build(BuildContext context) {
-    final mapController = Get.put(MapGoongController());
-    final orderController = Get.find<OrderController>();
+    final mapController = Get.put(MapGoongController(id: id));
     return Scaffold(
       appBar: TAppbar(
         showBackArrow: true,
@@ -29,14 +32,15 @@ class MapGoongScreen extends StatelessWidget {
           TRoundedIcon(
             icon: Icons.my_location_sharp,
             color: TColors.primary,
-            onPressed: () => mapController.controller
-                .animateCamera(CameraUpdate.newCameraPosition(
-              CameraPosition(
-                target: mapController.currentLocation.value,
-                zoom: 14.0,
+            onPressed: () => mapController.controller.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: mapController.currentLocation.value,
+                  zoom: 16.0,
+                ),
               ),
-            )),
-          )
+            ),
+          ),
         ],
       ),
       body: SafeArea(
@@ -44,58 +48,89 @@ class MapGoongScreen extends StatelessWidget {
           children: [
             SizedBox(
               height: THelperFunctions.screenHeight(),
-              child: MapboxMap(
-                onMapCreated:(MapboxMapController controller) {
-                  mapController.onMapCreated(controller);
+              child: FutureBuilder<String>(
+                future: loadMapStyle(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.hasData) {
+                    return MapboxMap(
+                      onMapCreated: mapController.onMapCreated,
+                      accessToken:
+                          "pk.eyJ1IjoiaGlldXNlcnZpY2VzIiwiYSI6ImNtMXA1bmh6MjAwbjUycXNicm1hdmJqNnkifQ.pULi1W0EzO_pMU2fHv0bVQ",
+                      initialCameraPosition: CameraPosition(
+                        target: mapController.currentLocation.value,
+                        zoom: 16.0,
+                      ),
+                      styleString: MapboxStyles.MAPBOX_STREETS,
+                      myLocationTrackingMode:
+                          MyLocationTrackingMode.TrackingGPS,
+                      onStyleLoadedCallback:
+                          mapController.onStyleLoadedCallback,
+                    );
+                  } else {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                      color: TColors.primary,
+                    ));
+                  }
                 },
-                accessToken:
-                    "pk.eyJ1IjoiaGlldXNlcnZpY2VzIiwiYSI6ImNtMXI2dG8zajAxYXMya3NienRueGFpMTUifQ.u4hszGbs2HMsDty9tvv3wg",
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(37.4219983, -122.084), // Tọa độ khởi tạo
-                  zoom: 10.0, // Độ phóng to
-                ),
-                zoomGesturesEnabled: true,
-                myLocationEnabled: true,
-                trackCameraPosition: true,
-                scrollGesturesEnabled: true,
-                myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
-                styleString: MapboxStyles.OUTDOORS,
-                compassEnabled: true,
-                onStyleLoadedCallback: () {
-                  print("Map style loaded");
-                },
-                // onStyleLoadedCallback: mapController.onStyleLoadedCallback,
-                minMaxZoomPreference: const MinMaxZoomPreference(3, 20),
               ),
             ),
-            DraggableScrollableSheet(
-              initialChildSize: 0.15,
-              minChildSize: 0.10,
-              maxChildSize: 0.8,
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
-                return Container(
-                  decoration: const BoxDecoration(
-                    color: TColors.primaryBackground,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(16)),
-                  ),
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          TActionOnOrder(
-                              orderController: orderController,
-                              orderModel: orderModel),
-                        ],
-                      ),
-                    ),
+            Obx(() {
+              if (mapController.loading.value) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: TColors.primary,
                   ),
                 );
-              },
-            ),
+              }
+              if (mapController.order.value.orderDetailId != 0) {
+                return DraggableScrollableSheet(
+                  initialChildSize: 0.15,
+                  minChildSize: 0.10,
+                  maxChildSize: 0.8,
+                  builder: (BuildContext context,
+                      ScrollController scrollController) {
+                    return Container(
+                      decoration: const BoxDecoration(
+                        color: TColors.primaryBackground,
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(16)),
+                      ),
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              TActionOnOrder(
+                                orderController: mapController,
+                                orderModel: mapController.order.value,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
+              return const SizedBox();
+            }),
+            // Obx(() {
+            //   if (mapController.order.value.status == 'Paid' ||
+            //       mapController.order.value.status == 'InRoute') {
+            //     return Positioned(
+            //         top: TSizes.md,
+            //         right: TSizes.md,
+            //         child: TRoundedIcon(
+            //           icon: Icons.play_circle,
+            //           backgroundColor: TColors.white,
+            //           onPressed: () => mapController.getDirectionToCustomer(false),
+            //         ));
+            //   }
+            //   return const SizedBox();
+            // })
           ],
         ),
       ),
@@ -110,7 +145,7 @@ class TActionOnOrder extends StatelessWidget {
     required this.orderModel,
   });
 
-  final OrderController orderController;
+  final MapGoongController orderController;
   final OrderModel orderModel;
 
   @override
@@ -258,8 +293,16 @@ class TActionOnOrder extends StatelessWidget {
         ],
       );
     }
-    return const SizedBox(
-      child: Text('Waiting customer paid'),
-    );
+    if (orderModel.status == "InProcess") {
+      return Column(
+        children: [
+          Text(
+            'Waiting customer paying!',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ],
+      );
+    }
+    return const SizedBox();
   }
 }

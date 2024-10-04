@@ -11,7 +11,7 @@ buildscript {
             }
             credentials {
                 username = "mapbox"
-                password = "pk.eyJ1IjoiaGlldXNlcnZpY2VzIiwiYSI6ImNtMXI2dG8zajAxYXMya3NienRueGFpMTUifQ.u4hszGbs2HMsDty9tvv3wg"
+                password = MAPBOX_DOWNLOADS_TOKEN
             }
         }
     }
@@ -28,11 +28,21 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        configurations.all{
-            resolutionStrategy{
-                force "com.google.android.gms:play-services-location:21.0.1"
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                username = "mapbox"
+                password = MAPBOX_DOWNLOADS_TOKEN
             }
         }
+//        configurations.all{
+//            resolutionStrategy{
+//                force "com.google.android.gms:play-services-location:21.0.1"
+//            }
+//        }
 
     }
 }

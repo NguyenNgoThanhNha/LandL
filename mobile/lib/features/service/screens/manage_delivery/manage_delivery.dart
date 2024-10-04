@@ -27,13 +27,22 @@ class ManageDeliveryScreen extends StatelessWidget {
           body: NestedScrollView(
             body: Padding(
               padding: const EdgeInsets.all(TSizes.defaultSpace),
-              child: Obx(() => TabBarView(
-                children: [
-                  TStatusTab(items: controller.listProcessingOrder.value),
-                  TStatusTab(items: controller.listCompletedOrder.value),
-                  TStatusTab(items: controller.listCancelOrder.value),
-                ],
-              )),
+              child: Obx(() {
+                if (controller.loading.value) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: TColors.primary,
+                    ),
+                  );
+                }
+                return TabBarView(
+                  children: [
+                    TStatusTab(items: controller.listProcessingOrder.value),
+                    TStatusTab(items: controller.listCompletedOrder.value),
+                    TStatusTab(items: controller.listCancelOrder.value),
+                  ],
+                );
+              }),
             ),
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {

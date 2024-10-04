@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:mobile/data/repositories/order/order_repository.dart';
-import 'package:mobile/features/service/models/order_model.dart';
 import 'package:mobile/utils/helpers/network_manager.dart';
 import 'package:mobile/utils/popups/loaders.dart';
 

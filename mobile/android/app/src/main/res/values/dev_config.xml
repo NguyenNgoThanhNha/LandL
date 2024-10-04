@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Navigation map</string>
-    <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">pk.eyJ1IjoiaGlldXNlcnZpY2VzIiwiYSI6ImNtMXI2dG8zajAxYXMya3NienRueGFpMTUifQ.u4hszGbs2HMsDty9tvv3wg</string>
+    <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">pk.eyJ1IjoiaGlldXNlcnZpY2VzIiwiYSI6ImNtMXA1bmh6MjAwbjUycXNicm1hdmJqNnkifQ.pULi1W0EzO_pMU2fHv0bVQ</string>
     <string name="user_location_permission_explanation">This app needs location permissions to show its functionality.</string>
     <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
 </resources>

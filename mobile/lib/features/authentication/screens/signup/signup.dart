@@ -62,12 +62,30 @@ class SignUpForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
-            controller: controller.fullName,
+            controller: controller.username,
             validator: (value) =>
-                TValidator.validateEmptyText('Full name', value),
+                TValidator.validateEmptyText('Username', value),
             expands: false,
             decoration: const InputDecoration(
                 labelText: TTexts.fullName, prefixIcon: Icon(Iconsax.user)),
+          ),
+          const SizedBox(
+            height: TSizes.spaceBtwInputFields,
+          ),
+          TextFormField(
+            controller: controller.fullName,
+            validator: (value) => TValidator.validateEmptyText('Full name', value),
+            decoration: const InputDecoration(
+                labelText: TTexts.email, prefixIcon: Icon(Iconsax.direct)),
+          ),
+          const SizedBox(
+            height: TSizes.spaceBtwInputFields,
+          ),
+          TextFormField(
+            controller: controller.email,
+            validator: (value) => TValidator.validateEmail(value),
+            decoration: const InputDecoration(
+                labelText: TTexts.email, prefixIcon: Icon(Iconsax.direct)),
           ),
           const SizedBox(
             height: TSizes.spaceBtwInputFields,

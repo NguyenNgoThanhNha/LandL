@@ -39,6 +39,10 @@ class TImages {
   static const String licenceCard = 'assets/icons/icons8-driver-license-64.png';
 
   //map
-  static const String package =
-      'assets/icons/orange-drone-with-a-package-bottom-view.png';
+  static const String package = 'assets/icons/icons8-package-100.png';
+  static const String packageAwait = 'assets/icons/await-package.png';
+  static const String receivePackage =
+      'assets/icons/icons8-receive-package-100.png';
+  static const String dropPackage = 'assets/icons/icons8-drop-shipping-100.png';
+  static const String startHome = 'assets/icons/icons8-pin-96.png';
 }

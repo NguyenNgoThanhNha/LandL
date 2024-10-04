@@ -1,0 +1,310 @@
+{
+    "version": 8,
+    "name": "exe201",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:thumb": "data:image/webp;base64,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",
+        "mapbox:uiParadigm": "global",
+        "mapbox:sdk-support": {
+            "js": "3.6.0",
+            "android": "11.6.0",
+            "ios": "11.6.0"
+        },
+        "mapbox:groups": {}
+    },
+    "center": [106.7032139148348, 10.743614970938438],
+    "zoom": 15.337709182061968,
+    "bearing": 0,
+    "pitch": 75,
+    "lights": [
+        {
+            "id": "directional",
+            "type": "directional",
+            "properties": {
+                "direction": [
+                    "match",
+                    ["config", "lightPreset"],
+                    "dawn",
+                    [
+                        "match",
+                        ["config", "theme"],
+                        "monochrome",
+                        ["literal", [120, 40]],
+                        ["literal", [120, 50]]
+                    ],
+                    "day",
+                    ["literal", [180, 20]],
+                    "dusk",
+                    [
+                        "match",
+                        ["config", "theme"],
+                        "monochrome",
+                        ["literal", [240, 30]],
+                        ["literal", [240, 80]]
+                    ],
+                    "night",
+                    ["literal", [270, 20]],
+                    ["literal", [180, 20]]
+                ],
+                "color": [
+                    "match",
+                    ["config", "lightPreset"],
+                    "dawn",
+                    "hsl(33, 98%, 77%)",
+                    "day",
+                    "hsl(0, 0%, 100%)",
+                    "dusk",
+                    [
+                        "match",
+                        ["config", "theme"],
+                        "monochrome",
+                        "hsl(30, 0%, 50%)",
+                        "hsl(30, 98%, 76%)"
+                    ],
+                    "night",
+                    [
+                        "match",
+                        ["config", "theme"],
+                        "monochrome",
+                        "hsl(0, 0%, 0%)",
+                        "hsl(0, 0%, 29%)"
+                    ],
+                    "hsl(0, 0%, 100%)"
+                ],
+                "intensity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    12,
+                    [
+                        "match",
+                        ["config", "lightPreset"],
+                        "dawn",
+                        0.5,
+                        "day",
+                        ["match", ["config", "theme"], "monochrome", 0.3, 0.2],
+                        "dusk",
+                        0,
+                        "night",
+                        ["match", ["config", "theme"], "monochrome", 0.01, 0],
+                        0.2
+                    ],
+                    14,
+                    [
+                        "match",
+                        ["config", "lightPreset"],
+                        "dawn",
+                        ["match", ["config", "theme"], "monochrome", 0.35, 0.5],
+                        "day",
+                        0.2,
+                        "dusk",
+                        ["match", ["config", "theme"], "monochrome", 0.15, 0.2],
+                        "night",
+                        ["match", ["config", "theme"], "monochrome", 0.25, 0.5],
+                        0.2
+                    ]
+                ],
+                "cast-shadows": true,
+                "shadow-intensity": [
+                    "match",
+                    ["config", "lightPreset"],
+                    "night",
+                    0.5,
+                    1
+                ]
+            }
+        }
+    ],
+    "terrain": {
+        "source": "mapbox-dem",
+        "exaggeration": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            6,
+            0,
+            7,
+            1,
+            12,
+            1,
+            13.7,
+            0
+        ]
+    },
+    "fog": {
+        "vertical-range": [30, 120],
+        "range": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            13,
+            ["literal", [1, 10]],
+            15,
+            ["literal", [1, 4]]
+        ],
+        "color": [
+            "interpolate",
+            ["exponential", 1.2],
+            ["zoom"],
+            5,
+            [
+                "interpolate",
+                ["linear"],
+                ["measure-light", "brightness"],
+                0.1,
+                [
+                    "match",
+                    ["config", "theme"],
+                    "monochrome",
+                    "hsla(0, 0%, 20%, 1)",
+                    "hsla(240, 9%, 55%, 1)"
+                ],
+                0.4,
+                "hsla(0, 0%, 100%, 1)"
+            ],
+            7,
+            [
+                "interpolate",
+                ["linear"],
+                ["measure-light", "brightness"],
+                0.02,
+                "hsla(213, 63%, 20%, 0.9)",
+                0.03,
+                "hsla(30, 65%, 60%, 0.5)",
+                0.4,
+                "hsla(10, 79%, 88%, 0.95)",
+                0.45,
+                "hsla(200, 60%, 98%, 0.9)"
+            ]
+        ],
+        "high-color": [
+            "interpolate",
+            ["exponential", 1.2],
+            ["zoom"],
+            5,
+            [
+                "interpolate",
+                ["linear"],
+                ["measure-light", "brightness"],
+                0.1,
+                "hsla(215, 100%, 20%, 1)",
+                0.4,
+                "hsla(215, 100%, 51%, 1)"
+            ],
+            7,
+            [
+                "interpolate",
+                ["linear"],
+                ["measure-light", "brightness"],
+                0,
+                "hsla(228, 38%, 20%, 1)",
+                0.05,
+                "hsla(360, 100%, 85%, 1)",
+                0.2,
+                "hsla(205, 88%, 86%, 1)",
+                0.4,
+                "hsla(270, 65%, 85%, 1)",
+                0.45,
+                "hsla(0, 0%, 100%, 1)"
+            ]
+        ],
+        "space-color": [
+            "interpolate",
+            ["exponential", 1.2],
+            ["zoom"],
+            5,
+            [
+                "match",
+                ["config", "theme"],
+                "monochrome",
+                "hsl(0, 0%, 0%)",
+                "hsl(211, 84%, 9%)"
+            ],
+            7,
+            [
+                "interpolate",
+                ["linear"],
+                ["measure-light", "brightness"],
+                0,
+                [
+                    "match",
+                    ["config", "theme"],
+                    "monochrome",
+                    "hsl(0, 0%, 0%)",
+                    "hsl(211, 84%, 17%)"
+                ],
+                0.2,
+                "hsl(210, 40%, 30%)",
+                0.4,
+                "hsl(270, 45%, 98%)",
+                0.45,
+                "hsl(210, 100%, 80%)"
+            ]
+        ],
+        "horizon-blend": [
+            "interpolate",
+            ["exponential", 1.2],
+            ["zoom"],
+            5,
+            ["match", ["config", "theme"], "monochrome", 0.001, 0.01],
+            7,
+            [
+                "interpolate",
+                ["exponential", 1.2],
+                ["measure-light", "brightness"],
+                0.35,
+                0.03,
+                0.4,
+                0.1,
+                0.45,
+                0.03
+            ]
+        ],
+        "star-intensity": [
+            "interpolate",
+            ["exponential", 1.2],
+            ["zoom"],
+            5,
+            0.4,
+            7,
+            [
+                "interpolate",
+                ["exponential", 1.2],
+                ["measure-light", "brightness"],
+                0.1,
+                0.2,
+                0.3,
+                0
+            ]
+        ]
+    },
+    "imports": [
+        {
+            "id": "basemap",
+            "url": "mapbox://styles/mapbox/standard",
+            "config": {
+                "theme": "default",
+                "lightPreset": "dawn",
+                "showPlaceLabels": true
+            }
+        }
+    ],
+    "sources": {
+        "mapbox-dem": {
+            "url": "mapbox://mapbox.mapbox-terrain-dem-v1",
+            "type": "raster-dem",
+            "tileSize": 512
+        }
+    },
+    "sprite": "mapbox://sprites/hieuservices/cm0y0ezhf012101pmg9f01txf/8cfd3drho5eet9n336g32nhhr",
+    "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+    "projection": {"name": "globe"},
+    "layers": [],
+    "created": "2024-09-11T15:22:39.267Z",
+    "modified": "2024-10-03T20:13:17.375Z",
+    "id": "cm0y0ezhf012101pmg9f01txf",
+    "owner": "hieuservices",
+    "visibility": "public",
+    "protected": false,
+    "draft": false
+}

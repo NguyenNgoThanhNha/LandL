@@ -15,6 +15,7 @@ class SignupController extends GetxController {
   final hideConfirmPassword = true.obs;
   final privacyPolicy = true.obs;
   final email = TextEditingController();
+  final username = TextEditingController();
   final fullName = TextEditingController();
   final city = TextEditingController();
   final password = TextEditingController();
@@ -73,9 +74,10 @@ class SignupController extends GetxController {
       final response = await AuthenticationRepository.instance.signUp(
           email.text.trim(),
           password.text.trim(),
-          fullName.text.trim(),
+          username.text.trim(),
           phoneNumber.text.trim(),
-          city.text.trim());
+          city.text.trim(),
+          fullName.text.toString());
       TFullScreenLoader.stopLoading();
       if (response.success == true) {
         TLoaders.successSnackBar(

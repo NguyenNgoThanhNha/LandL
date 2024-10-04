@@ -1,6 +1,4 @@
-import 'package:meta/meta.dart';
 import 'dart:convert';
-
 import 'package:mobile/features/personalization/models/user_model.dart';
 
 class OrderTotalModel {
@@ -18,6 +16,7 @@ class OrderTotalModel {
   DateTime orderDate;
   DateTime endDate;
 
+  // Constructor
   OrderTotalModel({
     required this.orderId,
     required this.orderCode,
@@ -34,11 +33,31 @@ class OrderTotalModel {
     required this.endDate,
   });
 
+  // Empty constructor with default values
+  static OrderTotalModel empty() => OrderTotalModel(
+    orderId: 0,
+    orderCode: 0,
+    totalAmount: 0.0,
+    driverAmount: 0.0,
+    systemAmount: 0.0,
+    vat: 0.0,
+    orderCount: 0,
+    status: '',
+    notes: '',
+    driverId: 0,
+    orderDriver: UserModel.empty(),  // Assuming UserModel has an empty constructor
+    orderDate: DateTime.now(),
+    endDate: DateTime.now(),
+  );
+
+  // JSON deserialization from a raw JSON string
   factory OrderTotalModel.fromRawJson(String str) =>
       OrderTotalModel.fromJson(json.decode(str));
 
+  // JSON serialization to a raw JSON string
   String toRawJson() => json.encode(toJson());
 
+  // JSON deserialization from Map
   factory OrderTotalModel.fromJson(Map<String, dynamic> json) =>
       OrderTotalModel(
         orderId: json["orderId"],
@@ -58,19 +77,20 @@ class OrderTotalModel {
         endDate: DateTime.parse(json["endDate"]),
       );
 
+  // JSON serialization to Map
   Map<String, dynamic> toJson() => {
-        "orderId": orderId,
-        "orderCode": orderCode,
-        "totalAmount": totalAmount,
-        "driverAmount": driverAmount,
-        "systemAmount": systemAmount,
-        "vat": vat,
-        "orderCount": orderCount,
-        "status": status,
-        "notes": notes,
-        "driverId": driverId,
-        "orderDriver": orderDriver?.toJson(),
-        "orderDate": orderDate.toIso8601String(),
-        "endDate": endDate.toIso8601String(),
-      };
+    "orderId": orderId,
+    "orderCode": orderCode,
+    "totalAmount": totalAmount,
+    "driverAmount": driverAmount,
+    "systemAmount": systemAmount,
+    "vat": vat,
+    "orderCount": orderCount,
+    "status": status,
+    "notes": notes,
+    "driverId": driverId,
+    "orderDriver": orderDriver?.toJson(),
+    "orderDate": orderDate.toIso8601String(),
+    "endDate": endDate.toIso8601String(),
+  };
 }

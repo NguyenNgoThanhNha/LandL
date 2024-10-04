@@ -1,6 +1,4 @@
 import 'package:mobile/commons/widgets/loader/animation_loader.dart';
-import 'package:mobile/utils/constants/colors.dart';
-import 'package:mobile/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

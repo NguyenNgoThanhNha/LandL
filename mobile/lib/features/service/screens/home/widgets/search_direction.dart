@@ -20,6 +20,7 @@ class TSearchDirection extends StatelessWidget {
         Text(
           TTexts.directionTo,
           style: Theme.of(context).textTheme.titleMedium,
+          textAlign: TextAlign.start,
         ),
         const SizedBox(
           height: TSizes.spacebtwItems / 2,
@@ -58,7 +59,17 @@ class TSearchDirection extends StatelessWidget {
               backgroundColor: TColors.primary.withOpacity(0.9),
             )
           ],
-        ))
+        )),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              child: Text('Get location',
+                  style: Theme.of(context).textTheme.titleSmall),
+              onPressed: () => controller.getLocation(),
+            ),
+          ],
+        )
       ],
     );
   }

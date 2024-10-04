@@ -87,7 +87,7 @@ class TDeliveryPackage extends StatelessWidget {
                 Expanded(
                     child: ElevatedButton(
                         onPressed: () => Get.to(() => DeliveryDetailScreen(
-                              orderModel: orderModel,
+                              id: orderModel.orderDetailId,
                             )),
                         child: const Text('View')))
               ],

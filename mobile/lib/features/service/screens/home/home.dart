@@ -33,29 +33,37 @@ class HomeScreen extends StatelessWidget {
                 Obx(() {
                   if (!controller.isUpdateVehicle.value &&
                       !controller.isUpdateIdCard.value) {
-                    return Text(
-                      TTexts.todo,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                    return Column(
+                      children: [
+                        Text(
+                          TTexts.todo,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        const SizedBox(
+                          height: TSizes.spacebtwItems,
+                        ),
+                      ],
                     );
                   }
                   return const SizedBox();
                 }),
-                const SizedBox(
-                  height: TSizes.spacebtwItems,
-                ),
                 Obx(() {
                   if (!controller.isUpdateIdCard.value) {
-                    return TWarningAction(
-                      onPressed: () => Get.to(() => const ContractScreen()),
-                      title: TTexts.identifyTitle,
-                      subTitle: TTexts.identifySubTitle,
+                    return Column(
+                      children: [
+                        TWarningAction(
+                          onPressed: () => Get.to(() => const ContractScreen()),
+                          title: TTexts.identifyTitle,
+                          subTitle: TTexts.identifySubTitle,
+                        ),
+                        const SizedBox(
+                          height: TSizes.spacebtwItems,
+                        ),
+                      ],
                     );
                   }
                   return const SizedBox();
                 }),
-                const SizedBox(
-                  height: TSizes.spacebtwItems,
-                ),
                 Obx(() {
                   if (!controller.isUpdateVehicle.value) {
                     return TWarningAction(
@@ -117,8 +125,8 @@ class HomeScreen extends StatelessWidget {
                     return const Center(
                         child: Text('No Delivery Suitable For You!!'));
                   }
-                  print(OrderModel.fromJson(
-                      controller.listOrder.value[1]));
+                  // print(OrderModel.fromJson(
+                  //     controller.listOrder.value[0]));
                   return ListView.separated(
                     separatorBuilder: (_, __) => const SizedBox(
                       height: TSizes.spacebtwItems,

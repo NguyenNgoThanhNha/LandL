@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="1.0.0"
-    android:versionName="init_app">
+    android:versionCode="2"
+    android:versionName="1.1.0">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -22,17 +21,19 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/logo"
         android:label="Leopard Lorry">
-
-
-        <!--        <receiver-->
-        <!--            android:name=".TelemetryBroadcastReceiver"-->
-        <!--            android:enabled="true"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="com.mapbox.android.telemetry.ALARM_WAKEUP" />-->
-        <!--            </intent-filter>-->
-        <!--        </receiver>-->
-
+        <receiver
+            android:name=".MyBroadCast"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.mobile.CUSTOM_ACTION" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />
+                <action android:name="android.intent.action.TIME_CHANGED" />
+                <action android:name="android.intent.action.AIRPLANE_MODE_CHANGED" />
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -49,9 +50,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver
-            android:name="com.mapbox.android.telemetry.TelemetryReceiver"
-            android:exported="true" />
+
 
         <meta-data
             android:name="com.mapbox.EnableTelemetry"
@@ -59,13 +58,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.mapbox.token"
-            android:value="sk.eyJ1IjoiaGlldXNlcnZpY2VzIiwiYSI6ImNtMHkxazFjaTBlZWUyanF2ZTJqdm12MTMifQ.crpnU_ZK_zR5aqvSleOQxA" />
+            android:value="pk.eyJ1IjoiaGlldXNlcnZpY2VzIiwiYSI6ImNtMXA1bmh6MjAwbjUycXNicm1hdmJqNnkifQ.pULi1W0EzO_pMU2fHv0bVQ" />
     </application>
 
     <queries>
