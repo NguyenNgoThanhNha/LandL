@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:get/get.dart';
@@ -12,8 +11,8 @@ import 'package:mobile/utils/http/upload_image.dart';
 import 'package:mobile/utils/popups/full_screen_loader.dart';
 import 'package:mobile/utils/popups/loaders.dart';
 
-class UploadContractController extends GetxController {
-  UploadContractController get instance => Get.find();
+class UploadDriverCardController extends GetxController {
+  UploadDriverCardController get instance => Get.find();
   final box = GetStorage();
   final imageFront = Rx<File?>(null);
   final imageBack = Rx<File?>(null);
@@ -46,14 +45,23 @@ class UploadContractController extends GetxController {
           TFullScreenLoader.stopLoading();
           return;
         }
-        final response = await THttpScan.scanIdCard(imageRx.value!);
+        final response = await THttpScan.scanDriverCard(imageRx.value!);
+
+        if (!isFront){
+          TFullScreenLoader.stopLoading();
+          TLoaders.successSnackBar(title: 'Upload success', message: 'You can not change it later!');
+          return;
+        }
+         
         if (response?['errorCode'] != 0){
           imageRx.value = null;
           TFullScreenLoader.stopLoading();
           TLoaders.warningSnackBar(title: 'Image wrong',message: "Please upload other front image!");
           return;
         }
-        if (isFront && response?['data'][0]['features'] != null){
+        print(response?['data'][0]);
+        if (isFront && (response?['data'][0]['id'] == null)){
+          print("hihi");
           imageRx.value = null;
           TFullScreenLoader.stopLoading();
           TLoaders.warningSnackBar(title: 'Image wrong',message: "Please upload other front image!");
@@ -66,8 +74,13 @@ class UploadContractController extends GetxController {
           return;
         }
 
+        final dataConvert = response?['data'][0];
+        if (isFront){
+          dataConvert['classLicense'] = response?['data'][0]['class'];
+        }
+
         final result = await THttpUpload.patchData(
-            'IdentityCard/UpdateIdentityCard', response?['data'][0]);
+            'LicenseDriver/UpdateLicenseDriver',  dataConvert);
         TFullScreenLoader.stopLoading();
         if (!result.success) {
           imageRx.value = null;
@@ -115,7 +128,7 @@ class UploadContractController extends GetxController {
 
         }
         final response = await THttpUpload.patch(
-            'IdentityCard/UpdateIdentityCard',
+            'LicenseDriver/UpdateLicenseDriver',
             imageFront.value!,
             imageBack.value!);
         TFullScreenLoader.stopLoading();

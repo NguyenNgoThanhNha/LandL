@@ -1,4 +1,4 @@
-package com.example.mobile;
+package com.landl.mobile;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,7 +15,7 @@ public class MyBroadCast extends BroadcastReceiver {
         Log.d(TAG, "Received broadcast with action: " + action);
 
         // Xử lý action tùy chỉnh
-        if ("com.example.mobile.CUSTOM_ACTION".equals(action)) {
+        if ("com.landl.mobile.CUSTOM_ACTION".equals(action)) {
             Log.d(TAG, "Custom action received!");
         }
 

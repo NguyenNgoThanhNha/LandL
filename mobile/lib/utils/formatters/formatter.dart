@@ -7,6 +7,7 @@ class TFormatter {
     return DateFormat('dd-MM-yyyy').format(date);
   }
 
+
   static String formatCurrency(double amount) {
     return NumberFormat.currency(locale: 'vi_VN', symbol: 'VND').format(amount);
   }

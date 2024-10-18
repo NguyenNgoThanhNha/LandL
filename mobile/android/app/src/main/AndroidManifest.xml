@@ -25,7 +25,7 @@
             android:name=".MyBroadCast"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.example.mobile.CUSTOM_ACTION" />
+                <action android:name="com.landl.mobile.CUSTOM_ACTION" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.intent.action.BATTERY_LOW" />
                 <action android:name="android.intent.action.BATTERY_OKAY" />

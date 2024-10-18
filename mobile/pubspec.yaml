@@ -4,7 +4,7 @@ description: "L and L application for drivers"
 publish_to: 'none'
 
 
-version: 1.0.0+1
+version: 1.0.0+3
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
@@ -52,6 +52,8 @@ dependencies:
   flutter_dotenv: ^5.1.0
 #  location: ^7.0.0
 #  flutter_mapbox_navigation: ^0.1.7
+
+  date_field: ^5.2.0
 
 dependency_overrides:
   geolocator: ^9.0.1

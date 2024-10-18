@@ -21,6 +21,7 @@ class SignupController extends GetxController {
   final password = TextEditingController();
   final phoneNumber = TextEditingController();
   final confirmPassword = TextEditingController();
+  final birthDay = TextEditingController();
 
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
 

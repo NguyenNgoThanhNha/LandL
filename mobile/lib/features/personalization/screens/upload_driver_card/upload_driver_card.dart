@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile/commons/widgets/appbar/appbar.dart';
 import 'package:mobile/commons/widgets/camera/camera.dart';
-import 'package:mobile/features/personalization/controllers/upload_contract/upload_contract_controller.dart';
+import 'package:mobile/features/personalization/controllers/upload_driver/upload_driver_card_controller.dart';
 import 'package:mobile/utils/constants/sizes.dart';
 import 'package:mobile/utils/constants/text_strings.dart';
-
-class UploadContractScreen extends StatelessWidget {
-  const UploadContractScreen({super.key});
+class UploadDriverCardScreen extends StatelessWidget {
+  const UploadDriverCardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UploadContractController());
+    final controller = Get.put(UploadDriverCardController());
 
     return Scaffold(
-      appBar: const TAppbar(
+      appBar:const TAppbar(
         showBackArrow: true,
-        title: Text(TTexts.idCardTitle),
+        title: Text(TTexts.licenceCardsTitle),
       ),
       body: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),

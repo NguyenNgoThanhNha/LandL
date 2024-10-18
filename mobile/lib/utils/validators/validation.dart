@@ -54,4 +54,16 @@ class TValidator {
 
     return null;
   }
+  static String? validateDate(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Date is required';
+    }
+
+    final dateRegExp = RegExp(r'^\d{2}$');
+    if (!dateRegExp.hasMatch(value)) {
+      return 'Invalid phone number format ( 10 digits required).';
+    }
+
+    return null;
+  }
 }

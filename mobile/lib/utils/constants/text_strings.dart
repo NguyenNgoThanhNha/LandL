@@ -37,10 +37,12 @@ class TTexts {
   static const String verificationCode = "Verify";
   static const String resentEmail = "Resend email";
   static const String resentEmailIn = "Resent email in";
+  static const String birthDay = "Birth Date";
+  static const String username = "Username";
 
   static const String loginTitle = "Welcome back,";
   static const String loginSubTitle =
-      "Access your account and enjoy seamless shopping with ease and security.";
+      "Access your account and enjoy your journey with ease and security.";
 
   //verify
   static const String verifyTitle = 'Confirm your email address';

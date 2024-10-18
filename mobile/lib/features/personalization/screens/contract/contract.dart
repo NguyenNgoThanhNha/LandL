@@ -8,6 +8,7 @@ import 'package:mobile/features/personalization/controllers/contract/contract_co
 import 'package:mobile/features/personalization/controllers/upload_contract/upload_contract_controller.dart';
 import 'package:mobile/features/personalization/screens/id_card_detail/id_card_detail.dart';
 import 'package:mobile/features/personalization/screens/upload_contract/upload_contract.dart';
+import 'package:mobile/features/personalization/screens/upload_driver_card/upload_driver_card.dart';
 import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/constants/image_strings.dart';
 import 'package:mobile/utils/constants/sizes.dart';
@@ -18,7 +19,6 @@ class ContractScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final uploadController = Get.put(UploadContractController());
     final controller = Get.put(ContractController());
     return Scaffold(
         appBar: TAppbar(
@@ -41,9 +41,7 @@ class ContractScreen extends StatelessWidget {
               GestureDetector(
                   onTap: () => Get.to(() => Obx(() {
                         if (!controller.isHasIdCard.value) {
-                          return const UploadContractScreen(
-                            title: TTexts.idCardTitle,
-                          );
+                          return const UploadContractScreen();
                         }
                         return const IdCardDetailScreen();
                       })),
@@ -84,10 +82,7 @@ class ContractScreen extends StatelessWidget {
                 height: TSizes.spacebtwItems,
               ),
               GestureDetector(
-                  onTap: () => uploadController.instance.updateLicenceCard()
-                  // Get.to(() => const UploadContractScreen(
-                  //     title: TTexts.licenceCardsTitle)
-                  ,
+                  onTap: () => Get.to(() => const UploadDriverCardScreen()),
                   child: TRoundedContainer(
                     backgroundColor: TColors.accent.withOpacity(0.3),
                     padding: const EdgeInsets.all(TSizes.sm),

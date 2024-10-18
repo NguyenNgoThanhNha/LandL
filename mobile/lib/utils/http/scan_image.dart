@@ -6,7 +6,7 @@ import 'package:mobile/utils/http/response_props.dart';
 
 class THttpScan {
   static Future<Map<String, dynamic>?> scanIdCard(File imageFile) async {
-    String apiIdCard = 'iUE6MvbIhBB5hbTve3jLN6RIyjanUb6Z';
+    String apiIdCard = 'dEjMvesFLsvrtBlw5ErdX87Zv3mtZY84';
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('https://api.fpt.ai/vision/idr/vnm'),
@@ -20,24 +20,18 @@ class THttpScan {
     return json.decode(utf8.decode(response.bodyBytes));
   }
 
-  static Future<ResponseProps?> scanDriverCard(File imageFile) async {
+  static Future<Map<String, dynamic>?> scanDriverCard(File imageFile) async {
     String apiIdCard = 'iUE6MvbIhBB5hbTve3jLN6RIyjanUb6Z';
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('https://api.fpt.ai/vision/idr/vnm'),
+      Uri.parse('https://api.fpt.ai/vision/dlr/vnm'),
     );
     request.headers['api-key'] = apiIdCard;
     request.files
         .add(await http.MultipartFile.fromPath('image', imageFile.path));
 
-    // return json.decode(response.body);
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+    return json.decode(utf8.decode(response.bodyBytes));
   }
-
-// static Future<ResponseProps> uploadDataServer(dynamic data) async{
-//   var request = http.MultipartRequest(
-//     'POST',
-//     Uri.parse('https://api.fpt.ai/vision/idr/vnm'),
-//   );
-//   request.headers['api-key'] = apiIdCard;
-// }
 }

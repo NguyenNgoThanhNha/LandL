@@ -37,7 +37,7 @@ class IdCardDetailScreen extends StatelessWidget {
                           value: info?['name'],
                           onPressed: () {}),
                       TProfileMenu(
-                          title: 'DOB', value: info?['dob'], onPressed: () {}),
+                          title: 'DOB', value: info!['dob'].toString().substring(0,10), onPressed: () {}),
                       TProfileMenu(
                           title: 'Sex', value: info?['sex'], onPressed: () {}),
                       TProfileMenu(

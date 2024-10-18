@@ -1,9 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mobile/data/repositories/user/user_repository.dart';
-import 'package:mobile/utils/constants/image_strings.dart';
 import 'package:mobile/utils/helpers/network_manager.dart';
-import 'package:mobile/utils/popups/full_screen_loader.dart';
 import 'package:mobile/utils/popups/loaders.dart';
 
 class ContractController extends GetxController {

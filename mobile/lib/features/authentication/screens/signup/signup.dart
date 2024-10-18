@@ -67,7 +67,7 @@ class SignUpForm extends StatelessWidget {
                 TValidator.validateEmptyText('Username', value),
             expands: false,
             decoration: const InputDecoration(
-                labelText: TTexts.fullName, prefixIcon: Icon(Iconsax.user)),
+                labelText: TTexts.username, prefixIcon: Icon(Iconsax.user)),
           ),
           const SizedBox(
             height: TSizes.spaceBtwInputFields,
@@ -76,7 +76,7 @@ class SignUpForm extends StatelessWidget {
             controller: controller.fullName,
             validator: (value) => TValidator.validateEmptyText('Full name', value),
             decoration: const InputDecoration(
-                labelText: TTexts.email, prefixIcon: Icon(Iconsax.direct)),
+                labelText: TTexts.fullName, prefixIcon: Icon(Iconsax.user_edit)),
           ),
           const SizedBox(
             height: TSizes.spaceBtwInputFields,
@@ -91,10 +91,11 @@ class SignUpForm extends StatelessWidget {
             height: TSizes.spaceBtwInputFields,
           ),
           TextFormField(
-            controller: controller.email,
-            validator: (value) => TValidator.validateEmail(value),
+            controller: controller.birthDay,
+            keyboardType: TextInputType.datetime,
+            validator: (value) => TValidator.validateDate(value),
             decoration: const InputDecoration(
-                labelText: TTexts.email, prefixIcon: Icon(Iconsax.direct)),
+                labelText: TTexts.birthDay, prefixIcon: Icon(Iconsax.cake)),
           ),
           const SizedBox(
             height: TSizes.spaceBtwInputFields,
