@@ -33,7 +33,9 @@ android {
     namespace = "com.landl.mobile"
     compileSdk = 34
     ndkVersion = flutter.ndkVersion
-
+    viewBinding {
+        enabled = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -71,9 +73,9 @@ flutter {
 
 dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
-//    implementation 'com.mapbox.mapboxsdk:mapbox-android-core:4.8.0'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.7.0'
-    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0'
+//    implementation 'com.mapbox.common:common:23.2.3'
+//    implementation 'com.google.android.gms:play-services-location:21.3.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 

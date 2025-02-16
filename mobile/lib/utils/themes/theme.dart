@@ -28,7 +28,7 @@ class TAppTheme {
       outlinedButtonTheme: TOutlinedButtonTheme.lightTheme);
   static ThemeData darkTheme = ThemeData(
       useMaterial3: true,
-      fontFamily: 'KumbhSans',
+      fontFamily: 'IBMPlexSans',
       brightness: Brightness.dark,
       primaryColor: TColors.primary,
       scaffoldBackgroundColor: TColors.black,

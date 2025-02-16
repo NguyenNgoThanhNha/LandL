@@ -47,7 +47,7 @@ class AuthenticationRepository extends GetxController {
         "phone": phone,
         "typeAccount": "Driver",
         "city": city,
-        "userName": username
+        "userName": username,
       });
     } catch (e) {
       throw 'Something went wrong';

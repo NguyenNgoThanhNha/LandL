@@ -45,7 +45,7 @@ class MapGoongController extends GetxController {
         double.parse(order.value.deliveryInfoDetail.longPickUp));
     delivery = LatLng(double.parse(order.value.deliveryInfoDetail.latDelivery),
         double.parse(order.value.deliveryInfoDetail.longDelivery));
-    _getCurrentLocation();
+    await _getCurrentLocation();
     await loadCurrentAddress();
     _startTracking();
   }
@@ -246,7 +246,6 @@ class MapGoongController extends GetxController {
   }
 
   Future<void> getDirectionToCustomer(bool removeLayer) async {
-
     if (controller != null) {
       controller.animateCamera(
         CameraUpdate.newLatLngBounds(
@@ -257,7 +256,8 @@ class MapGoongController extends GetxController {
             top: 20,
             right: 20),
       );
-      var response = await getDirectionsAPIResponse(currentLocation.value, delivery);
+      var response =
+          await getDirectionsAPIResponse(currentLocation.value, delivery);
 
       List<PointLatLng> result =
           polylinePoints.decodePolyline(response['route']);

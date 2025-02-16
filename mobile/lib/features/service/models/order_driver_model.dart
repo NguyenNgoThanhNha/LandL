@@ -11,10 +11,11 @@ class OrderTotalModel {
   int orderCount;
   String status;
   String? notes;
-  int driverId;
+  int? driverId;
   UserModel? orderDriver;
   DateTime orderDate;
   DateTime endDate;
+  String? dimension;
 
   // Constructor
   OrderTotalModel({
@@ -27,7 +28,8 @@ class OrderTotalModel {
     required this.orderCount,
     required this.status,
     this.notes,
-    required this.driverId,
+    this.dimension,
+    this.driverId,
     required this.orderDriver,
     required this.orderDate,
     required this.endDate,
@@ -35,20 +37,22 @@ class OrderTotalModel {
 
   // Empty constructor with default values
   static OrderTotalModel empty() => OrderTotalModel(
-    orderId: 0,
-    orderCode: 0,
-    totalAmount: 0.0,
-    driverAmount: 0.0,
-    systemAmount: 0.0,
-    vat: 0.0,
-    orderCount: 0,
-    status: '',
-    notes: '',
-    driverId: 0,
-    orderDriver: UserModel.empty(),  // Assuming UserModel has an empty constructor
-    orderDate: DateTime.now(),
-    endDate: DateTime.now(),
-  );
+        orderId: 0,
+        orderCode: 0,
+        totalAmount: 0.0,
+        driverAmount: 0.0,
+        systemAmount: 0.0,
+        vat: 0.0,
+        orderCount: 0,
+        status: '',
+        notes: '',
+        dimension: '',
+        driverId: 0,
+        orderDriver: UserModel.empty(),
+        // Assuming UserModel has an empty constructor
+        orderDate: DateTime.now(),
+        endDate: DateTime.now(),
+      );
 
   // JSON deserialization from a raw JSON string
   factory OrderTotalModel.fromRawJson(String str) =>
@@ -60,37 +64,38 @@ class OrderTotalModel {
   // JSON deserialization from Map
   factory OrderTotalModel.fromJson(Map<String, dynamic> json) =>
       OrderTotalModel(
-        orderId: json["orderId"],
-        orderCode: json["orderCode"],
-        totalAmount: json["totalAmount"].toDouble(),
-        driverAmount: json["driverAmount"].toDouble(),
-        systemAmount: json["systemAmount"].toDouble(),
-        vat: json["vat"].toDouble(),
-        orderCount: json["orderCount"],
-        status: json["status"] ?? "",
-        notes: json["notes"] ?? "",
-        driverId: json["driverId"],
-        orderDriver: json["orderDriver"] != null
-            ? UserModel.fromJson(json["orderDriver"])
-            : null,
-        orderDate: DateTime.parse(json["orderDate"]),
-        endDate: DateTime.parse(json["endDate"]),
-      );
+          orderId: json["orderId"],
+          orderCode: json["orderCode"],
+          totalAmount: json["totalAmount"].toDouble(),
+          driverAmount: json["driverAmount"].toDouble(),
+          systemAmount: json["systemAmount"].toDouble(),
+          vat: json["vat"].toDouble(),
+          orderCount: json["orderCount"],
+          status: json["status"] ?? "",
+          notes: json["notes"] ?? "",
+          driverId: json["driverId"] ?? 0,
+          orderDriver: json["orderDriver"] != null
+              ? UserModel.fromJson(json["orderDriver"])
+              : null,
+          orderDate: DateTime.parse(json["orderDate"]),
+          endDate: DateTime.parse(json["endDate"]),
+          dimension: json["dimension"] ?? "");
 
   // JSON serialization to Map
   Map<String, dynamic> toJson() => {
-    "orderId": orderId,
-    "orderCode": orderCode,
-    "totalAmount": totalAmount,
-    "driverAmount": driverAmount,
-    "systemAmount": systemAmount,
-    "vat": vat,
-    "orderCount": orderCount,
-    "status": status,
-    "notes": notes,
-    "driverId": driverId,
-    "orderDriver": orderDriver?.toJson(),
-    "orderDate": orderDate.toIso8601String(),
-    "endDate": endDate.toIso8601String(),
-  };
+        "orderId": orderId,
+        "orderCode": orderCode,
+        "totalAmount": totalAmount,
+        "driverAmount": driverAmount,
+        "systemAmount": systemAmount,
+        "vat": vat,
+        "orderCount": orderCount,
+        "status": status,
+        "notes": notes,
+        "dimension": dimension,
+        "driverId": driverId,
+        "orderDriver": orderDriver?.toJson(),
+        "orderDate": orderDate.toIso8601String(),
+        "endDate": endDate.toIso8601String(),
+      };
 }

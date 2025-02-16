@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mobile/data/repositories/user/user_repository.dart';
@@ -11,13 +13,13 @@ class ContractController extends GetxController {
   final loading = false.obs;
   final isHasDriverCard = false.obs;
   final idCard = {}.obs;
+  final isLicense = {}.obs;
   final userRepository = Get.put(UserRepository());
 
   @override
-  void onInit() {
-    loadingCard();
-    getInforId();
+  void onInit() async {
     super.onInit();
+    loadingCard();
   }
 
   void loadingCard() {
@@ -31,13 +33,35 @@ class ContractController extends GetxController {
 
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
-
         return;
       }
       final response = await userRepository.getIdCard();
       if (response.success) {
         idCard.value = response.result?.data;
         print(response.result?.data);
+      }
+
+      loading.value = false;
+    } catch (e) {
+      loading.value = false;
+
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+    }
+  }
+
+  Future<void> getDriverInfoId() async {
+    try {
+      loading.value = true;
+
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        return;
+      }
+      print("loading license...");
+      final response = await userRepository.getLicenseCard();
+      if (response.success) {
+        print(response.result?.data);
+        isLicense.value = response.result?.data;
       }
 
       loading.value = false;

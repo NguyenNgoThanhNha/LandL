@@ -12,7 +12,7 @@ final inputDecoration = InputDecoration(
   focusedBorder: inputBorder,
   enabledBorder: inputBorder,
 );
-
+@immutable
 class OTPFields extends StatefulWidget {
   TextEditingController pin1;
   TextEditingController pin2;

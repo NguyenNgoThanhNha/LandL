@@ -18,18 +18,23 @@ class VehicleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(VehicleController(), permanent: false);
+
     return Scaffold(
       appBar: TAppbar(
         showBackArrow: true,
         title:
             Text('Vehicles', style: Theme.of(context).textTheme.headlineMedium),
         actions: [
-          TRoundedIcon(
+    Obx(() {
+      if (controller.truck.value == null) {
+        return   TRoundedIcon(
             icon: Icons.add,
             backgroundColor: TColors.accent.withOpacity(0.2),
             color: Colors.black,
-            onPressed: () => Get.to(() => const AddVehicleScreen()),
-          )
+            onPressed: () =>  Get.to(() => const AddVehicleScreen())
+        );}
+      return const SizedBox();
+    })
         ],
       ),
       body: Padding(

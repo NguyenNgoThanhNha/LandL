@@ -14,6 +14,8 @@ class VehicleController extends GetxController {
   final box = GetStorage();
   final truckRepository = Get.put(TruckRepository());
 
+
+
   @override
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((_) {

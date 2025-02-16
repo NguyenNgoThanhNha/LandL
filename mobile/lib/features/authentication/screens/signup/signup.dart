@@ -74,9 +74,11 @@ class SignUpForm extends StatelessWidget {
           ),
           TextFormField(
             controller: controller.fullName,
-            validator: (value) => TValidator.validateEmptyText('Full name', value),
+            validator: (value) =>
+                TValidator.validateEmptyText('Full name', value),
             decoration: const InputDecoration(
-                labelText: TTexts.fullName, prefixIcon: Icon(Iconsax.user_edit)),
+                labelText: TTexts.fullName,
+                prefixIcon: Icon(Iconsax.user_edit)),
           ),
           const SizedBox(
             height: TSizes.spaceBtwInputFields,
@@ -131,7 +133,7 @@ class SignUpForm extends StatelessWidget {
             height: TSizes.spaceBtwInputFields,
           ),
           Obx(
-                () => TextFormField(
+            () => TextFormField(
               controller: controller.confirmPassword,
               validator: (value) => TValidator.validatePassword(value),
               obscureText: controller.hideConfirmPassword.value,
@@ -140,7 +142,7 @@ class SignUpForm extends StatelessWidget {
                   prefixIcon: const Icon(Iconsax.password_check),
                   suffixIcon: IconButton(
                       onPressed: () => controller.hideConfirmPassword.value =
-                      !controller.hideConfirmPassword.value,
+                          !controller.hideConfirmPassword.value,
                       icon: Icon(
                         controller.hideConfirmPassword.value
                             ? Iconsax.eye_slash
@@ -201,63 +203,77 @@ class TermAndPolicy extends StatelessWidget {
               onChanged: (value) => controller.privacyPolicy.value =
                   !controller.privacyPolicy.value)),
         ),
+        Expanded(
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                    text: TTexts.iAgreeTo,
+                    style: Theme.of(context).textTheme.bodySmall),
+                TextSpan(
+                    text: TTexts.privacyPolicy,
+                    style: Theme.of(context).textTheme.bodyMedium!.apply(
+                        color: dark ? TColors.white : TColors.primary,
+                        decoration: TextDecoration.underline,
+                        decorationColor:
+                            dark ? TColors.white : TColors.primary),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (_) {
+                              return Container(
+                                padding:
+                                    const EdgeInsets.all(TSizes.defaultSpace),
+                                child: const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(TTexts.privacyPolicy),
+                                    Text('Content detail')
+                                  ],
+                                ),
+                              );
+                            });
+                      }),
+                TextSpan(
+                    text: ' and ',
+                    style: Theme.of(context).textTheme.bodySmall),
+                TextSpan(
+                    text: TTexts.termOfUse,
+                    style: Theme.of(context).textTheme.bodyMedium!.apply(
+                        color: dark ? TColors.white : TColors.primary,
+                        decoration: TextDecoration.underline,
+                        decorationColor:
+                            dark ? TColors.white : TColors.primary),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (_) {
+                              return Container(
+                                padding:
+                                    const EdgeInsets.all(TSizes.defaultSpace),
+                                child: const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(TTexts.termOfUse),
+                                    Text('Content detail')
+                                  ],
+                                ),
+                              );
+                            });
+                      }),
+              ],
+            ),
+            softWrap: true,
+            textAlign: TextAlign.start,
+          ),
+        ),
         const SizedBox(
           width: TSizes.spacebtwItems,
-        ),
-        Text.rich(TextSpan(children: [
-          TextSpan(
-              text: TTexts.iAgreeTo,
-              style: Theme.of(context).textTheme.bodySmall),
-          TextSpan(
-              text: TTexts.privacyPolicy,
-              style: Theme.of(context).textTheme.bodyMedium!.apply(
-                  color: dark ? TColors.white : TColors.primary,
-                  decoration: TextDecoration.underline,
-                  decorationColor: dark ? TColors.white : TColors.primary),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (_) {
-                        return Container(
-                          padding: const EdgeInsets.all(TSizes.defaultSpace),
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(TTexts.privacyPolicy),
-                              Text('Content detail')
-                            ],
-                          ),
-                        );
-                      });
-                }),
-          TextSpan(text: ' and ', style: Theme.of(context).textTheme.bodySmall),
-          TextSpan(
-              text: TTexts.termOfUse,
-              style: Theme.of(context).textTheme.bodyMedium!.apply(
-                  color: dark ? TColors.white : TColors.primary,
-                  decoration: TextDecoration.underline,
-                  decorationColor: dark ? TColors.white : TColors.primary),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (_) {
-                        return Container(
-                          padding: const EdgeInsets.all(TSizes.defaultSpace),
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(TTexts.termOfUse),
-                              Text('Content detail')
-                            ],
-                          ),
-                        );
-                      });
-                }),
-        ]))
+        )
       ],
     );
   }

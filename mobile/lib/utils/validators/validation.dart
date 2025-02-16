@@ -59,9 +59,23 @@ class TValidator {
       return 'Date is required';
     }
 
-    final dateRegExp = RegExp(r'^\d{2}$');
+    final dateRegExp = RegExp(r'^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$');
     if (!dateRegExp.hasMatch(value)) {
-      return 'Invalid phone number format ( 10 digits required).';
+      return 'Invalid date format (expected dd/MM/yyyy)';
+    }
+
+    try {
+      final parts = value.split('/');
+      final day = int.parse(parts[0]);
+      final month = int.parse(parts[1]);
+      final year = int.parse(parts[2]);
+
+      final date = DateTime(year, month, day);
+      if (date.year != year || date.month != month || date.day != day) {
+        return 'Invalid date';
+      }
+    } catch (e) {
+      return 'Invalid date';
     }
 
     return null;

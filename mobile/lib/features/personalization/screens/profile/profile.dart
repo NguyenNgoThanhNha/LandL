@@ -27,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               width: double.infinity,
               child: Column(
                 children: [
@@ -52,10 +52,10 @@ class ProfileScreen extends StatelessWidget {
 //                             isNetworkImage: networkImage.isNotEmpty,
 //                           );
 //                   }),
-                  TextButton(
-                      onPressed: () {},
-// => controller.uploadUserProfilePicture(),
-                      child: const Text("Change Profile Picture"))
+//                   TextButton(
+//                       onPressed: () {},
+// // => controller.uploadUserProfilePicture(),
+//                       child: const Text("Change Profile Picture"))
                 ],
               ),
             ),
@@ -103,18 +103,18 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(
               height: TSizes.spacebtwItems,
             ),
-            Center(
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  'Close Account',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .apply(color: Colors.red),
-                ),
-              ),
-            )
+            // Center(
+            //   child: TextButton(
+            //     onPressed: () {},
+            //     child: Text(
+            //       'Close Account',
+            //       style: Theme.of(context)
+            //           .textTheme
+            //           .bodyMedium!
+            //           .apply(color: Colors.red),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       )),

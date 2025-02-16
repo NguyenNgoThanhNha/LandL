@@ -54,40 +54,7 @@ class SplashController extends GetxController {
     box.writeIfNull('isUpdateVehicle', false);
     print(">>>>>>>>>>>>>>>>>>>>>>>>currentAddress $currentAddress");
   }
-  // Future<void> initializeLocationAndSave() async {
-  //   loc.Location location = loc.Location();
-  //   bool? serviceEnabled;
-  //   loc.PermissionStatus? permissionGranted;
-  //   serviceEnabled = await location.serviceEnabled();
-  //   if (!serviceEnabled) {
-  //     serviceEnabled = await location.requestService();
-  //     if (!serviceEnabled) return;
-  //   }
-  //
-  //   permissionGranted = await location.hasPermission();
-  //   if (permissionGranted == loc.PermissionStatus.denied) {
-  //     permissionGranted = await location.requestPermission();
-  //     if (permissionGranted != loc.PermissionStatus.granted) return;
-  //   }
-  //
-  //   if (permissionGranted == loc.PermissionStatus.deniedForever) {
-  //     return Future.error('Location permissions are permanently denied');
-  //   }
-  //
-  //   loc.LocationData locationData = await location.getLocation();
-  //   LatLng currentLocation =
-  //       LatLng(locationData.latitude!, locationData.longitude!);
-  //   String currentAddress =
-  //       (await getParsedReverseGeocoding(currentLocation))['place'];
-  //
-  //   box.write('latitude', locationData.latitude!);
-  //   box.write('longitude', locationData.longitude!);
-  //   print('${locationData.latitude!} - ${locationData.longitude!}');
-  //   box.write('current-address', currentAddress);
-  //   box.writeIfNull('isUpdateIdCard', false);
-  //   box.writeIfNull('isUpdateVehicle', false);
-  //   print(">>>>>>>>>>>>>>>>>>>>>>>>currentAddress $currentAddress");
-  // }
+
 
   Future<void> requestCameraPermission() async {
     try {

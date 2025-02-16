@@ -4,6 +4,7 @@ import 'package:mobile/commons/widgets/list_tiles/settings_menu_tile.dart';
 import 'package:mobile/commons/widgets/list_tiles/user_profile_tile.dart';
 import 'package:mobile/commons/widgets/texts/section_heading.dart';
 import 'package:mobile/data/repositories/authentication/authentication_repository.dart';
+import 'package:mobile/features/personalization/screens/bank_account/bank_account.dart';
 import 'package:mobile/features/personalization/screens/contract/contract.dart';
 import 'package:mobile/features/personalization/screens/profile/profile.dart';
 import 'package:mobile/features/personalization/screens/vehicle/vehicle.dart';
@@ -60,10 +61,11 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(
                     height: TSizes.spacebtwItems,
                   ),
-                  const TSettingsMenuTile(
+                   TSettingsMenuTile(
                     icon: Iconsax.bank,
                     title: TTexts.payment,
                     subTitle: TTexts.paymentSub,
+                    onTap: () => Get.to(() => const BankAccountScreen()),
                   ),
                   TSettingsMenuTile(
                     icon: Iconsax.document,

@@ -11,6 +11,9 @@ class TFormatter {
   static String formatCurrency(double amount) {
     return NumberFormat.currency(locale: 'vi_VN', symbol: 'VND').format(amount);
   }
+  static String formatCurrencyWithoutSuffix(double amount) {
+    return NumberFormat("#,##0", "vi_VN").format(amount);
+  }
 
   static String formatPhoneNumber(String number) {
     if (number.length == 10) {

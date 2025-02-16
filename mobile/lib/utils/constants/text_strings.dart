@@ -39,6 +39,15 @@ class TTexts {
   static const String resentEmailIn = "Resent email in";
   static const String birthDay = "Birth Date";
   static const String username = "Username";
+  static const String bank = "Bank Name";
+  static const String number = "Account Number";
+  static const String doe = "Expire Date";
+  static const String money = "How much (VND)";
+  static const String description = "Description";
+  static const String request = "Request to Withdraw";
+  static const String createBankAccount = "Create Bank Account";
+
+
 
   static const String loginTitle = "Welcome back,";
   static const String loginSubTitle =
@@ -97,7 +106,7 @@ class TTexts {
       'Review your past deliveries and track records';
   static const String languageSub = 'Set your preferred language for the app';
   static const String idCardTitle = 'Upload ID Card';
-  static const String licenceCardsTitle = 'Upload Licence Card';
+  static const String licenceCardsTitle = 'Upload License Card';
 
   //vehicle
   static const String messageWarningNoTruck =

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:mobile/features/service/models/order_model.dart';
 import 'package:mobile/utils/http/http_client.dart';
@@ -21,7 +23,7 @@ class OrderRepository extends GetxController {
       final response =
           await THttpClient.get('Order/GetOrderDetailByOrderDetailId/$id');
       if (response.success) {
-
+        print(1111111111111111);
         return OrderModel.fromJson(response.result?.data);
       }
       return null;

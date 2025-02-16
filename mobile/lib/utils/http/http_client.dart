@@ -136,6 +136,7 @@ class THttpClient {
 
   static Map<String, dynamic> _handleResponseDynamic(http.Response response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
+      print(response);
       print(json.decode(response.body));
       return json.decode(response.body);
     } else {

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/features/personalization/screens/contract/contract.dart';
+import 'package:mobile/features/personalization/screens/driver_card/driver_card_screen.dart';
 import 'package:mobile/utils/constants/image_strings.dart';
 import 'package:mobile/utils/helpers/network_manager.dart';
 import 'package:mobile/utils/http/scan_image.dart';
@@ -125,7 +126,7 @@ class UploadContractController extends GetxController {
         } else {
           TLoaders.successSnackBar(title: 'Upload success', message: "Your information will be protected.");
           box.write('isHasIdCard', true);
-          Get.off(() => const ContractScreen());
+          Get.to(()=> const DriverCardScreen());
         }
       }
     } catch (e) {

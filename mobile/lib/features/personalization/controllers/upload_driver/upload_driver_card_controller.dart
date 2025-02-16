@@ -137,8 +137,9 @@ class UploadDriverCardController extends GetxController {
           return;
         } else {
           TLoaders.successSnackBar(title: 'Upload success', message: "Your information will be protected.");
-          box.write('isHasIdCard', true);
-          Get.off(() => const ContractScreen());
+          box.write('isHasDriverCard', true);
+          box.write("isUpdateIdCard", true);
+          Get.back(result: true);
         }
       }
     } catch (e) {

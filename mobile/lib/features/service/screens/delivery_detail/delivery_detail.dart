@@ -7,6 +7,7 @@ import 'package:mobile/commons/widgets/icons/rounded_icon.dart';
 import 'package:mobile/features/service/controllers/order/order_controller.dart';
 import 'package:mobile/features/service/models/order_model.dart';
 import 'package:mobile/features/service/screens/map/map_goong.dart';
+import 'package:mobile/features/service/screens/map/map_navigation.dart';
 import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/constants/sizes.dart';
 import 'package:mobile/utils/constants/text_strings.dart';
@@ -232,9 +233,12 @@ class DeliveryDetailScreen extends StatelessWidget {
                         ),
                       )),
                       TextButton(
-                          onPressed: () => Get.to(() => MapGoongScreen(
-                                id: orderController.order.value.orderDetailId,
-                              )),
+                          onPressed: () => Get.to(() => 
+                              // MapGoongScreen(
+                              //   id: orderController.order.value.orderDetailId,
+                              // )
+                            MapGoongScreen(id: orderController.order.value.orderDetailId)
+                          ),
                           child: const Text(
                             TTexts.viewMap,
                             style: TextStyle(
@@ -319,13 +323,13 @@ class TActionOnOrder extends StatelessWidget {
           ),
           Expanded(
               child: ElevatedButton(
-                onPressed: () => orderController.acceptOrder(
-                    orderModel.orderId.toString(),
-                    orderModel.orderDetailId.toString()),
-                child: const Text(
-                  TTexts.accept,
-                ),
-              ))
+            onPressed: () => orderController.acceptOrder(
+                orderModel.orderId.toString(),
+                orderModel.orderDetailId.toString()),
+            child: const Text(
+              TTexts.accept,
+            ),
+          ))
         ],
       );
     }
@@ -457,7 +461,6 @@ class TActionOnOrder extends StatelessWidget {
   }
 }
 
-
 class TDeliveryInfoItem extends StatelessWidget {
   const TDeliveryInfoItem({
     super.key,
@@ -548,5 +551,4 @@ class TLocationLine extends StatelessWidget {
       ],
     );
   }
-
 }

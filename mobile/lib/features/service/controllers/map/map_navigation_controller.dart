@@ -1,51 +1,101 @@
-// import 'package:flutter/services.dart';
-// import 'package:flutter_mapbox_navigation/flutter_mapbox_navigation.dart';
+// import 'dart:math';
+//
+// import 'package:flutter_mapbox_navigation/library.dart';
 // import 'package:get/get.dart';
 // import 'package:mapbox_gl/mapbox_gl.dart';
-// import 'package:mobile/utils/helpers/get_storage.dart';
+// import 'package:geolocator/geolocator.dart';
+// import 'package:mobile/data/repositories/order/order_repository.dart';
+// import 'package:mobile/features/service/models/order_model.dart';
+// import 'package:mobile/utils/helpers/goong_handler.dart';
+// import 'package:mobile/utils/helpers/network_manager.dart';
+// import 'package:mobile/utils/popups/loaders.dart';
 //
 // class MapNavigationController extends GetxController {
 //   static MapNavigationController get instance => Get.find();
-//   late MapBoxNavigationViewController mapboxController;
-//
+//   final int id;
 //   final currentLocation = const LatLng(0, 0).obs;
 //   final currentAddress = ''.obs;
 //   late CameraPosition initialCameraPosition;
+//   OrderRepository orderRepository = Get.put(OrderRepository());
 //
-//   late MapBoxNavigation directions;
-//   late MapBoxOptions options;
-//   var wayPoints = <WayPoint>[].obs;
-//   late double distanceRemaining, durationRemaining;
-//   late MapBoxNavigationViewController controller;
-//
+//   var distanceRemaining = 0.0.obs;
+//   var durationRemaining = 0.0.obs;
 //   var instruction = "".obs;
 //   var arrived = false.obs;
 //   var routeBuilt = false.obs;
 //   var isNavigating = false.obs;
+//
+//   MapNavigationController({required this.id});
+//   late MapBoxNavigation directions;
+//   late MapBoxOptions options;
+//   var wayPoints = <WayPoint>[].obs;
+//
+//   late MapBoxNavigationViewController controller;
 //   final bool isMultipleStop = false;
+//   Rx<OrderModel> order = OrderModel.empty().obs;
+//   LatLng pickup = const LatLng(0, 0);
+//   LatLng delivery = const LatLng(0, 0);
+//   final loading = false.obs;
 //
 //   @override
-//   void onInit() {
+//   void onInit() async{
 //     super.onInit();
-//     loadCurrentLocation();
-//     loadCurrentAddress();
-//     initialCameraPosition =
-//         CameraPosition(target: currentLocation.value, zoom: 14);
-//     print(initialCameraPosition.target);
-//     initialize();
+//     loading.value=true;
+//     await getData();
+//     pickup = LatLng(double.parse(order.value.deliveryInfoDetail.latPickUp),
+//         double.parse(order.value.deliveryInfoDetail.longPickUp));
+//     delivery = LatLng(double.parse(order.value.deliveryInfoDetail.latDelivery),
+//         double.parse(order.value.deliveryInfoDetail.longDelivery));
+//    await _getCurrentLocation();
+//     await loadCurrentAddress();
+// await initialize();
+//
+//     loading.value=false;
 //   }
 //
-//   void loadCurrentLocation() {
-//     currentLocation.value = getCurrentLatLngFromGetStorage();
+//   Future<void> _getCurrentLocation() async {
+//     Position position = await Geolocator.getCurrentPosition(
+//       desiredAccuracy: LocationAccuracy.high,
+//     );
+//     currentLocation.value = LatLng(position.latitude, position.longitude);
+//     print(currentLocation.value);
+//   }
+//   Future<void> loadCurrentAddress() async {
+//     // currentAddress.value = getCurrentAddressFromGetStorage();
+//     print(222222222);
+//     currentAddress.value =
+//     (await getParsedReverseGeocoding(currentLocation.value))['place'];
+//     print(">>>>>>>>>>>>> ${currentAddress.value}");
 //   }
 //
-//   void loadCurrentAddress() {
-//     currentAddress.value = getCurrentAddressFromGetStorage();
-//   }
 //
-//   Future<void> onRouteEvent(e) async {
-//     distanceRemaining = (await directions.getDistanceRemaining())!;
-//     durationRemaining = (await directions.getDurationRemaining())!;
+//   Future<void> getData() async {
+//     try {
+//       print("Get data");
+//       loading.value = true;
+//       final isConnected = await NetworkManager.instance.isConnected();
+//       if (!isConnected) {
+//         TLoaders.errorSnackBar(
+//             title: 'Network Error',
+//             message: 'Please check your internet connection.');
+//         loading.value = false;
+//         return;
+//       }
+//       final response = await orderRepository.getData(id);
+//       if (response != null) {
+//         order.value = response;
+//         print(response);
+//         update();
+//         loading.value = false;
+//       }
+//     } catch (e) {
+//       loading.value = false;
+//       TLoaders.errorSnackBar(title: 'Oh Snaps', message: e.toString());
+//     }
+//   }
+//   Future<void> onRouteEvent(RouteEvent e) async {
+//     distanceRemaining.value = await directions.distanceRemaining;
+//     durationRemaining.value = await directions.durationRemaining;
 //
 //     switch (e.eventType) {
 //       case MapBoxEvent.progress_change:
@@ -69,7 +119,7 @@
 //         arrived.value = true;
 //         if (!isMultipleStop) {
 //           await Future.delayed(const Duration(seconds: 3));
-//           await mapboxController.finishNavigation();
+//           await controller.finishNavigation();
 //         } else {}
 //         break;
 //       case MapBoxEvent.navigation_finished:
@@ -84,30 +134,54 @@
 //   }
 //
 //   Future<void> initialize() async {
+//     print("Starting ...");
+//     if (controller == null) {
+//       print("Controller is not initialized yet.");
+//       return;
+//     }
+//     directions = MapBoxNavigation(onRouteEvent: onRouteEvent);
+//     options = MapBoxOptions(
+//       zoom: 18.0,
+//       voiceInstructionsEnabled: true,
+//       bannerInstructionsEnabled: true,
+//       mode: MapBoxNavigationMode.drivingWithTraffic,
+//       isOptimized: true,
+//       units: VoiceUnits.metric,
+//       simulateRoute: true,
+//       language: "en",
+//     );
+//
 //     final cityhall =
-//         WayPoint(name: "City Hall", latitude: 42.886448, longitude: -78.878372);
+//         WayPoint(name: "Pickup", latitude: pickup.latitude, longitude: pickup.longitude);
 //     final downtown = WayPoint(
-//         name: "Downtown Buffalo", latitude: 42.8866177, longitude: -78.8814924);
+//         name: "Delivery", latitude: delivery.latitude, longitude: delivery.longitude);
 //     wayPoints.add(cityhall);
 //     wayPoints.add(downtown);
-//     controller.startNavigation(
-//         options: MapBoxOptions(
-//             initialLatitude: 36.1175275,
-//             initialLongitude: -115.1839524,
-//             zoom: 13.0,
-//             tilt: 0.0,
-//             bearing: 0.0,
-//             enableRefresh: false,
-//             alternatives: true,
-//             voiceInstructionsEnabled: true,
-//             bannerInstructionsEnabled: true,
-//             allowsUTurnAtWayPoints: true,
-//             mode: MapBoxNavigationMode.drivingWithTraffic,
-//             // mapStyleUrlDay: "https://url_to_day_style",
-//             // mapStyleUrlNight: "https://url_to_night_style",
-//             units: VoiceUnits.imperial,
-//             simulateRoute: true,
-//             language: "en"));
-//     controller.buildRoute(wayPoints: wayPoints);
+//     // controller.startNavigation(
+//     //     options: MapBoxOptions(
+//     //         initialLatitude: currentLocation.value.latitude,
+//     //         initialLongitude:currentLocation.value.longitude,
+//     //         zoom: 13.0,
+//     //         tilt: 0.0,
+//     //         bearing: 0.0,
+//     //         enableRefresh: false,
+//     //         alternatives: true,
+//     //         voiceInstructionsEnabled: true,
+//     //         bannerInstructionsEnabled: true,
+//     //         allowsUTurnAtWayPoints: true,
+//     //         mode: MapBoxNavigationMode.drivingWithTraffic,
+//     //         // mapStyleUrlDay: "https://url_to_day_style",
+//     //         // mapStyleUrlNight: "https://url_to_night_style",
+//     //         units: VoiceUnits.imperial,
+//     //         simulateRoute: true,
+//     //         language: "en"));
+//     // controller.buildRoute(wayPoints: wayPoints);
+//     await directions.startNavigation(wayPoints: wayPoints, options: options);
+//   }
+//   void onMapCreated(MapBoxNavigationViewController controller) async {
+//     this.controller = controller;
+//     await initialize();
+//     // Now controller is initialized
+//     print("MapBox Controller initialized.");
 //   }
 // }

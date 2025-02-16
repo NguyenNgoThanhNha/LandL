@@ -6,6 +6,7 @@ import 'package:mobile/features/service/controllers/home/home_controller.dart';
 import 'package:mobile/utils/constants/colors.dart';
 import 'package:mobile/utils/constants/sizes.dart';
 import 'package:mobile/utils/constants/text_strings.dart';
+import 'package:mobile/utils/formatters/formatter.dart';
 
 class TBalance extends StatelessWidget {
   const TBalance({
@@ -53,7 +54,7 @@ class TBalance extends StatelessWidget {
                             .apply(color: TColors.white),
                       );
                     } else {
-                      return Text(accountBalance ?? "0.000",
+                      return Text(TFormatter.formatCurrencyWithoutSuffix(double.parse(accountBalance ?? 0)),
                           style: Theme.of(context)
                               .textTheme
                               .displaySmall!

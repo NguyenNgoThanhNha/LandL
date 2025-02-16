@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:mobile/features/personalization/models/user_model.dart';
 import 'package:mobile/utils/http/http_client.dart';
 import 'package:mobile/utils/http/response_props.dart';
+import 'package:mobile/utils/http/upload_image.dart';
 
 class UserRepository extends GetxController {
   UserRepository get instance => Get.find();
@@ -46,6 +47,32 @@ class UserRepository extends GetxController {
     try {
       final res = await THttpClient.get('IdentityCard/GetIdentityCard');
       return res;
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  Future<ResponseProps> getLicenseCard() async {
+    try {
+      final res = await THttpClient.get('LicenseDriver/GetLicenseDriver');
+      return res;
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  Future<ResponseProps> updateBankAccountInfo(
+      String fullName, String bank, String accountNumber, String doe) async {
+    try {
+      final email = deviceStorage.read('email');
+      print(email);
+      final response = await THttpUpload.patchData('User/UpdateInfo?email=$email', {
+        "fullName": fullName,
+        "stk": accountNumber,
+        "bank": bank,
+        "expireDate": doe
+      });
+     return response;
     } catch (e) {
       throw 'Something went wrong. Please try again.';
     }

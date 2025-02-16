@@ -6,6 +6,7 @@ import 'package:mobile/commons/widgets/custom_shapes/containers/rounded_containe
 import 'package:mobile/commons/widgets/icons/rounded_icon.dart';
 import 'package:mobile/features/personalization/controllers/contract/contract_controller.dart';
 import 'package:mobile/features/personalization/controllers/upload_contract/upload_contract_controller.dart';
+import 'package:mobile/features/personalization/screens/driver_card/driver_card_screen.dart';
 import 'package:mobile/features/personalization/screens/id_card_detail/id_card_detail.dart';
 import 'package:mobile/features/personalization/screens/upload_contract/upload_contract.dart';
 import 'package:mobile/features/personalization/screens/upload_driver_card/upload_driver_card.dart';
@@ -82,7 +83,12 @@ class ContractScreen extends StatelessWidget {
                 height: TSizes.spacebtwItems,
               ),
               GestureDetector(
-                  onTap: () => Get.to(() => const UploadDriverCardScreen()),
+                  onTap: () => Get.to(() => Obx(() {
+                    if (!controller.isHasDriverCard.value) {
+                      return const UploadDriverCardScreen();
+                    }
+                    return const DriverCardScreen();
+                  })),
                   child: TRoundedContainer(
                     backgroundColor: TColors.accent.withOpacity(0.3),
                     padding: const EdgeInsets.all(TSizes.sm),

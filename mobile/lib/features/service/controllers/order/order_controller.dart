@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mobile/data/repositories/authentication/authentication_repository.dart';
 import 'package:mobile/data/repositories/order/order_repository.dart';
 import 'package:mobile/features/service/models/order_model.dart';
 import 'package:mobile/utils/helpers/network_manager.dart';
@@ -71,7 +72,7 @@ class OrderController extends GetxController {
 
   Future<void> updateOrderStatus(String orderDetailId, int status) async {
     try {
-      loading.value = false;
+      loading.value = true;
 
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
@@ -82,6 +83,7 @@ class OrderController extends GetxController {
       loading.value = false;
       if (response.success) {
         order.value = OrderModel.fromJson(response.result?.data);
+        await AuthenticationRepository.instance.checkUserFromBackend();
 
         TLoaders.successSnackBar(title: "Update Success!", message: "Order status update success!");
         // Get.to(() => DeliveryDetailScreen(orderModel: orderRes));

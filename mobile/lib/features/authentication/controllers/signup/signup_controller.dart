@@ -79,7 +79,11 @@ class SignupController extends GetxController {
           phoneNumber.text.trim(),
           city.text.trim(),
           fullName.text.toString());
+
       TFullScreenLoader.stopLoading();
+
+      print(response);
+
       if (response.success == true) {
         TLoaders.successSnackBar(
             title: 'Congratulations',
@@ -87,11 +91,13 @@ class SignupController extends GetxController {
 
         Get.to(() => VerifyOtpScreen(email: email.text.trim()));
       } else {
+        TFullScreenLoader.stopLoading();
         TLoaders.errorSnackBar(
             title: 'Register account failed',
             message: response.result?.message);
         return;
       }
+      TFullScreenLoader.stopLoading();
     } catch (e) {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());

@@ -19,11 +19,18 @@ class LoginController extends GetxController {
   final password = TextEditingController();
   final loginFormKey = GlobalKey<FormState>();
 
+  // @override
+  // void onClose() {
+  //   email.dispose();
+  //   password.dispose();
+  //   super.onClose();
+  // }
+  //
   @override
-  void onClose() {
+  void dispose() {
     email.dispose();
     password.dispose();
-    super.onClose();
+    super.dispose();
   }
 
   @override
